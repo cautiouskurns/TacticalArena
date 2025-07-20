@@ -235,6 +235,13 @@ public class Task_1_1_3_Setup : EditorWindow
             }
         }
         
+        GUILayout.Space(5);
+        
+        if (GUILayout.Button("Create/Update Obstacle Prefabs", buttonStyle))
+        {
+            CreateObstaclePrefabs();
+        }
+        
         GUILayout.Space(20);
         
         // Current Status Section
@@ -561,11 +568,13 @@ public class Task_1_1_3_Setup : EditorWindow
             serializedObstacle.FindProperty("worldPosition").vector3Value = worldPos;
             serializedObstacle.ApplyModifiedProperties();
             
-            // Create visual representation
-            CreateObstacleVisual(obstacleObj, obstacleType);
-            
-            // Create collider for line-of-sight blocking
-            CreateObstacleCollider(obstacleObj, obstacleType);
+            // Try to use prefab first, fallback to procedural generation
+            if (!TryCreateFromPrefab(obstacleObj, obstacleType))
+            {
+                // Fallback to procedural generation
+                CreateObstacleVisual(obstacleObj, obstacleType);
+                CreateObstacleCollider(obstacleObj, obstacleType);
+            }
             
             // Mark tile as occupied
             GridTile tile = cachedGridManager.GetTile(coord);
@@ -592,6 +601,71 @@ public class Task_1_1_3_Setup : EditorWindow
         if (includeHighWalls) return ObstacleType.HighWall;
         if (includeLowCover) return ObstacleType.LowCover;
         return ObstacleType.Terrain;
+    }
+    
+    /// <summary>
+    /// Tries to create obstacle from prefab, returns true if successful
+    /// </summary>
+    private bool TryCreateFromPrefab(GameObject parentObj, ObstacleType obstacleType)
+    {
+        string prefabPath = $"Assets/Prefabs/Obstacles/Obstacle_{obstacleType}.prefab";
+        GameObject prefab = AssetDatabase.LoadAssetAtPath<GameObject>(prefabPath);
+        
+        if (prefab != null)
+        {
+            // Get the components from the prefab
+            Obstacle prefabObstacle = prefab.GetComponent<Obstacle>();
+            Renderer prefabRenderer = prefab.GetComponentInChildren<Renderer>();
+            Collider prefabCollider = prefab.GetComponent<Collider>();
+            
+            if (prefabObstacle != null)
+            {
+                // Copy the visual hierarchy from prefab
+                foreach (Transform child in prefab.transform)
+                {
+                    GameObject childCopy = Instantiate(child.gameObject, parentObj.transform);
+                    childCopy.name = child.name; // Remove "(Clone)" suffix
+                }
+                
+                // Copy collider from prefab
+                if (prefabCollider != null)
+                {
+                    CopyComponent(prefabCollider, parentObj);
+                }
+                
+                if (logObstacleDetails)
+                {
+                    Debug.Log($"Created obstacle {obstacleType} from prefab: {prefabPath}");
+                }
+                
+                return true;
+            }
+        }
+        
+        if (logObstacleDetails)
+        {
+            Debug.Log($"Prefab not found for {obstacleType}, using procedural generation");
+        }
+        
+        return false;
+    }
+    
+    /// <summary>
+    /// Copies a component to another GameObject
+    /// </summary>
+    private Component CopyComponent(Component source, GameObject destination)
+    {
+        System.Type type = source.GetType();
+        Component copy = destination.AddComponent(type);
+        
+        // Copy all fields
+        var fields = type.GetFields(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.NonPublic | System.Reflection.BindingFlags.Instance);
+        foreach (var field in fields)
+        {
+            field.SetValue(copy, field.GetValue(source));
+        }
+        
+        return copy;
     }
     
     private void CreateObstacleVisual(GameObject obstacleObj, ObstacleType obstacleType)
@@ -840,5 +914,136 @@ public class Task_1_1_3_Setup : EditorWindow
         }
         
         Debug.Log("Obstacle system reset complete");
+    }
+    
+    /// <summary>
+    /// Creates or updates obstacle prefabs
+    /// </summary>
+    private void CreateObstaclePrefabs()
+    {
+        Debug.Log("=== Creating Obstacle Prefabs ===");
+        
+        // Create Prefabs folder if it doesn't exist
+        if (!AssetDatabase.IsValidFolder("Assets/Prefabs"))
+        {
+            AssetDatabase.CreateFolder("Assets", "Prefabs");
+        }
+        
+        if (!AssetDatabase.IsValidFolder("Assets/Prefabs/Obstacles"))
+        {
+            AssetDatabase.CreateFolder("Assets/Prefabs", "Obstacles");
+        }
+        
+        // Create prefab for each obstacle type
+        CreateObstaclePrefab(ObstacleType.LowCover, lowCoverColor, lowCoverHeight);
+        CreateObstaclePrefab(ObstacleType.HighWall, highWallColor, highWallHeight);
+        CreateObstaclePrefab(ObstacleType.Terrain, terrainColor, terrainHeight);
+        
+        AssetDatabase.SaveAssets();
+        AssetDatabase.Refresh();
+        
+        Debug.Log("Obstacle prefabs created in Assets/Prefabs/Obstacles/");
+        EditorUtility.DisplayDialog("Prefabs Created", 
+            "Obstacle prefabs have been created in Assets/Prefabs/Obstacles/\n\n" +
+            "The obstacle system will now use these prefabs for consistent appearance and better workflow.", "OK");
+    }
+    
+    /// <summary>
+    /// Creates a single obstacle prefab
+    /// </summary>
+    private void CreateObstaclePrefab(ObstacleType obstacleType, Color color, float height)
+    {
+        string prefabName = $"Obstacle_{obstacleType}";
+        string prefabPath = $"Assets/Prefabs/Obstacles/{prefabName}.prefab";
+        
+        // Create the obstacle GameObject
+        GameObject obstacleObj = new GameObject(prefabName);
+        
+        // Add Obstacle component
+        Obstacle obstacle = obstacleObj.AddComponent<Obstacle>();
+        
+        // Configure obstacle properties
+        var serializedObstacle = new SerializedObject(obstacle);
+        serializedObstacle.FindProperty("obstacleType").enumValueIndex = (int)obstacleType;
+        serializedObstacle.ApplyModifiedProperties();
+        
+        // Create visual representation
+        GameObject visual = CreateObstaclePrefabVisual(obstacleObj, obstacleType, color, height);
+        
+        // Create collider
+        CreateObstaclePrefabCollider(obstacleObj, obstacleType, height);
+        
+        // Save as prefab
+        GameObject prefabAsset = PrefabUtility.SaveAsPrefabAsset(obstacleObj, prefabPath);
+        
+        // Clean up the temporary GameObject
+        DestroyImmediate(obstacleObj);
+        
+        Debug.Log($"Created prefab: {prefabPath}");
+    }
+    
+    /// <summary>
+    /// Creates the visual component for prefab
+    /// </summary>
+    private GameObject CreateObstaclePrefabVisual(GameObject parent, ObstacleType obstacleType, Color color, float height)
+    {
+        GameObject visual;
+        
+        switch (obstacleType)
+        {
+            case ObstacleType.LowCover:
+                visual = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                break;
+            case ObstacleType.HighWall:
+                visual = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                break;
+            case ObstacleType.Terrain:
+                visual = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                break;
+            default:
+                visual = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                break;
+        }
+        
+        visual.name = "Visual";
+        visual.transform.SetParent(parent.transform);
+        visual.transform.localPosition = Vector3.up * (height / 2f);
+        
+        if (obstacleType == ObstacleType.Terrain)
+        {
+            visual.transform.localScale = new Vector3(0.8f, height, 0.8f);
+        }
+        else
+        {
+            visual.transform.localScale = new Vector3(0.9f, height, 0.9f);
+        }
+        
+        // Remove the default collider (we'll add our own to the parent)
+        DestroyImmediate(visual.GetComponent<Collider>());
+        
+        // Set up material
+        Renderer renderer = visual.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            Material obstacleMaterial = CreateOrGetObstacleMaterial($"Obstacle_{obstacleType}", color);
+            renderer.material = obstacleMaterial;
+            renderer.shadowCastingMode = generateObstacleShadows ? 
+                UnityEngine.Rendering.ShadowCastingMode.On : 
+                UnityEngine.Rendering.ShadowCastingMode.Off;
+        }
+        
+        return visual;
+    }
+    
+    /// <summary>
+    /// Creates the collider component for prefab
+    /// </summary>
+    private void CreateObstaclePrefabCollider(GameObject parent, ObstacleType obstacleType, float height)
+    {
+        BoxCollider collider = parent.AddComponent<BoxCollider>();
+        
+        collider.size = new Vector3(0.9f, height, 0.9f);
+        collider.center = new Vector3(0f, height / 2f, 0f);
+        collider.isTrigger = false; // Solid collider for line-of-sight blocking
     }
 }

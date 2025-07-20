@@ -123,6 +123,14 @@ public struct ObstacleData
     {
         return blocksMovement ? float.PositiveInfinity : movementCost;
     }
+    
+    /// <summary>
+    /// Gets the prefab path for this obstacle type
+    /// </summary>
+    public string GetPrefabPath()
+    {
+        return $"Assets/Prefabs/Obstacles/Obstacle_{type}.prefab";
+    }
 }
 
 /// <summary>
