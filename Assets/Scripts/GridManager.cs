@@ -18,6 +18,9 @@ public class GridManager : MonoBehaviour
     [SerializeField] private bool enableTileColliders = true;
     [SerializeField] private bool enableDebugGizmos = true;
     
+    [Header("Obstacle Integration")]
+    [SerializeField] private ObstacleManager obstacleManager;
+    
     [Header("Debug Information")]
     [SerializeField] private GridCoordinate hoveredTile = GridCoordinate.Invalid;
     [SerializeField] private GridCoordinate selectedTile = GridCoordinate.Invalid;
@@ -204,6 +207,12 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public Vector3 GridToWorld(GridCoordinate coordinate)
     {
+        // Ensure grid dimensions are calculated
+        if (gridStartPosition == Vector3.zero || totalGridWidth == 0)
+        {
+            CalculateGridDimensions();
+        }
+        
         if (!coordinate.IsWithinBounds(gridWidth, gridHeight))
         {
             Debug.LogWarning($"GridManager: Invalid coordinate {coordinate}");
@@ -221,6 +230,13 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public GridTile GetTile(GridCoordinate coordinate)
     {
+        // Ensure data structures are initialized
+        if (coordinateToTile == null)
+        {
+            InitializeDataStructures();
+            CacheGridTiles();
+        }
+        
         if (coordinateToTile.TryGetValue(coordinate, out GridTile tile))
         {
             return tile;
@@ -311,9 +327,105 @@ public class GridManager : MonoBehaviour
     /// </summary>
     public bool HasLineOfSight(GridCoordinate from, GridCoordinate to)
     {
-        // Simple implementation - can be enhanced for obstacle checking
-        // For now, just check if both coordinates are valid
+        // Delegate to obstacle manager if available
+        if (obstacleManager != null && obstacleManager.LineOfSightEnabled)
+        {
+            return obstacleManager.HasLineOfSight(from, to);
+        }
+        
+        // Fallback: Simple implementation - just check if both coordinates are valid
         return IsValidCoordinate(from) && IsValidCoordinate(to);
+    }
+    
+    /// <summary>
+    /// Gets the cover value between two coordinates
+    /// </summary>
+    public float GetCoverValue(GridCoordinate from, GridCoordinate to)
+    {
+        if (obstacleManager != null && obstacleManager.PartialCoverEnabled)
+        {
+            return obstacleManager.GetCoverValue(from, to);
+        }
+        
+        return 0f; // No cover if obstacle manager not available
+    }
+    
+    /// <summary>
+    /// Checks if a coordinate has an obstacle
+    /// </summary>
+    public bool HasObstacle(GridCoordinate coordinate)
+    {
+        if (obstacleManager != null)
+        {
+            return obstacleManager.HasObstacle(coordinate);
+        }
+        
+        // Fallback: Check tile occupation status
+        GridTile tile = GetTile(coordinate);
+        return tile != null && tile.IsOccupied;
+    }
+    
+    /// <summary>
+    /// Gets all coordinates that are blocked for movement
+    /// </summary>
+    public List<GridCoordinate> GetBlockedCoordinates()
+    {
+        if (obstacleManager != null)
+        {
+            return obstacleManager.GetBlockedCoordinates();
+        }
+        
+        // Fallback: Check all tiles for occupation
+        List<GridCoordinate> blockedCoords = new List<GridCoordinate>();
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int z = 0; z < gridHeight; z++)
+            {
+                GridCoordinate coord = new GridCoordinate(x, z);
+                if (IsCoordinateOccupied(coord))
+                {
+                    blockedCoords.Add(coord);
+                }
+            }
+        }
+        
+        return blockedCoords;
+    }
+    
+    /// <summary>
+    /// Gets all coordinates that are free for movement
+    /// </summary>
+    public List<GridCoordinate> GetFreeCoordinates()
+    {
+        if (obstacleManager != null)
+        {
+            return obstacleManager.GetFreeCoordinates();
+        }
+        
+        // Fallback: Check all tiles for availability
+        List<GridCoordinate> freeCoords = new List<GridCoordinate>();
+        for (int x = 0; x < gridWidth; x++)
+        {
+            for (int z = 0; z < gridHeight; z++)
+            {
+                GridCoordinate coord = new GridCoordinate(x, z);
+                if (!IsCoordinateOccupied(coord))
+                {
+                    freeCoords.Add(coord);
+                }
+            }
+        }
+        
+        return freeCoords;
+    }
+    
+    /// <summary>
+    /// Sets the obstacle manager reference
+    /// </summary>
+    public void SetObstacleManager(ObstacleManager manager)
+    {
+        obstacleManager = manager;
+        Debug.Log("GridManager: Obstacle manager integration established");
     }
     
     /// <summary>
@@ -388,7 +500,9 @@ public class GridManager : MonoBehaviour
             totalTiles = TotalTiles,
             selectedTile = selectedTile,
             hoveredTile = hoveredTile,
-            gridBounds = new Bounds(gridCenter, new Vector3(totalGridWidth, 0.1f, totalGridHeight))
+            gridBounds = new Bounds(gridCenter, new Vector3(totalGridWidth, 0.1f, totalGridHeight)),
+            obstacleCount = obstacleManager != null ? obstacleManager.ObstacleCount : 0,
+            lineOfSightEnabled = obstacleManager != null ? obstacleManager.LineOfSightEnabled : false
         };
     }
     
@@ -448,9 +562,11 @@ public struct GridInfo
     public GridCoordinate selectedTile;
     public GridCoordinate hoveredTile;
     public Bounds gridBounds;
+    public int obstacleCount;
+    public bool lineOfSightEnabled;
     
     public override string ToString()
     {
-        return $"Grid {gridSize.x}x{gridSize.y}, {totalTiles} tiles, Selected: {selectedTile}, Hovered: {hoveredTile}";
+        return $"Grid {gridSize.x}x{gridSize.y}, {totalTiles} tiles, {obstacleCount} obstacles, Selected: {selectedTile}, Hovered: {hoveredTile}";
     }
 }

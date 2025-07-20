@@ -16,6 +16,7 @@ public class GridTile : MonoBehaviour
     [SerializeField] private bool isSelected = false;
     [SerializeField] private bool isHovered = false;
     [SerializeField] private bool isBlocked = false;
+    [SerializeField] private GameObject occupyingObject = null;
     
     [Header("Visual Feedback")]
     [SerializeField] private bool enableVisualFeedback = true;
@@ -48,6 +49,7 @@ public class GridTile : MonoBehaviour
     public bool IsHovered => isHovered;
     public bool IsBlocked => isBlocked;
     public float TileSize => tileSize;
+    public GameObject OccupyingObject => occupyingObject;
     
     void Awake()
     {
@@ -227,19 +229,36 @@ public class GridTile : MonoBehaviour
     /// <summary>
     /// Sets the occupied state of this tile
     /// </summary>
-    public void SetOccupiedState(bool occupied)
+    public void SetOccupiedState(bool occupied, GameObject occupant = null)
     {
         if (isOccupied != occupied)
         {
             isOccupied = occupied;
+            occupyingObject = occupied ? occupant : null;
             UpdateVisualState();
             OnTileOccupiedChanged?.Invoke(coordinate);
             
             if (showDebugInfo)
             {
-                Debug.Log($"GridTile {name}: Occupied state changed to {occupied}");
+                Debug.Log($"GridTile {name}: Occupied state changed to {occupied} by {(occupant ? occupant.name : "none")}");
             }
         }
+    }
+    
+    /// <summary>
+    /// Occupies this tile with the specified object
+    /// </summary>
+    public void OccupyTile(GameObject occupant)
+    {
+        SetOccupiedState(true, occupant);
+    }
+    
+    /// <summary>
+    /// Clears the occupation of this tile
+    /// </summary>
+    public void ClearOccupation()
+    {
+        SetOccupiedState(false, null);
     }
     
     /// <summary>
@@ -299,7 +318,8 @@ public class GridTile : MonoBehaviour
             isHovered = isHovered,
             isBlocked = isBlocked,
             isAccessible = IsAccessible(),
-            movementCost = GetMovementCost()
+            movementCost = GetMovementCost(),
+            occupyingObject = occupyingObject
         };
     }
     
@@ -416,9 +436,11 @@ public struct TileInfo
     public bool isBlocked;
     public bool isAccessible;
     public float movementCost;
+    public GameObject occupyingObject;
     
     public override string ToString()
     {
-        return $"Tile {coordinate}: Occupied={isOccupied}, Selected={isSelected}, Blocked={isBlocked}, Cost={movementCost}";
+        string occupantName = occupyingObject ? occupyingObject.name : "none";
+        return $"Tile {coordinate}: Occupied={isOccupied} by {occupantName}, Selected={isSelected}, Blocked={isBlocked}, Cost={movementCost}";
     }
 }
