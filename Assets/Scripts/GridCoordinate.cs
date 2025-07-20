@@ -53,6 +53,16 @@ public struct GridCoordinate
     /// <summary>
     /// Calculates Euclidean distance to another coordinate
     /// </summary>
+    public float DistanceTo(GridCoordinate other)
+    {
+        float dx = x - other.x;
+        float dz = z - other.z;
+        return Mathf.Sqrt(dx * dx + dz * dz);
+    }
+    
+    /// <summary>
+    /// Calculates Euclidean distance to another coordinate
+    /// </summary>
     public float Distance(GridCoordinate other)
     {
         int dx = x - other.x;
