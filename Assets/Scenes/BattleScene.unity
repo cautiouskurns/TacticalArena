@@ -995,6 +995,157 @@ LineRenderer:
   m_UseWorldSpace: 0
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &247126704
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 247126708}
+  - component: {fileID: 247126707}
+  - component: {fileID: 247126706}
+  - component: {fileID: 247126705}
+  m_Layer: 0
+  m_Name: Movement Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &247126705
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247126704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e4bfb062748e94107b9ff3dbbd0497e2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovementAnimator
+  enableAnimation: 1
+  movementSpeed: 2
+  movementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  movementTolerance: 0.1
+  enableHeightAnimation: 0
+  maxHeightOffset: 0.5
+  heightCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableRotationAlignment: 0
+  rotationSpeed: 5
+  useFixedDeltaTime: 0
+  maxConcurrentAnimations: 10
+  enableAnimationLogging: 1
+--- !u!114 &247126706
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247126704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b29d2961f5f9427dbec2ff376133f6e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovementValidator
+  enableValidation: 1
+  allowDiagonalMovement: 0
+  restrictToAdjacentTiles: 1
+  checkObstacles: 1
+  checkUnitOccupancy: 1
+  maxMovementDistance: 1
+  allowMovementThroughUnits: 0
+  allowMovementThroughObstacles: 0
+  enableValidationLogging: 1
+--- !u!114 &247126707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247126704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cf7eb141f93c54916bce468495233dff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovementManager
+  movementSpeed: 2
+  allowDiagonalMovement: 0
+  restrictToAdjacentTiles: 1
+  preventOverlappingMoves: 1
+  gridLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  raycastDistance: 100
+  showMovementPreview: 1
+  previewFadeTime: 0.3
+  validMoveMaterial: {fileID: 2100000, guid: 6937086c1f2454bbc920a4da37bcc22e, type: 2}
+  invalidMoveMaterial: {fileID: 2100000, guid: 9708333177fc14814b756f566201e7c9, type: 2}
+  selectionManager: {fileID: 1018921826}
+  enableMovementLogging: 1
+--- !u!4 &247126708
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247126704}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &259407276
 GameObject:
   m_ObjectHideFlags: 0
@@ -3458,6 +3609,7 @@ GameObject:
   - component: {fileID: 719432018}
   - component: {fileID: 719432017}
   - component: {fileID: 719432022}
+  - component: {fileID: 719432023}
   m_Layer: 0
   m_Name: Red Unit 2
   m_TagString: Untagged
@@ -3686,6 +3838,55 @@ MonoBehaviour:
   usePropertyBlocks: 0
   cacheComponents: 1
   enableDebugLogging: 1
+--- !u!114 &719432023
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719432015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9798ece7d45f42e8a7219226147b57d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridMovementComponent
+  movementSpeed: 2
+  enableMovementAnimation: 1
+  useCustomAnimationCurve: 0
+  customMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  canMove: 1
+  isMoving: 0
+  currentGridPosition: {x: 0, y: 0}
+  targetGridPosition: {x: 0, y: 0}
+  enableMovementEffects: 1
+  movementParticles: {fileID: 0}
+  movementAudioSource: {fileID: 0}
+  movementStartSound: {fileID: 0}
+  movementCompleteSound: {fileID: 0}
+  enableMovementLogging: 1
 --- !u!1 &735224585
 GameObject:
   m_ObjectHideFlags: 0
@@ -3941,6 +4142,7 @@ GameObject:
   - component: {fileID: 767108878}
   - component: {fileID: 767108877}
   - component: {fileID: 767108882}
+  - component: {fileID: 767108883}
   m_Layer: 0
   m_Name: Red Unit 1
   m_TagString: Untagged
@@ -4169,6 +4371,55 @@ MonoBehaviour:
   usePropertyBlocks: 0
   cacheComponents: 1
   enableDebugLogging: 1
+--- !u!114 &767108883
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767108875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9798ece7d45f42e8a7219226147b57d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridMovementComponent
+  movementSpeed: 2
+  enableMovementAnimation: 1
+  useCustomAnimationCurve: 0
+  customMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  canMove: 1
+  isMoving: 0
+  currentGridPosition: {x: 0, y: 0}
+  targetGridPosition: {x: 0, y: 0}
+  enableMovementEffects: 1
+  movementParticles: {fileID: 0}
+  movementAudioSource: {fileID: 0}
+  movementStartSound: {fileID: 0}
+  movementCompleteSound: {fileID: 0}
+  enableMovementLogging: 1
 --- !u!1 &789142945
 GameObject:
   m_ObjectHideFlags: 0
@@ -7172,6 +7423,7 @@ GameObject:
   - component: {fileID: 1468225314}
   - component: {fileID: 1468225313}
   - component: {fileID: 1468225318}
+  - component: {fileID: 1468225319}
   m_Layer: 0
   m_Name: Blue Unit 1
   m_TagString: Untagged
@@ -7400,6 +7652,55 @@ MonoBehaviour:
   usePropertyBlocks: 0
   cacheComponents: 1
   enableDebugLogging: 1
+--- !u!114 &1468225319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468225311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9798ece7d45f42e8a7219226147b57d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridMovementComponent
+  movementSpeed: 2
+  enableMovementAnimation: 1
+  useCustomAnimationCurve: 0
+  customMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  canMove: 1
+  isMoving: 0
+  currentGridPosition: {x: 0, y: 0}
+  targetGridPosition: {x: 0, y: 0}
+  enableMovementEffects: 1
+  movementParticles: {fileID: 0}
+  movementAudioSource: {fileID: 0}
+  movementStartSound: {fileID: 0}
+  movementCompleteSound: {fileID: 0}
+  enableMovementLogging: 1
 --- !u!1 &1489580187
 GameObject:
   m_ObjectHideFlags: 0
@@ -8477,6 +8778,7 @@ GameObject:
   - component: {fileID: 1880040323}
   - component: {fileID: 1880040322}
   - component: {fileID: 1880040327}
+  - component: {fileID: 1880040328}
   m_Layer: 0
   m_Name: Blue Unit 2
   m_TagString: Untagged
@@ -8705,6 +9007,55 @@ MonoBehaviour:
   usePropertyBlocks: 0
   cacheComponents: 1
   enableDebugLogging: 1
+--- !u!114 &1880040328
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880040320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f9798ece7d45f42e8a7219226147b57d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GridMovementComponent
+  movementSpeed: 2
+  enableMovementAnimation: 1
+  useCustomAnimationCurve: 0
+  customMovementCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  canMove: 1
+  isMoving: 0
+  currentGridPosition: {x: 0, y: 0}
+  targetGridPosition: {x: 0, y: 0}
+  enableMovementEffects: 1
+  movementParticles: {fileID: 0}
+  movementAudioSource: {fileID: 0}
+  movementStartSound: {fileID: 0}
+  movementCompleteSound: {fileID: 0}
+  enableMovementLogging: 1
 --- !u!21 &1933930709
 Material:
   serializedVersion: 8
@@ -9439,7 +9790,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 330585546}
   - {fileID: 832575519}
-  - {fileID: 408600668}
   - {fileID: 1489580188}
+  - {fileID: 408600668}
   - {fileID: 1939828379}
   - {fileID: 1018921827}
+  - {fileID: 247126708}

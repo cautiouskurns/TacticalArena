@@ -6,8 +6,9 @@ using System;
 /// Handles unit properties, team assignment, positioning, and state management.
 /// Serves as the foundation for all unit-based tactical gameplay mechanics.
 /// Implements ISelectable for mouse selection system integration.
+/// Implements IMovable for grid-based movement system integration.
 /// </summary>
-public class Unit : MonoBehaviour, ISelectable
+public class Unit : MonoBehaviour, ISelectable, IMovable
 {
     [Header("Unit Identity")]
     [SerializeField] private string unitName = "Tactical Unit";
@@ -118,6 +119,18 @@ public class Unit : MonoBehaviour, ISelectable
     public System.Action<ISelectable> OnSelected { get; set; }
     public System.Action<ISelectable> OnDeselected { get; set; }
     public System.Action<ISelectable, bool> OnHoverChanged { get; set; }
+    
+    // IMovable interface implementation
+    public Vector2Int GridPosition 
+    { 
+        get => new Vector2Int(gridCoordinate.x, gridCoordinate.z); 
+        set => SetGridCoordinate(new GridCoordinate(value.x, value.y)); // Vector2Int.y maps to GridCoordinate.z
+    }
+    
+    // IMovable events
+    public event System.Action<IMovable, Vector2Int> OnMovementStart;
+    public event System.Action<IMovable, Vector2Int> OnMovementComplete;
+    public event System.Action<IMovable, string> OnMovementCancel;
     
     void Awake()
     {
@@ -698,6 +711,139 @@ public class Unit : MonoBehaviour, ISelectable
     public string GetDisplayInfo()
     {
         return $"{unitName} ({team})";
+    }
+    
+    // IMovable interface methods implementation
+    
+    /// <summary>
+    /// Attempts to move to a target grid position (IMovable implementation)
+    /// </summary>
+    public bool MoveTo(Vector2Int targetGridPosition, Vector3 worldPosition, bool animated = true)
+    {
+        if (!CanMove)
+        {
+            if (enableDebugLogging)
+            {
+                Debug.Log($"Unit {unitName} cannot move: CanMove = {CanMove}");
+            }
+            return false;
+        }
+        
+        GridCoordinate targetCoordinate = new GridCoordinate(targetGridPosition.x, targetGridPosition.y);
+        
+        // Use existing MoveTo method but update for IMovable integration
+        GridCoordinate oldCoordinate = gridCoordinate;
+        gridCoordinate = targetCoordinate;
+        targetWorldPosition = worldPosition;
+        
+        // Fire IMovable event
+        OnMovementStart?.Invoke(this, targetGridPosition);
+        
+        if (animated)
+        {
+            StartMovementAnimation();
+        }
+        else
+        {
+            transform.position = worldPosition;
+            OnMovementCompleted(targetGridPosition);
+        }
+        
+        // Update state
+        hasMoved = true;
+        ConsumeActionPoint();
+        
+        // Trigger Unit events
+        OnUnitMoved?.Invoke(this, oldCoordinate, targetCoordinate);
+        
+        // Play move sound
+        PlaySound(moveSound);
+        
+        if (enableDebugLogging)
+        {
+            Debug.Log($"Unit {unitName} moving from {oldCoordinate} to {targetCoordinate}");
+        }
+        
+        return true;
+    }
+    
+    /// <summary>
+    /// Validates movement to a target position (IMovable implementation)
+    /// </summary>
+    public MovementValidationResult ValidateMovement(Vector2Int targetGridPosition)
+    {
+        if (!CanMove)
+        {
+            return MovementValidationResult.Invalid("Unit cannot move at this time", this, targetGridPosition);
+        }
+        
+        GridCoordinate targetCoordinate = new GridCoordinate(targetGridPosition.x, targetGridPosition.y);
+        
+        // Check if target is within movement range
+        float distance = gridCoordinate.DistanceTo(targetCoordinate);
+        if (distance > movementRange)
+        {
+            return MovementValidationResult.Invalid($"Target is out of movement range ({distance} > {movementRange})", this, targetGridPosition);
+        }
+        
+        // Check if target is occupied (basic check - MovementValidator will do more comprehensive checks)
+        if (gridManager != null && gridManager.IsCoordinateOccupied(targetCoordinate))
+        {
+            return MovementValidationResult.Invalid("Target position is occupied", this, targetGridPosition);
+        }
+        
+        return MovementValidationResult.Valid(this, targetGridPosition);
+    }
+    
+    /// <summary>
+    /// Called when movement starts (IMovable implementation)
+    /// </summary>
+    public void OnMovementStarted(Vector2Int targetPosition)
+    {
+        // Movement already handled in MoveTo method
+        if (enableDebugLogging)
+        {
+            Debug.Log($"Unit {unitName} movement started to {targetPosition}");
+        }
+    }
+    
+    /// <summary>
+    /// Called when movement completes (IMovable implementation)
+    /// </summary>
+    public void OnMovementCompleted(Vector2Int finalPosition)
+    {
+        isMoving = false;
+        GridPosition = finalPosition;
+        OnMovementComplete?.Invoke(this, finalPosition);
+        
+        // Update grid system
+        if (gridManager != null)
+        {
+            GridTile tile = gridManager.GetTile(gridCoordinate);
+            if (tile != null)
+            {
+                tile.OccupyTile(gameObject);
+            }
+        }
+        
+        if (enableDebugLogging)
+        {
+            Debug.Log($"Unit {unitName} movement completed at {finalPosition}");
+        }
+    }
+    
+    /// <summary>
+    /// Called when movement is cancelled (IMovable implementation)
+    /// </summary>
+    public void OnMovementCancelled(string reason)
+    {
+        isMoving = false;
+        OnMovementCancel?.Invoke(this, reason);
+        
+        if (enableDebugLogging)
+        {
+            Debug.Log($"Unit {unitName} movement cancelled: {reason}");
+        }
     }
     
     /// <summary>

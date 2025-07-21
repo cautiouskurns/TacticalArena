@@ -1,5 +1,5 @@
 # 3D Tactical Arena - Living Project Overview
-Last Updated: Task 1.2.2 - Mouse Selection System
+Last Updated: Task 1.2.3 - Grid-Based Movement System
 
 ## Current Game State
 - **3D battlefield scene** with isometric camera and tactical overview
@@ -7,7 +7,11 @@ Last Updated: Task 1.2.2 - Mouse Selection System
 - **Grid coordinate system** supporting precise tactical positioning (0,0 to 3,3)
 - **4 tactical units** (2 blue, 2 red) positioned on the battlefield with team assignment
 - **Mouse-based unit selection** with visual highlighting and hover feedback
-- **Single-unit selection system** with clear visual distinction between selected/unselected states
+- **Click-to-move system** with selected units moving to adjacent grid tiles with smooth animation
+- **Movement validation system** checking obstacles, boundaries, and unit occupancy
+- **Grid snapping movement** with smooth interpolation and precise positioning
+- **Adjacent-tile movement restriction** (1 tile per move) with diagonal movement options
+- **Movement state management** preventing concurrent movements and handling animation
 - **Team-based selection validation** preventing selection of enemy units (future turn system ready)
 - **Strategic obstacle placement** with 2-3 obstacles creating tactical chokepoints
 - **Line-of-sight system** with full and partial cover mechanics
@@ -15,7 +19,7 @@ Last Updated: Task 1.2.2 - Mouse Selection System
 - **Performance optimization** with dynamic quality management and monitoring
 - **Professional visual quality** with clean aesthetic and tactical clarity
 - **Complete Sub-milestone 1.1** - tactical battlefield foundation with polished environment
-- **Progressing Sub-milestone 1.2** - unit system and movement mechanics
+- **Complete core Task 1.2.3** - grid-based movement system with click-to-move functionality
 
 ## System Architecture
 
@@ -32,7 +36,7 @@ Last Updated: Task 1.2.2 - Mouse Selection System
 - **ObstacleType**: Configuration system for different obstacle types and tactical properties
 
 #### Unit & Selection Systems  
-- **Unit**: Core tactical unit with team assignment, positioning, health, and ISelectable implementation
+- **Unit**: Core tactical unit with team assignment, positioning, health, ISelectable and IMovable implementation
 - **UnitManager**: Centralized unit management, team organization, and coordination
 - **UnitHealth**: Health tracking system for combat preparation
 - **UnitTeam**: Team assignment and tactical coordination system
@@ -41,6 +45,13 @@ Last Updated: Task 1.2.2 - Mouse Selection System
 - **ISelectable**: Interface contract for selectable objects with team validation
 - **SelectionHighlight**: Visual feedback component for selection and hover states with smooth transitions
 
+#### Movement Systems
+- **MovementManager**: Centralized movement coordination with click-to-move input processing
+- **MovementValidator**: Movement legality checking with obstacle, boundary, and adjacency validation
+- **MovementAnimator**: Smooth grid-based animation with customizable curves and grid snapping
+- **GridMovementComponent**: Individual unit movement behavior with state management and effects
+- **IMovable**: Interface contract for movable objects with grid positioning and validation
+
 #### Editor Automation Tools
 - **Task_1_1_1_Setup**: Editor automation tool for scene configuration and validation
 - **Task_1_1_2_Setup**: Editor automation tool for grid system creation and management
@@ -48,6 +59,7 @@ Last Updated: Task 1.2.2 - Mouse Selection System
 - **Task_1_1_4_Setup**: Editor automation tool for environment polish with materials and lighting
 - **Task_1_2_1_Setup**: Editor automation tool for unit system creation and configuration
 - **Task_1_2_2_Setup**: Editor automation tool for mouse selection system with material generation
+- **Task_1_2_3_Setup**: Editor automation tool for grid-based movement system with validation and animation
 
 #### Support Systems
 - **MaterialManager**: Centralized material management system for visual consistency and polish
@@ -86,6 +98,19 @@ graph TD
     U --> V[SelectionHighlight]
     T --> S
     V --> W[Visual Feedback]
+    
+    %% Movement System Integration
+    S --> X[Movement System]
+    X --> Y[MovementManager]
+    X --> Z[MovementValidator]
+    X --> AA[MovementAnimator]
+    O --> BB[IMovable Interface]
+    BB --> CC[GridMovementComponent]
+    Y --> Z
+    Y --> AA
+    Y --> S
+    Z --> J
+    AA --> BB
     G --> M[Obstacle System]
     M --> N[ObstacleManager]
     M --> O[Obstacle Components]
@@ -125,7 +150,10 @@ graph TD
 - **SelectionManager → Units**: Team validation and single-selection enforcement
 - **Obstacle → Grid Tiles**: Direct tile occupation tracking and visual state management
 - **ObstacleManager → GridManager**: Line-of-sight calculations and spatial query coordination
-- **Selection → Movement**: Foundation for click-to-move and tactical positioning (Task 1.2.3)
+- **Selection → Movement**: Integrated click-to-move system with selected unit movement
+- **Movement → Grid**: Grid coordinate validation and world position conversion
+- **Movement → Obstacles**: Movement validation against obstacle positions and boundaries
+- **Movement → Animation**: Smooth interpolation with grid snapping and state management
 - **Line-of-Sight → Combat**: Vision and cover calculations ready for tactical combat
 
 ## Asset Inventory
@@ -178,6 +206,15 @@ graph TD
   - Team validation setup and single-selection enforcement
   - Integration with existing Unit components and ISelectable interface
   - Built-in validation testing and troubleshooting tools
+
+- **Task_1_2_3_Setup.cs**: Grid-based movement system automation tool
+  - Automated MovementManager, MovementValidator, and MovementAnimator creation
+  - Movement validation material generation for visual feedback
+  - Configurable movement speed, animation curves, and adjacency rules
+  - GridMovementComponent attachment to existing units with IMovable integration
+  - SelectionManager integration for click-to-move functionality
+  - Comprehensive validation testing for movement system components
+  - Built-in debugging and troubleshooting tools for movement validation
 
 #### Runtime Systems
 - **CameraController.cs**: Runtime camera management and validation
@@ -316,6 +353,52 @@ graph TD
   - Draw call counting and rendering performance metrics
   - Adaptive visual effects reduction for performance maintenance
 
+#### Movement Systems
+- **MovementManager.cs**: Centralized movement coordination and click-to-move processing
+  - Mouse click detection and grid position raycast conversion
+  - Movement request validation and processing with state management
+  - Integration with SelectionManager for selected unit movement
+  - Movement animation coordination with MovementAnimator
+  - Overlapping movement prevention with concurrent movement blocking
+  - Unit occupancy tracking and collision detection
+  - Event system for movement state changes and completion
+
+- **MovementValidator.cs**: Movement legality checking and validation system
+  - Adjacent tile movement restriction with configurable distance limits
+  - Obstacle collision detection with cached obstacle position optimization
+  - Grid boundary validation with coordinate range checking
+  - Unit occupancy validation preventing movement to occupied tiles
+  - Diagonal movement configuration with optional adjacency rules
+  - Path validation for multi-tile movements with obstacle blocking
+  - Performance optimization with spatial caching and efficient queries
+
+- **MovementAnimator.cs**: Smooth grid-based animation and interpolation system
+  - Configurable movement speed and animation curves for natural movement
+  - Grid snapping precision ensuring exact final positioning
+  - Height animation effects with arc-based movement for visual appeal
+  - Rotation alignment for directional movement indication
+  - Concurrent animation management with performance limiting
+  - Animation cancellation and state recovery for interrupted movements
+  - Custom curve support for specialized movement types
+
+- **GridMovementComponent.cs**: Individual unit movement behavior and state management
+  - Unit movement state tracking with progress indication
+  - Animation coordination with MovementAnimator integration
+  - Movement effects system with particle and audio feedback
+  - Pause and resume functionality for tactical interruptions
+  - Movement cancellation with state recovery and cleanup
+  - Integration with IMovable interface for system coordination
+  - Visual feedback during movement with state indicator updates
+
+- **IMovable.cs**: Movement interface contract and base implementation
+  - Grid position management with coordinate conversion utilities
+  - Movement validation contract with extensible validation rules
+  - Movement state tracking with CanMove and IsMoving properties
+  - Event system for movement lifecycle with start, complete, and cancel events
+  - Team integration for movement validation and restriction
+  - Base implementation class reducing code duplication across movable objects
+  - Display information formatting for debugging and movement tracking
+
 ### Scene Objects
 - **Main Camera**: Configured for orthographic isometric perspective
   - Position: Calculated for optimal 4x4 grid view
@@ -398,8 +481,9 @@ graph TD
 3. **Obstacle Setup**: Task_1_1_3_Setup → Obstacle placement → Line-of-sight setup → Integration
 4. **Unit Setup**: Task_1_2_1_Setup → Unit creation → Team assignment → Grid positioning
 5. **Selection Setup**: Task_1_2_2_Setup → SelectionManager → MouseInputHandler → Visual feedback
-6. **Runtime Initialization**: SceneManager → Component validation → System readiness
-7. **Tactical Integration**: Camera → Grid → Units → Selection → Movement ready (Task 1.2.3)
+6. **Movement Setup**: Task_1_2_3_Setup → MovementManager → MovementValidator → Animation system
+7. **Runtime Initialization**: SceneManager → Component validation → System readiness
+8. **Tactical Gameplay Loop**: Mouse Click → Unit Selection → Click Target → Movement Validation → Animation → Grid Update
 
 ### Configuration Parameters
 - **Camera Distance**: 12f units from grid center
@@ -410,6 +494,10 @@ graph TD
 - **Obstacle Heights**: Low Cover 0.5f, High Wall 1.5f, Terrain 0.3f
 - **Line-of-Sight**: Raycasting-based with height considerations
 - **Cover Values**: Low Cover 50%, High Wall 100%, Terrain 20%
+- **Movement Speed**: 2.0f units per second for smooth animation
+- **Movement Distance**: 1 tile maximum per move (adjacent tiles only)
+- **Animation Curves**: EaseInOut for natural movement feel
+- **Grid Snapping Tolerance**: 0.1f units for precise positioning
 
 ## Visual Style Foundation
 - **Isometric Perspective**: Fixed camera angles for tactical clarity
@@ -540,6 +628,16 @@ Assets/
 - Integration with existing Unit components and ISelectable interface
 - Performance-optimized raycasting and input handling
 
+**Task 1.2.3**: ✅ COMPLETE - GRID-BASED MOVEMENT SYSTEM
+- Click-to-move functionality with selected unit movement to adjacent tiles
+- Comprehensive movement validation (obstacles, boundaries, unit occupancy)
+- Smooth animation system with grid snapping and customizable curves
+- Adjacent-tile movement restriction with optional diagonal movement support
+- Movement state management preventing concurrent movements
+- Integration with SelectionManager for seamless click-to-move workflow
+- IMovable interface implementation for extensible movement system
+- Performance-optimized animation with concurrent movement limiting
+
 ## Next Development Phase
 
-**Task 1.2.3** will implement the complete movement system with grid-based unit movement, allowing selected units to move to adjacent tiles with click-to-move controls, tactical pathfinding, and obstacle avoidance. This will complete the core tactical interaction loop of select → move → act.
+**Task 1.2.4** will add enhanced visual feedback including valid move highlighting, movement path previews, and tactical information display. This will complete Sub-milestone 1.2 with a fully polished unit interaction system ready for combat mechanics.
