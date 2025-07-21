@@ -54,6 +54,7 @@ public class Task_1_2_1_Setup : EditorWindow
     {
         Task_1_2_1_Setup window = GetWindow<Task_1_2_1_Setup>("Task 1.2.1 Setup");
         window.minSize = new Vector2(500, 800);
+        window.LoadPositionsFromPrefs();
         window.Show();
     }
     
@@ -92,13 +93,23 @@ public class Task_1_2_1_Setup : EditorWindow
         EditorGUILayout.LabelField("Blue Team Positions:", EditorStyles.miniBoldLabel);
         for (int i = 0; i < blueTeamCount && i < blueTeamPositions.Length; i++)
         {
-            blueTeamPositions[i] = DrawGridCoordinateField($"Blue Unit {i + 1}", blueTeamPositions[i]);
+            GridCoordinate newPos = DrawGridCoordinateField($"Blue Unit {i + 1}", blueTeamPositions[i]);
+            if (!newPos.Equals(blueTeamPositions[i]))
+            {
+                blueTeamPositions[i] = newPos;
+                SavePositionsToPrefs();
+            }
         }
         
         EditorGUILayout.LabelField("Red Team Positions:", EditorStyles.miniBoldLabel);
         for (int i = 0; i < redTeamCount && i < redTeamPositions.Length; i++)
         {
-            redTeamPositions[i] = DrawGridCoordinateField($"Red Unit {i + 1}", redTeamPositions[i]);
+            GridCoordinate newPos = DrawGridCoordinateField($"Red Unit {i + 1}", redTeamPositions[i]);
+            if (!newPos.Equals(redTeamPositions[i]))
+            {
+                redTeamPositions[i] = newPos;
+                SavePositionsToPrefs();
+            }
         }
         
         EditorGUI.indentLevel--;
@@ -218,8 +229,14 @@ public class Task_1_2_1_Setup : EditorWindow
     {
         EditorGUILayout.BeginHorizontal();
         EditorGUILayout.LabelField(label, GUILayout.Width(100));
-        int x = EditorGUILayout.IntField("X", coordinate.x, GUILayout.Width(50));
-        int z = EditorGUILayout.IntField("Z", coordinate.z, GUILayout.Width(50));
+        
+        // Create temporary variables for the input fields
+        int x = coordinate.x;
+        int z = coordinate.z;
+        
+        x = EditorGUILayout.IntField("X", x, GUILayout.Width(60));
+        z = EditorGUILayout.IntField("Z", z, GUILayout.Width(60));
+        
         EditorGUILayout.EndHorizontal();
         
         return new GridCoordinate(x, z);
@@ -1146,6 +1163,48 @@ public class Task_1_2_1_Setup : EditorWindow
         
         Debug.Log("Unit system reset complete");
         EditorUtility.DisplayDialog("Reset Complete", "Unit system has been reset.", "OK");
+    }
+    
+    /// <summary>
+    /// Saves position arrays to EditorPrefs
+    /// </summary>
+    private void SavePositionsToPrefs()
+    {
+        // Save blue team positions
+        for (int i = 0; i < blueTeamPositions.Length; i++)
+        {
+            EditorPrefs.SetInt($"UnitSetup_Blue_{i}_X", blueTeamPositions[i].x);
+            EditorPrefs.SetInt($"UnitSetup_Blue_{i}_Z", blueTeamPositions[i].z);
+        }
+        
+        // Save red team positions
+        for (int i = 0; i < redTeamPositions.Length; i++)
+        {
+            EditorPrefs.SetInt($"UnitSetup_Red_{i}_X", redTeamPositions[i].x);
+            EditorPrefs.SetInt($"UnitSetup_Red_{i}_Z", redTeamPositions[i].z);
+        }
+    }
+    
+    /// <summary>
+    /// Loads position arrays from EditorPrefs
+    /// </summary>
+    private void LoadPositionsFromPrefs()
+    {
+        // Load blue team positions
+        for (int i = 0; i < blueTeamPositions.Length; i++)
+        {
+            int x = EditorPrefs.GetInt($"UnitSetup_Blue_{i}_X", blueTeamPositions[i].x);
+            int z = EditorPrefs.GetInt($"UnitSetup_Blue_{i}_Z", blueTeamPositions[i].z);
+            blueTeamPositions[i] = new GridCoordinate(x, z);
+        }
+        
+        // Load red team positions
+        for (int i = 0; i < redTeamPositions.Length; i++)
+        {
+            int x = EditorPrefs.GetInt($"UnitSetup_Red_{i}_X", redTeamPositions[i].x);
+            int z = EditorPrefs.GetInt($"UnitSetup_Red_{i}_Z", redTeamPositions[i].z);
+            redTeamPositions[i] = new GridCoordinate(x, z);
+        }
     }
 }
 

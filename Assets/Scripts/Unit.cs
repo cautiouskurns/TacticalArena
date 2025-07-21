@@ -5,8 +5,9 @@ using System;
 /// Core unit component that represents an individual tactical unit on the battlefield.
 /// Handles unit properties, team assignment, positioning, and state management.
 /// Serves as the foundation for all unit-based tactical gameplay mechanics.
+/// Implements ISelectable for mouse selection system integration.
 /// </summary>
-public class Unit : MonoBehaviour
+public class Unit : MonoBehaviour, ISelectable
 {
     [Header("Unit Identity")]
     [SerializeField] private string unitName = "Tactical Unit";
@@ -107,6 +108,17 @@ public class Unit : MonoBehaviour
     public bool EnableSelection => enableSelection;
     public UnitHealth Health => unitHealth;
     
+    // ISelectable interface implementation
+    public bool IsHovered => isHovered;
+    public bool CanBeSelected => enableSelection && isAlive && isActive;
+    public GameObject GameObject => gameObject;
+    public Transform Transform => transform;
+    
+    // ISelectable events (using existing events where possible)
+    public System.Action<ISelectable> OnSelected { get; set; }
+    public System.Action<ISelectable> OnDeselected { get; set; }
+    public System.Action<ISelectable, bool> OnHoverChanged { get; set; }
+    
     void Awake()
     {
         InitializeUnit();
@@ -124,9 +136,11 @@ public class Unit : MonoBehaviour
     {
         HandleMovementAnimation();
         UpdateSelectionState();
-        UpdateVisualFeedback();
+        // UpdateVisualFeedback() - Disabled in favor of SelectionHighlight component
     }
     
+    // Mouse input handlers disabled - SelectionManager handles mouse input
+    /*
     void OnMouseEnter()
     {
         if (enableMouseHover && enableSelection)
@@ -150,6 +164,7 @@ public class Unit : MonoBehaviour
             HandleMouseClick();
         }
     }
+    */
     
     /// <summary>
     /// Initializes the unit component
@@ -615,6 +630,74 @@ public class Unit : MonoBehaviour
         {
             Debug.Log($"Unit {unitName} selection: {selected}");
         }
+    }
+    
+    // ISelectable interface methods implementation
+    
+    /// <summary>
+    /// Selects this unit (ISelectable implementation)
+    /// </summary>
+    public bool Select()
+    {
+        if (!CanBeSelected || isSelected) return false;
+        
+        SetSelected(true);
+        OnSelected?.Invoke(this);
+        return true;
+    }
+    
+    /// <summary>
+    /// Deselects this unit (ISelectable implementation)
+    /// </summary>
+    public void Deselect()
+    {
+        if (!isSelected) return;
+        
+        SetSelected(false);
+        OnDeselected?.Invoke(this);
+    }
+    
+    /// <summary>
+    /// Sets hover state for this unit (ISelectable implementation)
+    /// </summary>
+    public void SetHover(bool hovered)
+    {
+        if (isHovered == hovered) return;
+        
+        isHovered = hovered;
+        OnHoverChanged?.Invoke(this, hovered);
+        
+        if (enableDebugLogging)
+        {
+            Debug.Log($"Unit {unitName} hover: {hovered}");
+        }
+    }
+    
+    /// <summary>
+    /// Validates selection based on team restrictions (ISelectable implementation)
+    /// </summary>
+    public bool ValidateSelection(UnitTeam requestingTeam, bool restrictToPlayerTeam)
+    {
+        if (!CanBeSelected) return false;
+        
+        if (restrictToPlayerTeam && team != requestingTeam)
+        {
+            if (enableDebugLogging)
+            {
+                Debug.Log($"Selection denied: Unit {unitName} belongs to {team}, requesting team is {requestingTeam}");
+            }
+            return false;
+        }
+        
+        return true;
+    }
+    
+    /// <summary>
+    /// Gets display information about this unit (ISelectable implementation)
+    /// </summary>
+    public string GetDisplayInfo()
+    {
+        return $"{unitName} ({team})";
     }
     
     /// <summary>

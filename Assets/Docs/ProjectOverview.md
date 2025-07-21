@@ -1,22 +1,27 @@
 # 3D Tactical Arena - Living Project Overview
-Last Updated: Task 1.1.4 - Environment Polish
+Last Updated: Task 1.2.2 - Mouse Selection System
 
 ## Current Game State
 - **3D battlefield scene** with isometric camera and tactical overview
 - **4x4 grid system** with visible tile boundaries and selection feedback
 - **Grid coordinate system** supporting precise tactical positioning (0,0 to 3,3)
-- **Tile selection feedback** with visual highlighting and mouse interaction
+- **4 tactical units** (2 blue, 2 red) positioned on the battlefield with team assignment
+- **Mouse-based unit selection** with visual highlighting and hover feedback
+- **Single-unit selection system** with clear visual distinction between selected/unselected states
+- **Team-based selection validation** preventing selection of enemy units (future turn system ready)
 - **Strategic obstacle placement** with 2-3 obstacles creating tactical chokepoints
 - **Line-of-sight system** with full and partial cover mechanics
-- **Obstacle integration** with grid coordinate mapping and visual feedback
 - **Environment polish system** with materials, lighting optimization, and visual feedback
 - **Performance optimization** with dynamic quality management and monitoring
 - **Professional visual quality** with clean aesthetic and tactical clarity
 - **Complete Sub-milestone 1.1** - tactical battlefield foundation with polished environment
+- **Progressing Sub-milestone 1.2** - unit system and movement mechanics
 
 ## System Architecture
 
 ### Core Systems Implemented
+
+#### Grid & Environment Systems
 - **CameraController**: Isometric perspective management, positioning validation, and future interaction support
 - **SceneManager**: Scene organization, hierarchy management, and system coordination  
 - **GridManager**: 4x4 grid system with coordinate mapping, tile management, line-of-sight, and spatial queries
@@ -25,10 +30,26 @@ Last Updated: Task 1.1.4 - Environment Polish
 - **ObstacleManager**: Central obstacle system with line-of-sight calculations and spatial optimization
 - **Obstacle**: Individual obstacle behavior with cover mechanics and visual integration
 - **ObstacleType**: Configuration system for different obstacle types and tactical properties
+
+#### Unit & Selection Systems  
+- **Unit**: Core tactical unit with team assignment, positioning, health, and ISelectable implementation
+- **UnitManager**: Centralized unit management, team organization, and coordination
+- **UnitHealth**: Health tracking system for combat preparation
+- **UnitTeam**: Team assignment and tactical coordination system
+- **SelectionManager**: Centralized selection state management with mouse input coordination
+- **MouseInputHandler**: Mouse input processing, raycasting, and hover detection
+- **ISelectable**: Interface contract for selectable objects with team validation
+- **SelectionHighlight**: Visual feedback component for selection and hover states with smooth transitions
+
+#### Editor Automation Tools
 - **Task_1_1_1_Setup**: Editor automation tool for scene configuration and validation
 - **Task_1_1_2_Setup**: Editor automation tool for grid system creation and management
 - **Task_1_1_3_Setup**: Editor automation tool for strategic obstacle placement and terrain setup
 - **Task_1_1_4_Setup**: Editor automation tool for environment polish with materials and lighting
+- **Task_1_2_1_Setup**: Editor automation tool for unit system creation and configuration
+- **Task_1_2_2_Setup**: Editor automation tool for mouse selection system with material generation
+
+#### Support Systems
 - **MaterialManager**: Centralized material management system for visual consistency and polish
 - **VisualFeedbackManager**: Dynamic visual feedback system for tile interactions and battlefield state
 - **PerformanceOptimizer**: Performance monitoring and optimization system for smooth gameplay
@@ -48,6 +69,23 @@ graph TD
     I --> J[GridManager]
     I --> K[GridTile Components]
     I --> L[GridCoordinate System]
+    
+    %% Unit System Integration
+    J --> M[Unit System]
+    M --> N[UnitManager]
+    M --> O[Unit Components]
+    O --> P[UnitHealth]
+    O --> Q[UnitTeam]
+    
+    %% Selection System Integration
+    E --> R[Mouse Selection System]
+    R --> S[SelectionManager]
+    R --> T[MouseInputHandler]
+    S --> U[ISelectable Interface]
+    O --> U
+    U --> V[SelectionHighlight]
+    T --> S
+    V --> W[Visual Feedback]
     G --> M[Obstacle System]
     M --> N[ObstacleManager]
     M --> O[Obstacle Components]
@@ -76,13 +114,18 @@ graph TD
 
 ### Integration Points
 - **Camera → Grid**: Isometric camera positioned to view entire 4x4 grid with optimal tactical clarity
+- **Camera → Selection**: Raycasting from camera through mouse position for unit detection
 - **Grid → Coordinate System**: World-to-grid and grid-to-world conversion for precise positioning
 - **Grid → Tile Selection**: Mouse interaction and visual feedback for tactical interface
 - **Grid → Obstacle System**: Seamless integration with obstacle placement and line-of-sight
+- **Grid → Unit System**: Unit placement and positioning using grid coordinates
+- **Unit → Selection**: ISelectable interface implementation for mouse-based selection
+- **Selection → Visual Feedback**: SelectionHighlight component providing immediate visual response
+- **MouseInput → SelectionManager**: Centralized selection state with raycast detection
+- **SelectionManager → Units**: Team validation and single-selection enforcement
 - **Obstacle → Grid Tiles**: Direct tile occupation tracking and visual state management
 - **ObstacleManager → GridManager**: Line-of-sight calculations and spatial query coordination
-- **Grid → Unit Placement**: Coordinate system ready for unit placement with obstacle awareness
-- **Obstacle → Pathfinding**: Tile-based obstacle blocking ready for pathfinding integration
+- **Selection → Movement**: Foundation for click-to-move and tactical positioning (Task 1.2.3)
 - **Line-of-Sight → Combat**: Vision and cover calculations ready for tactical combat
 
 ## Asset Inventory
@@ -118,6 +161,23 @@ graph TD
   - Performance settings optimization for target frame rates
   - Quality management with anti-aliasing, shadows, and VSync control
   - Comprehensive environment material application and validation
+
+- **Task_1_2_1_Setup.cs**: Unit system creation and configuration tool
+  - Automated unit prefab creation with team assignment and positioning
+  - Configurable unit count and placement with grid coordinate validation
+  - Material assignment for team colors and visual distinction
+  - Component setup for UnitHealth, UnitTeam, and core Unit behavior
+  - Prefab generation and scene hierarchy organization
+  - Comprehensive validation and error reporting
+
+- **Task_1_2_2_Setup.cs**: Mouse selection system automation tool
+  - Automated SelectionManager and MouseInputHandler component creation
+  - Selection highlight material generation with configurable colors
+  - Visual feedback configuration with emission and rim lighting effects
+  - Raycast layer mask configuration and performance optimization
+  - Team validation setup and single-selection enforcement
+  - Integration with existing Unit components and ISelectable interface
+  - Built-in validation testing and troubleshooting tools
 
 #### Runtime Systems
 - **CameraController.cs**: Runtime camera management and validation
@@ -187,6 +247,72 @@ graph TD
   - Real-time frame rate monitoring with history tracking
   - Dynamic quality adjustment based on performance thresholds
   - Memory usage optimization with garbage collection management
+
+#### Unit & Selection Systems
+- **Unit.cs**: Core tactical unit component with ISelectable implementation
+  - Unit identity management with team assignment and unique IDs
+  - Grid-based positioning with coordinate validation and world conversion
+  - Health, movement, and action point management for tactical gameplay
+  - Selection interface implementation with team validation
+  - Visual feedback integration and event system for state changes
+  - Audio feedback and animation state management
+
+- **UnitManager.cs**: Centralized unit management and coordination system
+  - Unit registration and team organization with dictionary-based lookups
+  - Selection management with team restrictions and single-selection enforcement
+  - Turn system foundation with team switching and action validation
+  - Keyboard navigation support for unit cycling and selection
+  - Performance optimization with cached unit queries and validation
+  - Event coordination between units and other systems
+
+- **UnitHealth.cs**: Health tracking and damage management system
+  - Health point management with max/current health tracking
+  - Damage calculation and application with death state handling
+  - Healing system support for revival and restoration mechanics
+  - Visual integration with health indicator UI preparation
+  - Event system for health changes and death notifications
+
+- **UnitTeam.cs**: Team assignment and tactical coordination enumeration
+  - Team identification system (Blue, Red, Neutral) for tactical gameplay
+  - Team-based validation and restriction logic for selection and movement
+  - Color coordination system for visual team distinction
+  - Foundation for turn-based mechanics and team switching
+
+- **SelectionManager.cs**: Centralized selection state management system
+  - Mouse-based unit selection with raycast detection and validation
+  - Single-selection enforcement with automatic deselection of previous units
+  - Team validation preventing selection of opponent units
+  - Hover state management for visual feedback coordination
+  - Keyboard navigation support for unit cycling and selection
+  - Audio feedback integration with selection sounds and validation
+  - Double-click detection for advanced unit actions
+  - Performance optimization with selection caching and validation
+
+- **MouseInputHandler.cs**: Mouse input processing and raycasting system
+  - Mouse position to 3D ray conversion with camera integration
+  - Raycast optimization with layer masking and distance limiting
+  - Hover detection with configurable update rates for performance
+  - Input cooldown system preventing accidental multiple selections
+  - Raycast caching for performance optimization
+  - Debug visualization with ray drawing and hit point indication
+  - Grid coordinate conversion utilities for tactical positioning
+
+- **ISelectable.cs**: Selection interface contract and base implementation
+  - Interface definition for selectable objects with team validation
+  - Selection state management with hover and active state tracking
+  - Event system for selection changes and visual feedback coordination
+  - Team validation logic for turn-based selection restrictions
+  - Base implementation class reducing code duplication across selectable objects
+  - Display information formatting for debugging and UI integration
+
+- **SelectionHighlight.cs**: Visual feedback component for selection states
+  - Material property block optimization for efficient highlighting
+  - Smooth transition animations with configurable duration and curves
+  - Selection and hover state visual distinction with emission and rim effects
+  - Pulse effects for selected units with configurable intensity
+  - Material caching and performance optimization for batching
+  - Integration with ISelectable events for automatic state updates
+  - Color customization and highlight intensity configuration
   - Draw call counting and rendering performance metrics
   - Adaptive visual effects reduction for performance maintenance
 
@@ -270,8 +396,10 @@ graph TD
 1. **Editor Setup**: Task_1_1_1_Setup → Camera positioning → Lighting configuration → Scene organization
 2. **Grid Setup**: Task_1_1_2_Setup → Grid creation → Tile generation → Material assignment
 3. **Obstacle Setup**: Task_1_1_3_Setup → Obstacle placement → Line-of-sight setup → Integration
-4. **Runtime Initialization**: SceneManager → Component validation → System readiness
-5. **Tactical Integration**: Camera → Grid → Obstacles → Line-of-sight → Tactical gameplay ready
+4. **Unit Setup**: Task_1_2_1_Setup → Unit creation → Team assignment → Grid positioning
+5. **Selection Setup**: Task_1_2_2_Setup → SelectionManager → MouseInputHandler → Visual feedback
+6. **Runtime Initialization**: SceneManager → Component validation → System readiness
+7. **Tactical Integration**: Camera → Grid → Units → Selection → Movement ready (Task 1.2.3)
 
 ### Configuration Parameters
 - **Camera Distance**: 12f units from grid center
@@ -402,3 +530,16 @@ Assets/
 **Documentation Status**: ✅ COMPLETE - Comprehensive multi-system documentation
 
 **SUB-MILESTONE 1.1**: ✅ COMPLETE - TACTICAL BATTLEFIELD FOUNDATION WITH PROFESSIONAL POLISH
+
+## Current Development Phase
+
+**Task 1.2.2**: ✅ COMPLETE - MOUSE SELECTION SYSTEM
+- Mouse-based unit selection with visual highlighting
+- Team validation and single-selection enforcement  
+- Hover feedback and selection state management
+- Integration with existing Unit components and ISelectable interface
+- Performance-optimized raycasting and input handling
+
+## Next Development Phase
+
+**Task 1.2.3** will implement the complete movement system with grid-based unit movement, allowing selected units to move to adjacent tiles with click-to-move controls, tactical pathfinding, and obstacle avoidance. This will complete the core tactical interaction loop of select → move → act.
