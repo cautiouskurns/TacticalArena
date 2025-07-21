@@ -319,7 +319,10 @@ public class Unit : MonoBehaviour
     {
         if (gridManager != null)
         {
-            return gridManager.GridToWorld(gridCoordinate);
+            Vector3 worldPos = gridManager.GridToWorld(gridCoordinate);
+            // Preserve Y position to keep unit above ground level
+            worldPos.y = transform.position.y;
+            return worldPos;
         }
         
         // Fallback calculation

@@ -525,12 +525,20 @@ public class Task_1_2_1_Setup : EditorWindow
                 unit.transform.position = worldPos;
                 return;
             }
+            else
+            {
+                Debug.LogError("GridManager component not found on Grid System");
+            }
+        }
+        else
+        {
+            Debug.LogError("Grid System GameObject not found");
         }
         
         // Fallback positioning
         Vector3 fallbackPos = new Vector3(gridPos.x, unitHeight / 2f, gridPos.z);
         unit.transform.position = fallbackPos;
-        Debug.LogWarning($"Using fallback positioning for unit at {gridPos}");
+        Debug.LogWarning($"Using fallback positioning for unit at {gridPos} -> {fallbackPos}");
     }
     
     /// <summary>
@@ -571,12 +579,19 @@ public class Task_1_2_1_Setup : EditorWindow
             unit = unitObj.AddComponent<Unit>();
         }
         
-        // Configure unit properties
+        // Configure unit properties using public methods and serialization
         var serializedUnit = new SerializedObject(unit);
-        serializedUnit.FindProperty("team").enumValueIndex = (int)team;
-        serializedUnit.FindProperty("gridCoordinate").vector2IntValue = new Vector2Int(gridPos.x, gridPos.z);
         serializedUnit.FindProperty("moveSpeed").floatValue = unitMoveSpeed;
         serializedUnit.FindProperty("enableSelection").boolValue = enableUnitSelection;
+        serializedUnit.ApplyModifiedProperties();
+        
+        // Set team via serialization to ensure it's properly saved in editor
+        serializedUnit.FindProperty("team").enumValueIndex = (int)team;
+        
+        // Set GridCoordinate via serialization to avoid repositioning conflicts
+        var gridCoordProp = serializedUnit.FindProperty("gridCoordinate");
+        gridCoordProp.FindPropertyRelative("x").intValue = gridPos.x;
+        gridCoordProp.FindPropertyRelative("z").intValue = gridPos.z;
         serializedUnit.ApplyModifiedProperties();
         
         // Add UnitHealth component
@@ -729,10 +744,10 @@ public class Task_1_2_1_Setup : EditorWindow
     /// </summary>
     private void DisplayCurrentStatus()
     {
-        // Count existing units
-        GameObject[] blueUnits = GameObject.FindGameObjectsWithTag("Untagged")
+        // Count existing units - search all GameObjects, not just "Untagged" ones
+        GameObject[] blueUnits = FindObjectsByType<GameObject>(FindObjectsSortMode.None)
             .Where(go => go.name.Contains("Blue Unit")).ToArray();
-        GameObject[] redUnits = GameObject.FindGameObjectsWithTag("Untagged")
+        GameObject[] redUnits = FindObjectsByType<GameObject>(FindObjectsSortMode.None)
             .Where(go => go.name.Contains("Red Unit")).ToArray();
         
         EditorGUILayout.LabelField($"Blue Team Units: {blueUnits.Length}");
@@ -808,9 +823,10 @@ public class Task_1_2_1_Setup : EditorWindow
     /// </summary>
     private bool ValidateUnitCount()
     {
-        GameObject[] blueUnits = GameObject.FindGameObjectsWithTag("Untagged")
+        // Find all GameObjects in the scene, not just those with "Untagged" tag
+        GameObject[] blueUnits = FindObjectsByType<GameObject>(FindObjectsSortMode.None)
             .Where(go => go.name.Contains("Blue Unit")).ToArray();
-        GameObject[] redUnits = GameObject.FindGameObjectsWithTag("Untagged")
+        GameObject[] redUnits = FindObjectsByType<GameObject>(FindObjectsSortMode.None)
             .Where(go => go.name.Contains("Red Unit")).ToArray();
         
         bool countValid = blueUnits.Length == blueTeamCount && redUnits.Length == redTeamCount;
@@ -832,8 +848,8 @@ public class Task_1_2_1_Setup : EditorWindow
     /// </summary>
     private bool ValidateTeamAssignment()
     {
-        GameObject[] allUnits = GameObject.FindGameObjectsWithTag("Untagged")
-            .Where(go => go.name.Contains("Unit")).ToArray();
+        GameObject[] allUnits = FindObjectsByType<GameObject>(FindObjectsSortMode.None)
+            .Where(go => go.name.Contains("Unit") && !go.name.Contains("Unit Manager") && !go.name.Equals("Units")).ToArray();
         
         foreach (GameObject unitObj in allUnits)
         {
@@ -883,8 +899,8 @@ public class Task_1_2_1_Setup : EditorWindow
             return false;
         }
         
-        GameObject[] allUnits = GameObject.FindGameObjectsWithTag("Untagged")
-            .Where(go => go.name.Contains("Unit")).ToArray();
+        GameObject[] allUnits = FindObjectsByType<GameObject>(FindObjectsSortMode.None)
+            .Where(go => go.name.Contains("Unit") && !go.name.Contains("Unit Manager") && !go.name.Equals("Units")).ToArray();
         
         foreach (GameObject unitObj in allUnits)
         {
@@ -899,9 +915,12 @@ public class Task_1_2_1_Setup : EditorWindow
                 }
                 
                 Vector3 expectedWorldPos = gridManager.GridToWorld(gridPos);
+                // Adjust expected Y position to match unit positioning logic
+                expectedWorldPos.y = unitHeight / 2f;
                 Vector3 actualWorldPos = unitObj.transform.position;
                 
-                if (Vector3.Distance(new Vector3(expectedWorldPos.x, actualWorldPos.y, expectedWorldPos.z), actualWorldPos) > 0.1f)
+                
+                if (Vector3.Distance(expectedWorldPos, actualWorldPos) > 0.1f)
                 {
                     Debug.LogError($"✗ Unit {unitObj.name} position mismatch. Expected {expectedWorldPos}, actual {actualWorldPos}");
                     return false;
@@ -918,8 +937,8 @@ public class Task_1_2_1_Setup : EditorWindow
     /// </summary>
     private bool ValidateComponentSetup()
     {
-        GameObject[] allUnits = GameObject.FindGameObjectsWithTag("Untagged")
-            .Where(go => go.name.Contains("Unit")).ToArray();
+        GameObject[] allUnits = FindObjectsByType<GameObject>(FindObjectsSortMode.None)
+            .Where(go => go.name.Contains("Unit") && !go.name.Contains("Unit Manager") && !go.name.Equals("Units")).ToArray();
         
         foreach (GameObject unitObj in allUnits)
         {
@@ -976,22 +995,22 @@ public class Task_1_2_1_Setup : EditorWindow
     /// </summary>
     private bool ValidateMaterialAssignment()
     {
-        GameObject[] blueUnits = GameObject.FindGameObjectsWithTag("Untagged")
+        GameObject[] blueUnits = FindObjectsByType<GameObject>(FindObjectsSortMode.None)
             .Where(go => go.name.Contains("Blue Unit")).ToArray();
-        GameObject[] redUnits = GameObject.FindGameObjectsWithTag("Untagged")
+        GameObject[] redUnits = FindObjectsByType<GameObject>(FindObjectsSortMode.None)
             .Where(go => go.name.Contains("Red Unit")).ToArray();
         
         // Check blue units
         foreach (GameObject unit in blueUnits)
         {
             Renderer renderer = unit.GetComponent<Renderer>();
-            if (renderer == null || renderer.material == null)
+            if (renderer == null || renderer.sharedMaterial == null)
             {
                 Debug.LogError($"✗ Blue unit {unit.name} missing material");
                 return false;
             }
             
-            Color materialColor = renderer.material.color;
+            Color materialColor = renderer.sharedMaterial.color;
             if (Vector4.Distance(materialColor, blueTeamColor) > 0.2f)
             {
                 Debug.LogWarning($"⚠ Blue unit {unit.name} color may not match team color");
@@ -1002,13 +1021,13 @@ public class Task_1_2_1_Setup : EditorWindow
         foreach (GameObject unit in redUnits)
         {
             Renderer renderer = unit.GetComponent<Renderer>();
-            if (renderer == null || renderer.material == null)
+            if (renderer == null || renderer.sharedMaterial == null)
             {
                 Debug.LogError($"✗ Red unit {unit.name} missing material");
                 return false;
             }
             
-            Color materialColor = renderer.material.color;
+            Color materialColor = renderer.sharedMaterial.color;
             if (Vector4.Distance(materialColor, redTeamColor) > 0.2f)
             {
                 Debug.LogWarning($"⚠ Red unit {unit.name} color may not match team color");

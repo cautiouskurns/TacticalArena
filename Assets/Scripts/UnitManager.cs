@@ -86,7 +86,6 @@ public class UnitManager : MonoBehaviour
     void Start()
     {
         FindSystemReferences();
-        InitializeTeamDictionaries();
         
         if (enableAutomaticRegistration)
         {
@@ -116,6 +115,12 @@ public class UnitManager : MonoBehaviour
         unitsByTeam = new Dictionary<UnitTeam, List<Unit>>();
         unitsById = new Dictionary<int, Unit>();
         unitsByPosition = new Dictionary<GridCoordinate, Unit>();
+        
+        // Initialize team dictionaries immediately
+        foreach (UnitTeam team in System.Enum.GetValues(typeof(UnitTeam)))
+        {
+            unitsByTeam[team] = new List<Unit>();
+        }
         
         Debug.Log("UnitManager: System initialized");
     }
@@ -147,17 +152,6 @@ public class UnitManager : MonoBehaviour
         {
             Debug.LogWarning("UnitManager: GridManager not found, grid integration disabled");
             integrateWithGrid = false;
-        }
-    }
-    
-    /// <summary>
-    /// Initializes team dictionaries
-    /// </summary>
-    private void InitializeTeamDictionaries()
-    {
-        foreach (UnitTeam team in System.Enum.GetValues(typeof(UnitTeam)))
-        {
-            unitsByTeam[team] = new List<Unit>();
         }
     }
     

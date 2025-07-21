@@ -357,7 +357,7 @@ MonoBehaviour:
   isSelected: 0
   isHovered: 0
   isBlocked: 0
-  occupyingObject: {fileID: 486232724}
+  occupyingObject: {fileID: 1468225311}
   enableVisualFeedback: 1
   enableHoverEffect: 1
   enableClickEffect: 1
@@ -629,39 +629,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 100246405}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &117071514
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 117071515}
-  m_Layer: 0
-  m_Name: Blue Team
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &117071515
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 117071514}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 486232725}
-  - {fileID: 1419158456}
-  m_Father: {fileID: 205072302}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &133987822
 GameObject:
   m_ObjectHideFlags: 0
@@ -796,40 +763,6 @@ MonoBehaviour:
   enableHoverEffect: 1
   enableClickEffect: 1
   showDebugInfo: 0
---- !u!1 &205072301
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 205072302}
-  m_Layer: 0
-  m_Name: Units
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &205072302
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 205072301}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children:
-  - {fileID: 117071515}
-  - {fileID: 574552985}
-  - {fileID: 1019822843}
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &230820698
 GameObject:
   m_ObjectHideFlags: 0
@@ -1166,11 +1099,11 @@ MonoBehaviour:
     z: 1
   worldPosition: {x: -0.97, y: 0, z: -3.03}
   tileSize: 1
-  isOccupied: 1
+  isOccupied: 0
   isSelected: 0
   isHovered: 0
   isBlocked: 0
-  occupyingObject: {fileID: 1326534606}
+  occupyingObject: {fileID: 0}
   enableVisualFeedback: 1
   enableHoverEffect: 1
   enableClickEffect: 1
@@ -1251,7 +1184,7 @@ MonoBehaviour:
   isSelected: 0
   isHovered: 0
   isBlocked: 0
-  occupyingObject: {fileID: 1736420501}
+  occupyingObject: {fileID: 767108875}
   enableVisualFeedback: 1
   enableHoverEffect: 1
   enableClickEffect: 1
@@ -2369,197 +2302,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 446508181}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &486232724
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 486232725}
-  - component: {fileID: 486232730}
-  - component: {fileID: 486232729}
-  - component: {fileID: 486232728}
-  - component: {fileID: 486232727}
-  - component: {fileID: 486232726}
-  m_Layer: 0
-  m_Name: Blue Unit 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &486232725
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486232724}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.06, y: 0.75, z: -4.06}
-  m_LocalScale: {x: 0.8, y: 1.5, z: 0.8}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 117071515}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &486232726
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486232724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bed659d58c29a49728125bfeab45b801, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
-  maxHealth: 3
-  currentHealth: 3
-  isInvulnerable: 0
-  canRegenerate: 0
-  regenerationRate: 1
-  regenerationDelay: 5
-  maxRegenerationHealth: 3
-  damageReduction: 0
-  hasArmor: 0
-  armorPoints: 0
-  enableVisualDamage: 1
-  healthyColor: {r: 1, g: 1, b: 1, a: 1}
-  damagedColor: {r: 1, g: 0, b: 0, a: 1}
-  criticalColor: {r: 0.5450981, g: 0, b: 0, a: 1}
-  damageFlashDuration: 0.5
-  damageSound: {fileID: 0}
-  healSound: {fileID: 0}
-  deathSound: {fileID: 0}
-  audioVolume: 0.7
-  enableDebugLogging: 0
-  showHealthBar: 0
---- !u!114 &486232727
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486232724}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ff7c93e322c64531baac6e329e7c16f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Unit
-  unitName: Tactical Unit
-  team: 0
-  unitID: -1
-  gridCoordinate:
-    x: 0
-    z: 0
-  targetWorldPosition: {x: 0, y: 0, z: 0}
-  snapToGrid: 1
-  moveSpeed: 2
-  movementRange: 1
-  actionPoints: 2
-  currentActionPoints: 2
-  isSelected: 0
-  isActive: 1
-  hasMoved: 0
-  hasActed: 0
-  enableSelection: 1
-  enableMouseHover: 1
-  selectionLayerMask:
-    serializedVersion: 2
-    m_Bits: 55
-  selectionIndicator: {fileID: 0}
-  selectedMaterial: {fileID: 0}
-  hoveredMaterial: {fileID: 0}
-  teamColor: {r: 0, g: 0, b: 1, a: 1}
-  enableVisualFeedback: 1
-  selectionSound: {fileID: 0}
-  moveSound: {fileID: 0}
-  actionSound: {fileID: 0}
-  audioVolume: 0.5
-  enableDebugLogging: 0
-  showDebugInfo: 0
-  enableGizmosDrawing: 1
---- !u!23 &486232728
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486232724}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a598f88524b4c47e3935889b1b7c5bdc, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &486232729
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486232724}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &486232730
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 486232724}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &487639178
 GameObject:
   m_ObjectHideFlags: 0
@@ -2636,7 +2378,7 @@ MonoBehaviour:
   isSelected: 0
   isHovered: 0
   isBlocked: 0
-  occupyingObject: {fileID: 2039887487}
+  occupyingObject: {fileID: 719432015}
   enableVisualFeedback: 1
   enableHoverEffect: 1
   enableClickEffect: 1
@@ -2946,7 +2688,7 @@ MonoBehaviour:
   enableHoverEffect: 1
   enableClickEffect: 1
   showDebugInfo: 0
---- !u!1 &574552984
+--- !u!1 &626681752
 GameObject:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -2954,7 +2696,7 @@ GameObject:
   m_PrefabAsset: {fileID: 0}
   serializedVersion: 6
   m_Component:
-  - component: {fileID: 574552985}
+  - component: {fileID: 626681753}
   m_Layer: 0
   m_Name: Red Team
   m_TagString: Untagged
@@ -2962,22 +2704,22 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &574552985
+--- !u!4 &626681753
 Transform:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 574552984}
+  m_GameObject: {fileID: 626681752}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1736420502}
-  - {fileID: 2039887488}
-  m_Father: {fileID: 205072302}
+  - {fileID: 767108876}
+  - {fileID: 719432016}
+  m_Father: {fileID: 1939828379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &656001240
 GameObject:
@@ -3335,6 +3077,197 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 701571925}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &719432015
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 719432016}
+  - component: {fileID: 719432021}
+  - component: {fileID: 719432020}
+  - component: {fileID: 719432019}
+  - component: {fileID: 719432018}
+  - component: {fileID: 719432017}
+  m_Layer: 0
+  m_Name: Red Unit 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &719432016
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719432015}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.97, y: 0.5, z: -0.97}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 626681753}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &719432017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719432015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed659d58c29a49728125bfeab45b801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
+  maxHealth: 3
+  currentHealth: 3
+  isInvulnerable: 0
+  canRegenerate: 0
+  regenerationRate: 1
+  regenerationDelay: 5
+  maxRegenerationHealth: 3
+  damageReduction: 0
+  hasArmor: 0
+  armorPoints: 0
+  enableVisualDamage: 1
+  healthyColor: {r: 1, g: 1, b: 1, a: 1}
+  damagedColor: {r: 1, g: 0, b: 0, a: 1}
+  criticalColor: {r: 0.5450981, g: 0, b: 0, a: 1}
+  damageFlashDuration: 0.5
+  damageSound: {fileID: 0}
+  healSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  audioVolume: 0.7
+  enableDebugLogging: 0
+  showHealthBar: 0
+--- !u!114 &719432018
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719432015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff7c93e322c64531baac6e329e7c16f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  unitName: Tactical Unit
+  team: 1
+  unitID: -1
+  gridCoordinate:
+    x: 3
+    z: 3
+  targetWorldPosition: {x: 0, y: 0, z: 0}
+  snapToGrid: 1
+  moveSpeed: 2
+  movementRange: 1
+  actionPoints: 2
+  currentActionPoints: 2
+  isSelected: 0
+  isActive: 1
+  hasMoved: 0
+  hasActed: 0
+  enableSelection: 1
+  enableMouseHover: 1
+  selectionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  selectionIndicator: {fileID: 0}
+  selectedMaterial: {fileID: 0}
+  hoveredMaterial: {fileID: 0}
+  teamColor: {r: 0, g: 0, b: 1, a: 1}
+  enableVisualFeedback: 1
+  selectionSound: {fileID: 0}
+  moveSound: {fileID: 0}
+  actionSound: {fileID: 0}
+  audioVolume: 0.5
+  enableDebugLogging: 0
+  showDebugInfo: 0
+  enableGizmosDrawing: 1
+--- !u!23 &719432019
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719432015}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 6dff5becc093a492bb78a1876aa2f2c9, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &719432020
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719432015}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &719432021
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719432015}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &735224585
 GameObject:
   m_ObjectHideFlags: 0
@@ -3575,6 +3508,197 @@ LineRenderer:
   m_UseWorldSpace: 0
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
+--- !u!1 &767108875
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 767108876}
+  - component: {fileID: 767108881}
+  - component: {fileID: 767108880}
+  - component: {fileID: 767108879}
+  - component: {fileID: 767108878}
+  - component: {fileID: 767108877}
+  m_Layer: 0
+  m_Name: Red Unit 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &767108876
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767108875}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -2, y: 0.5, z: -0.97}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 626681753}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &767108877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767108875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed659d58c29a49728125bfeab45b801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
+  maxHealth: 3
+  currentHealth: 3
+  isInvulnerable: 0
+  canRegenerate: 0
+  regenerationRate: 1
+  regenerationDelay: 5
+  maxRegenerationHealth: 3
+  damageReduction: 0
+  hasArmor: 0
+  armorPoints: 0
+  enableVisualDamage: 1
+  healthyColor: {r: 1, g: 1, b: 1, a: 1}
+  damagedColor: {r: 1, g: 0, b: 0, a: 1}
+  criticalColor: {r: 0.5450981, g: 0, b: 0, a: 1}
+  damageFlashDuration: 0.5
+  damageSound: {fileID: 0}
+  healSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  audioVolume: 0.7
+  enableDebugLogging: 0
+  showHealthBar: 0
+--- !u!114 &767108878
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767108875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff7c93e322c64531baac6e329e7c16f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  unitName: Tactical Unit
+  team: 1
+  unitID: -1
+  gridCoordinate:
+    x: 2
+    z: 3
+  targetWorldPosition: {x: 0, y: 0, z: 0}
+  snapToGrid: 1
+  moveSpeed: 2
+  movementRange: 1
+  actionPoints: 2
+  currentActionPoints: 2
+  isSelected: 0
+  isActive: 1
+  hasMoved: 0
+  hasActed: 0
+  enableSelection: 1
+  enableMouseHover: 1
+  selectionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  selectionIndicator: {fileID: 0}
+  selectedMaterial: {fileID: 0}
+  hoveredMaterial: {fileID: 0}
+  teamColor: {r: 0, g: 0, b: 1, a: 1}
+  enableVisualFeedback: 1
+  selectionSound: {fileID: 0}
+  moveSound: {fileID: 0}
+  actionSound: {fileID: 0}
+  audioVolume: 0.5
+  enableDebugLogging: 0
+  showDebugInfo: 0
+  enableGizmosDrawing: 1
+--- !u!23 &767108879
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767108875}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: 6dff5becc093a492bb78a1876aa2f2c9, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &767108880
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767108875}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &767108881
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767108875}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &789142945
 GameObject:
   m_ObjectHideFlags: 0
@@ -3995,6 +4119,39 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &862364571
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 862364572}
+  m_Layer: 0
+  m_Name: Blue Team
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &862364572
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 862364571}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1468225312}
+  - {fileID: 1880040321}
+  m_Father: {fileID: 1939828379}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &878680258
 GameObject:
@@ -4567,78 +4724,15 @@ MonoBehaviour:
     z: 0
   worldPosition: {x: -2, y: 0, z: -4.06}
   tileSize: 1
-  isOccupied: 1
+  isOccupied: 0
   isSelected: 0
   isHovered: 0
   isBlocked: 0
-  occupyingObject: {fileID: 69749316}
+  occupyingObject: {fileID: 0}
   enableVisualFeedback: 1
   enableHoverEffect: 1
   enableClickEffect: 1
   showDebugInfo: 0
---- !u!1 &1019822842
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1019822843}
-  - component: {fileID: 1019822844}
-  m_Layer: 0
-  m_Name: Unit Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1019822843
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019822842}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 205072302}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1019822844
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1019822842}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bb47485bac0424e769b71cdabb608966, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitManager
-  enableDebugVisualization: 0
-  validateGridPositions: 1
-  allowMultipleSelection: 0
-  enableAutomaticRegistration: 1
-  playerTeam: 0
-  restrictSelectionToPlayerTeam: 1
-  enableKeyboardSelection: 1
-  nextUnitKey: 9
-  previousUnitKey: 304
-  enableTurnSystem: 0
-  currentTurnTeam: 0
-  turnTimeLimit: 30
-  autoEndTurn: 0
-  maxUnitsPerTeam: 4
-  maxTotalUnits: 8
-  enforceUnitLimits: 1
-  integrateWithGrid: 1
-  integrateWithObstacles: 1
-  enableCollisionDetection: 1
 --- !u!1 &1029531370
 GameObject:
   m_ObjectHideFlags: 0
@@ -4881,11 +4975,11 @@ MonoBehaviour:
     z: 2
   worldPosition: {x: -3.03, y: 0, z: -2}
   tileSize: 1
-  isOccupied: 1
+  isOccupied: 0
   isSelected: 0
   isHovered: 0
   isBlocked: 0
-  occupyingObject: {fileID: 230820698}
+  occupyingObject: {fileID: 0}
   enableVisualFeedback: 1
   enableHoverEffect: 1
   enableClickEffect: 1
@@ -5627,6 +5721,69 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1261634624}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1271122019
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1271122020}
+  - component: {fileID: 1271122021}
+  m_Layer: 0
+  m_Name: Unit Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1271122020
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271122019}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 1939828379}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1271122021
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1271122019}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb47485bac0424e769b71cdabb608966, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitManager
+  enableDebugVisualization: 0
+  validateGridPositions: 1
+  allowMultipleSelection: 0
+  enableAutomaticRegistration: 1
+  playerTeam: 0
+  restrictSelectionToPlayerTeam: 1
+  enableKeyboardSelection: 1
+  nextUnitKey: 9
+  previousUnitKey: 304
+  enableTurnSystem: 0
+  currentTurnTeam: 0
+  turnTimeLimit: 30
+  autoEndTurn: 0
+  maxUnitsPerTeam: 4
+  maxTotalUnits: 8
+  enforceUnitLimits: 1
+  integrateWithGrid: 1
+  integrateWithObstacles: 1
+  enableCollisionDetection: 1
 --- !u!1 &1281760479
 GameObject:
   m_ObjectHideFlags: 0
@@ -5703,7 +5860,7 @@ MonoBehaviour:
   isSelected: 0
   isHovered: 0
   isBlocked: 0
-  occupyingObject: {fileID: 1419158455}
+  occupyingObject: {fileID: 1880040320}
   enableVisualFeedback: 1
   enableHoverEffect: 1
   enableClickEffect: 1
@@ -6269,197 +6426,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1390937024}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &1419158455
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1419158456}
-  - component: {fileID: 1419158461}
-  - component: {fileID: 1419158460}
-  - component: {fileID: 1419158459}
-  - component: {fileID: 1419158458}
-  - component: {fileID: 1419158457}
-  m_Layer: 0
-  m_Name: Blue Unit 2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1419158456
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419158455}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.03, y: 0.75, z: -4.06}
-  m_LocalScale: {x: 0.8, y: 1.5, z: 0.8}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 117071515}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1419158457
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419158455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bed659d58c29a49728125bfeab45b801, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
-  maxHealth: 3
-  currentHealth: 3
-  isInvulnerable: 0
-  canRegenerate: 0
-  regenerationRate: 1
-  regenerationDelay: 5
-  maxRegenerationHealth: 3
-  damageReduction: 0
-  hasArmor: 0
-  armorPoints: 0
-  enableVisualDamage: 1
-  healthyColor: {r: 1, g: 1, b: 1, a: 1}
-  damagedColor: {r: 1, g: 0, b: 0, a: 1}
-  criticalColor: {r: 0.5450981, g: 0, b: 0, a: 1}
-  damageFlashDuration: 0.5
-  damageSound: {fileID: 0}
-  healSound: {fileID: 0}
-  deathSound: {fileID: 0}
-  audioVolume: 0.7
-  enableDebugLogging: 0
-  showHealthBar: 0
---- !u!114 &1419158458
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419158455}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ff7c93e322c64531baac6e329e7c16f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Unit
-  unitName: Tactical Unit
-  team: 0
-  unitID: -1
-  gridCoordinate:
-    x: 0
-    z: 0
-  targetWorldPosition: {x: 0, y: 0, z: 0}
-  snapToGrid: 1
-  moveSpeed: 2
-  movementRange: 1
-  actionPoints: 2
-  currentActionPoints: 2
-  isSelected: 0
-  isActive: 1
-  hasMoved: 0
-  hasActed: 0
-  enableSelection: 1
-  enableMouseHover: 1
-  selectionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  selectionIndicator: {fileID: 0}
-  selectedMaterial: {fileID: 0}
-  hoveredMaterial: {fileID: 0}
-  teamColor: {r: 0, g: 0, b: 1, a: 1}
-  enableVisualFeedback: 1
-  selectionSound: {fileID: 0}
-  moveSound: {fileID: 0}
-  actionSound: {fileID: 0}
-  audioVolume: 0.5
-  enableDebugLogging: 0
-  showDebugInfo: 0
-  enableGizmosDrawing: 1
---- !u!23 &1419158459
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419158455}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a598f88524b4c47e3935889b1b7c5bdc, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1419158460
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419158455}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &1419158461
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1419158455}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1422020435
 GameObject:
   m_ObjectHideFlags: 0
@@ -6621,15 +6587,206 @@ MonoBehaviour:
     z: 3
   worldPosition: {x: -4.06, y: 0, z: -0.97}
   tileSize: 1
-  isOccupied: 1
+  isOccupied: 0
   isSelected: 0
   isHovered: 0
   isBlocked: 0
-  occupyingObject: {fileID: 1218083399}
+  occupyingObject: {fileID: 0}
   enableVisualFeedback: 1
   enableHoverEffect: 1
   enableClickEffect: 1
   showDebugInfo: 0
+--- !u!1 &1468225311
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1468225312}
+  - component: {fileID: 1468225317}
+  - component: {fileID: 1468225316}
+  - component: {fileID: 1468225315}
+  - component: {fileID: 1468225314}
+  - component: {fileID: 1468225313}
+  m_Layer: 0
+  m_Name: Blue Unit 1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1468225312
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468225311}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.06, y: 0.5, z: -4.06}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 862364572}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1468225313
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468225311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed659d58c29a49728125bfeab45b801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
+  maxHealth: 3
+  currentHealth: 3
+  isInvulnerable: 0
+  canRegenerate: 0
+  regenerationRate: 1
+  regenerationDelay: 5
+  maxRegenerationHealth: 3
+  damageReduction: 0
+  hasArmor: 0
+  armorPoints: 0
+  enableVisualDamage: 1
+  healthyColor: {r: 1, g: 1, b: 1, a: 1}
+  damagedColor: {r: 1, g: 0, b: 0, a: 1}
+  criticalColor: {r: 0.5450981, g: 0, b: 0, a: 1}
+  damageFlashDuration: 0.5
+  damageSound: {fileID: 0}
+  healSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  audioVolume: 0.7
+  enableDebugLogging: 0
+  showHealthBar: 0
+--- !u!114 &1468225314
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468225311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff7c93e322c64531baac6e329e7c16f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  unitName: Tactical Unit
+  team: 0
+  unitID: -1
+  gridCoordinate:
+    x: 0
+    z: 0
+  targetWorldPosition: {x: 0, y: 0, z: 0}
+  snapToGrid: 1
+  moveSpeed: 2
+  movementRange: 1
+  actionPoints: 2
+  currentActionPoints: 2
+  isSelected: 0
+  isActive: 1
+  hasMoved: 0
+  hasActed: 0
+  enableSelection: 1
+  enableMouseHover: 1
+  selectionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  selectionIndicator: {fileID: 0}
+  selectedMaterial: {fileID: 0}
+  hoveredMaterial: {fileID: 0}
+  teamColor: {r: 0, g: 0, b: 1, a: 1}
+  enableVisualFeedback: 1
+  selectionSound: {fileID: 0}
+  moveSound: {fileID: 0}
+  actionSound: {fileID: 0}
+  audioVolume: 0.5
+  enableDebugLogging: 0
+  showDebugInfo: 0
+  enableGizmosDrawing: 1
+--- !u!23 &1468225315
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468225311}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a598f88524b4c47e3935889b1b7c5bdc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1468225316
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468225311}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1468225317
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468225311}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1489580187
 GameObject:
   m_ObjectHideFlags: 0
@@ -6798,7 +6955,7 @@ MonoBehaviour:
   enableVisualFeedback: 1
   enableHoverEffects: 1
   enableSelectionEffects: 1
-  feedbackIntensity: 1
+  feedbackIntensity: 2
   feedbackSpeed: 2
   hoverIntensityCurve:
     serializedVersion: 2
@@ -7352,197 +7509,6 @@ LineRenderer:
   m_UseWorldSpace: 0
   m_Loop: 0
   m_ApplyActiveColorSpace: 1
---- !u!1 &1736420501
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 1736420502}
-  - component: {fileID: 1736420507}
-  - component: {fileID: 1736420506}
-  - component: {fileID: 1736420505}
-  - component: {fileID: 1736420504}
-  - component: {fileID: 1736420503}
-  m_Layer: 0
-  m_Name: Red Unit 1
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &1736420502
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736420501}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: 0.75, z: -0.97}
-  m_LocalScale: {x: 0.8, y: 1.5, z: 0.8}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 574552985}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &1736420503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736420501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bed659d58c29a49728125bfeab45b801, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
-  maxHealth: 3
-  currentHealth: 3
-  isInvulnerable: 0
-  canRegenerate: 0
-  regenerationRate: 1
-  regenerationDelay: 5
-  maxRegenerationHealth: 3
-  damageReduction: 0
-  hasArmor: 0
-  armorPoints: 0
-  enableVisualDamage: 1
-  healthyColor: {r: 1, g: 1, b: 1, a: 1}
-  damagedColor: {r: 1, g: 0, b: 0, a: 1}
-  criticalColor: {r: 0.5450981, g: 0, b: 0, a: 1}
-  damageFlashDuration: 0.5
-  damageSound: {fileID: 0}
-  healSound: {fileID: 0}
-  deathSound: {fileID: 0}
-  audioVolume: 0.7
-  enableDebugLogging: 0
-  showHealthBar: 0
---- !u!114 &1736420504
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736420501}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ff7c93e322c64531baac6e329e7c16f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Unit
-  unitName: Tactical Unit
-  team: 1
-  unitID: -1
-  gridCoordinate:
-    x: 0
-    z: 0
-  targetWorldPosition: {x: 0, y: 0, z: 0}
-  snapToGrid: 1
-  moveSpeed: 2
-  movementRange: 1
-  actionPoints: 2
-  currentActionPoints: 2
-  isSelected: 0
-  isActive: 1
-  hasMoved: 0
-  hasActed: 0
-  enableSelection: 1
-  enableMouseHover: 1
-  selectionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  selectionIndicator: {fileID: 0}
-  selectedMaterial: {fileID: 0}
-  hoveredMaterial: {fileID: 0}
-  teamColor: {r: 0, g: 0, b: 1, a: 1}
-  enableVisualFeedback: 1
-  selectionSound: {fileID: 0}
-  moveSound: {fileID: 0}
-  actionSound: {fileID: 0}
-  audioVolume: 0.5
-  enableDebugLogging: 0
-  showDebugInfo: 0
-  enableGizmosDrawing: 1
---- !u!23 &1736420505
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736420501}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 6dff5becc093a492bb78a1876aa2f2c9, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &1736420506
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736420501}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &1736420507
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1736420501}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1773810449
 GameObject:
   m_ObjectHideFlags: 0
@@ -7883,6 +7849,197 @@ MonoBehaviour:
   enableHoverEffect: 1
   enableClickEffect: 1
   showDebugInfo: 0
+--- !u!1 &1880040320
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1880040321}
+  - component: {fileID: 1880040326}
+  - component: {fileID: 1880040325}
+  - component: {fileID: 1880040324}
+  - component: {fileID: 1880040323}
+  - component: {fileID: 1880040322}
+  m_Layer: 0
+  m_Name: Blue Unit 2
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1880040321
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880040320}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.03, y: 0.5, z: -4.06}
+  m_LocalScale: {x: 0.5, y: 1, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 862364572}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1880040322
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880040320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bed659d58c29a49728125bfeab45b801, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
+  maxHealth: 3
+  currentHealth: 3
+  isInvulnerable: 0
+  canRegenerate: 0
+  regenerationRate: 1
+  regenerationDelay: 5
+  maxRegenerationHealth: 3
+  damageReduction: 0
+  hasArmor: 0
+  armorPoints: 0
+  enableVisualDamage: 1
+  healthyColor: {r: 1, g: 1, b: 1, a: 1}
+  damagedColor: {r: 1, g: 0, b: 0, a: 1}
+  criticalColor: {r: 0.5450981, g: 0, b: 0, a: 1}
+  damageFlashDuration: 0.5
+  damageSound: {fileID: 0}
+  healSound: {fileID: 0}
+  deathSound: {fileID: 0}
+  audioVolume: 0.7
+  enableDebugLogging: 0
+  showHealthBar: 0
+--- !u!114 &1880040323
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880040320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1ff7c93e322c64531baac6e329e7c16f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Unit
+  unitName: Tactical Unit
+  team: 0
+  unitID: -1
+  gridCoordinate:
+    x: 1
+    z: 0
+  targetWorldPosition: {x: 0, y: 0, z: 0}
+  snapToGrid: 1
+  moveSpeed: 2
+  movementRange: 1
+  actionPoints: 2
+  currentActionPoints: 2
+  isSelected: 0
+  isActive: 1
+  hasMoved: 0
+  hasActed: 0
+  enableSelection: 1
+  enableMouseHover: 1
+  selectionLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  selectionIndicator: {fileID: 0}
+  selectedMaterial: {fileID: 0}
+  hoveredMaterial: {fileID: 0}
+  teamColor: {r: 0, g: 0, b: 1, a: 1}
+  enableVisualFeedback: 1
+  selectionSound: {fileID: 0}
+  moveSound: {fileID: 0}
+  actionSound: {fileID: 0}
+  audioVolume: 0.5
+  enableDebugLogging: 0
+  showDebugInfo: 0
+  enableGizmosDrawing: 1
+--- !u!23 &1880040324
+MeshRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880040320}
+  m_Enabled: 1
+  m_CastShadows: 1
+  m_ReceiveShadows: 1
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 2
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 2100000, guid: a598f88524b4c47e3935889b1b7c5bdc, type: 2}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 1
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 3
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_AdditionalVertexStreams: {fileID: 0}
+--- !u!65 &1880040325
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880040320}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!33 &1880040326
+MeshFilter:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880040320}
+  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &1937528629
 GameObject:
   m_ObjectHideFlags: 0
@@ -7972,6 +8129,40 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1937528629}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &1939828378
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1939828379}
+  m_Layer: 0
+  m_Name: Units
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1939828379
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1939828378}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 862364572}
+  - {fileID: 626681753}
+  - {fileID: 1271122020}
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1985058528
 GameObject:
   m_ObjectHideFlags: 0
@@ -8293,197 +8484,6 @@ MonoBehaviour:
   enableHoverEffect: 1
   enableClickEffect: 1
   showDebugInfo: 0
---- !u!1 &2039887487
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 2039887488}
-  - component: {fileID: 2039887493}
-  - component: {fileID: 2039887492}
-  - component: {fileID: 2039887491}
-  - component: {fileID: 2039887490}
-  - component: {fileID: 2039887489}
-  m_Layer: 0
-  m_Name: Red Unit 2
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &2039887488
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039887487}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -0.97, y: 0.75, z: -0.97}
-  m_LocalScale: {x: 0.8, y: 1.5, z: 0.8}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 574552985}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &2039887489
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039887487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: bed659d58c29a49728125bfeab45b801, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::UnitHealth
-  maxHealth: 3
-  currentHealth: 3
-  isInvulnerable: 0
-  canRegenerate: 0
-  regenerationRate: 1
-  regenerationDelay: 5
-  maxRegenerationHealth: 3
-  damageReduction: 0
-  hasArmor: 0
-  armorPoints: 0
-  enableVisualDamage: 1
-  healthyColor: {r: 1, g: 1, b: 1, a: 1}
-  damagedColor: {r: 1, g: 0, b: 0, a: 1}
-  criticalColor: {r: 0.5450981, g: 0, b: 0, a: 1}
-  damageFlashDuration: 0.5
-  damageSound: {fileID: 0}
-  healSound: {fileID: 0}
-  deathSound: {fileID: 0}
-  audioVolume: 0.7
-  enableDebugLogging: 0
-  showHealthBar: 0
---- !u!114 &2039887490
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039887487}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1ff7c93e322c64531baac6e329e7c16f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Unit
-  unitName: Tactical Unit
-  team: 1
-  unitID: -1
-  gridCoordinate:
-    x: 0
-    z: 0
-  targetWorldPosition: {x: 0, y: 0, z: 0}
-  snapToGrid: 1
-  moveSpeed: 2
-  movementRange: 1
-  actionPoints: 2
-  currentActionPoints: 2
-  isSelected: 0
-  isActive: 1
-  hasMoved: 0
-  hasActed: 0
-  enableSelection: 1
-  enableMouseHover: 1
-  selectionLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  selectionIndicator: {fileID: 0}
-  selectedMaterial: {fileID: 0}
-  hoveredMaterial: {fileID: 0}
-  teamColor: {r: 0, g: 0, b: 1, a: 1}
-  enableVisualFeedback: 1
-  selectionSound: {fileID: 0}
-  moveSound: {fileID: 0}
-  actionSound: {fileID: 0}
-  audioVolume: 0.5
-  enableDebugLogging: 0
-  showDebugInfo: 0
-  enableGizmosDrawing: 1
---- !u!23 &2039887491
-MeshRenderer:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039887487}
-  m_Enabled: 1
-  m_CastShadows: 1
-  m_ReceiveShadows: 1
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 2
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: 6dff5becc093a492bb78a1876aa2f2c9, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 1
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 3
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 0
-  m_AdditionalVertexStreams: {fileID: 0}
---- !u!65 &2039887492
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039887487}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!33 &2039887493
-MeshFilter:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2039887487}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1 &2071695059
 GameObject:
   m_ObjectHideFlags: 0
@@ -8637,7 +8637,7 @@ MonoBehaviour:
     z: 4
   worldPosition: {x: -3.03, y: 0, z: 0.059999943}
   tileSize: 1
-  isOccupied: 0
+  isOccupied: 1
   isSelected: 0
   isHovered: 0
   isBlocked: 0
@@ -8654,4 +8654,4 @@ SceneRoots:
   - {fileID: 832575519}
   - {fileID: 408600668}
   - {fileID: 1489580188}
-  - {fileID: 205072302}
+  - {fileID: 1939828379}
