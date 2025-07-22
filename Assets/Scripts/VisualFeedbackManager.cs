@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 /// <summary>
 /// Visual feedback management system for tactical battlefield interactions.
-/// Handles hover effects, selection feedback, and dynamic visual responses.
+/// Handles hover effects, selection feedback, movement previews, and dynamic visual responses.
+/// Enhanced for Task 1.2.4 with comprehensive movement visual feedback integration.
 /// </summary>
 public class VisualFeedbackManager : MonoBehaviour
 {
@@ -38,9 +39,23 @@ public class VisualFeedbackManager : MonoBehaviour
     [SerializeField] private float effectPoolingThreshold = 0.1f;
     [SerializeField] private bool useObjectPooling = true;
     
+    [Header("Movement Integration")]
+    [SerializeField] private bool enableMovementFeedback = true;
+    [SerializeField] private bool enableMovementPreviews = true;
+    [SerializeField] private bool enableCollisionFeedback = true;
+    [SerializeField] private float movementPreviewIntensity = 1.0f;
+    [SerializeField] private Color validMoveColor = Color.green;
+    [SerializeField] private Color invalidMoveColor = Color.red;
+    [SerializeField] private Color previewMoveColor = Color.yellow;
+    
+    [Header("Debug Settings")]
+    [SerializeField] private bool enableDebugLogging = false;
+    
     [Header("Audio Integration")]
     [SerializeField] private AudioClip hoverSound;
     [SerializeField] private AudioClip selectionSound;
+    [SerializeField] private AudioClip movementFeedbackSound;
+    [SerializeField] private AudioClip collisionFeedbackSound;
     [SerializeField] private float audioVolume = 0.3f;
     [SerializeField] private bool enableAudioFeedback = false;
     
@@ -49,6 +64,9 @@ public class VisualFeedbackManager : MonoBehaviour
     private MaterialManager materialManager;
     private Camera mainCamera;
     private AudioSource audioSource;
+    private MovementPreviewSystem movementPreviewSystem;
+    private MovementAnimationEnhancer animationEnhancer;
+    private CollisionFeedbackSystem collisionFeedbackSystem;
     
     // Feedback tracking
     private Dictionary<GridCoordinate, TileFeedbackState> activeFeedbackStates;
@@ -60,6 +78,8 @@ public class VisualFeedbackManager : MonoBehaviour
     private GridCoordinate currentHoveredTile = GridCoordinate.Invalid;
     private GridCoordinate currentSelectedTile = GridCoordinate.Invalid;
     private List<GridCoordinate> highlightedTiles = new List<GridCoordinate>();
+    private List<GridCoordinate> movementPreviewTiles = new List<GridCoordinate>();
+    private IMovable currentSelectedMovable;
     
     // Performance tracking
     private int activeEffectCount = 0;
@@ -70,14 +90,22 @@ public class VisualFeedbackManager : MonoBehaviour
     public System.Action<GridCoordinate> OnTileHoverEnd;
     public System.Action<GridCoordinate> OnTileSelectionStart;
     public System.Action<GridCoordinate> OnTileSelectionEnd;
+    public System.Action<IMovable, List<Vector2Int>> OnMovementPreviewStart;
+    public System.Action<IMovable> OnMovementPreviewEnd;
+    public System.Action<IMovable, Vector2Int> OnMovementFeedback;
+    public System.Action<IMovable> OnCollisionFeedback;
     
     // Public properties
     public bool VisualFeedbackEnabled => enableVisualFeedback;
     public bool HoverEffectsEnabled => enableHoverEffects;
     public bool SelectionEffectsEnabled => enableSelectionEffects;
+    public bool MovementFeedbackEnabled => enableMovementFeedback;
+    public bool MovementPreviewsEnabled => enableMovementPreviews;
+    public bool CollisionFeedbackEnabled => enableCollisionFeedback;
     public float FeedbackIntensity => feedbackIntensity;
     public GridCoordinate CurrentHoveredTile => currentHoveredTile;
     public GridCoordinate CurrentSelectedTile => currentSelectedTile;
+    public IMovable CurrentSelectedMovable => currentSelectedMovable;
     public int ActiveEffectCount => activeEffectCount;
     
     void Awake()
@@ -199,6 +227,9 @@ public class VisualFeedbackManager : MonoBehaviour
         {
             Debug.LogWarning("VisualFeedbackManager: MaterialManager not found");
         }
+        
+        // Find movement system components
+        FindMovementSystemReferences();
     }
     
     /// <summary>
@@ -727,6 +758,293 @@ public class VisualFeedbackManager : MonoBehaviour
     }
     
     /// <summary>
+    /// Finds references to movement system components
+    /// </summary>
+    private void FindMovementSystemReferences()
+    {
+        GameObject movementManagerObj = GameObject.Find("Movement Manager");
+        if (movementManagerObj != null)
+        {
+            movementPreviewSystem = movementManagerObj.GetComponent<MovementPreviewSystem>();
+            animationEnhancer = movementManagerObj.GetComponent<MovementAnimationEnhancer>();
+            collisionFeedbackSystem = movementManagerObj.GetComponent<CollisionFeedbackSystem>();
+        }
+        
+        if (enableDebugLogging)
+        {
+            Debug.Log($"VisualFeedbackManager found movement references - Preview: {movementPreviewSystem != null}, Enhancer: {animationEnhancer != null}, Collision: {collisionFeedbackSystem != null}");
+        }
+        
+        // Setup movement system event listeners
+        SetupMovementEventListeners();
+    }
+    
+    /// <summary>
+    /// Sets up event listeners for movement systems
+    /// </summary>
+    private void SetupMovementEventListeners()
+    {
+        if (movementPreviewSystem != null)
+        {
+            movementPreviewSystem.OnPreviewStarted += OnMovementPreviewStarted;
+            movementPreviewSystem.OnPreviewStopped += OnMovementPreviewStopped;
+        }
+        
+        if (collisionFeedbackSystem != null)
+        {
+            collisionFeedbackSystem.OnCollisionFeedback += OnMovementCollisionFeedback;
+        }
+        
+        // Listen to selection changes to show movement previews
+        if (gridManager != null)
+        {
+            gridManager.OnTileSelected += OnTileSelectedForMovement;
+        }
+        
+        // Find and listen to SelectionManager
+        SelectionManager selectionManager = FindFirstObjectByType<SelectionManager>();
+        if (selectionManager != null)
+        {
+            selectionManager.OnObjectSelected += OnUnitSelectedForMovement;
+            selectionManager.OnObjectDeselected += OnUnitDeselectedForMovement;
+        }
+    }
+    
+    /// <summary>
+    /// Called when unit is selected for potential movement
+    /// </summary>
+    private void OnUnitSelectedForMovement(ISelectable selectable)
+    {
+        if (!enableMovementFeedback) return;
+        
+        if (selectable is IMovable movable)
+        {
+            currentSelectedMovable = movable;
+            
+            if (enableMovementPreviews)
+            {
+                ShowMovementPreviews(movable);
+            }
+        }
+    }
+    
+    /// <summary>
+    /// Called when unit is deselected
+    /// </summary>
+    private void OnUnitDeselectedForMovement(ISelectable selectable)
+    {
+        if (selectable is IMovable)
+        {
+            ClearMovementPreviews();
+            currentSelectedMovable = null;
+        }
+    }
+    
+    /// <summary>
+    /// Called when tile is selected (for movement targeting)
+    /// </summary>
+    private void OnTileSelectedForMovement(GridCoordinate coordinate)
+    {
+        if (!enableMovementFeedback || currentSelectedMovable == null) return;
+        
+        Vector2Int targetPosition = new Vector2Int(coordinate.x, coordinate.z);
+        OnMovementFeedback?.Invoke(currentSelectedMovable, targetPosition);
+        
+        PlayAudioFeedback(movementFeedbackSound);
+    }
+    
+    /// <summary>
+    /// Called when movement preview starts
+    /// </summary>
+    private void OnMovementPreviewStarted(IMovable unit)
+    {
+        if (!enableMovementFeedback) return;
+        
+        // Could add additional visual effects here
+        if (enableDebugLogging)
+        {
+            Debug.Log($"VisualFeedbackManager: Movement preview started for {unit.GetDisplayInfo()}");
+        }
+    }
+    
+    /// <summary>
+    /// Called when movement preview stops
+    /// </summary>
+    private void OnMovementPreviewStopped(IMovable unit)
+    {
+        if (!enableMovementFeedback) return;
+        
+        if (enableDebugLogging)
+        {
+            Debug.Log($"VisualFeedbackManager: Movement preview stopped for {unit.GetDisplayInfo()}");
+        }
+    }
+    
+    /// <summary>
+    /// Called when movement collision feedback occurs
+    /// </summary>
+    private void OnMovementCollisionFeedback(Transform unit, CollisionFeedbackSystem.CollisionType collisionType, Vector2Int targetPosition)
+    {
+        if (!enableCollisionFeedback) return;
+        
+        PlayAudioFeedback(collisionFeedbackSound);
+        
+        IMovable movable = unit.GetComponent<IMovable>();
+        if (movable != null)
+        {
+            OnCollisionFeedback?.Invoke(movable);
+        }
+        
+        if (enableDebugLogging)
+        {
+            Debug.Log($"VisualFeedbackManager: Collision feedback for {unit.name}, type: {collisionType}");
+        }
+    }
+    
+    /// <summary>
+    /// Shows movement previews for a movable unit
+    /// </summary>
+    public void ShowMovementPreviews(IMovable movable)
+    {
+        if (!enableMovementPreviews || movable == null) return;
+        
+        ClearMovementPreviews();
+        
+        Vector2Int currentPosition = movable.GridPosition;
+        List<Vector2Int> validMoves = GetValidMovesForUnit(movable);
+        
+        // Convert to GridCoordinate list for highlighting
+        List<GridCoordinate> previewCoordinates = new List<GridCoordinate>();
+        foreach (Vector2Int move in validMoves)
+        {
+            previewCoordinates.Add(new GridCoordinate(move.x, move.y));
+        }
+        
+        // Apply movement preview highlights
+        foreach (GridCoordinate coord in previewCoordinates)
+        {
+            movementPreviewTiles.Add(coord);
+            GridTile tile = gridManager?.GetTile(coord);
+            if (tile != null && materialManager != null)
+            {
+                // Use a different state for movement previews
+                materialManager.ApplyTileMaterial(tile, GridTileState.Highlighted);
+            }
+        }
+        
+        OnMovementPreviewStart?.Invoke(movable, validMoves);
+        
+        if (enableDebugLogging)
+        {
+            Debug.Log($"VisualFeedbackManager: Showing {validMoves.Count} movement previews for {movable.GetDisplayInfo()}");
+        }
+    }
+    
+    /// <summary>
+    /// Clears movement preview highlights
+    /// </summary>
+    public void ClearMovementPreviews()
+    {
+        foreach (GridCoordinate coord in movementPreviewTiles)
+        {
+            GridTile tile = gridManager?.GetTile(coord);
+            if (tile != null && materialManager != null)
+            {
+                GridTileState targetState = GridTileState.Normal;
+                
+                if (coord == currentSelectedTile)
+                    targetState = GridTileState.Selected;
+                else if (coord == currentHoveredTile)
+                    targetState = GridTileState.Hovered;
+                
+                materialManager.ApplyTileMaterial(tile, targetState);
+            }
+        }
+        
+        movementPreviewTiles.Clear();
+        
+        if (currentSelectedMovable != null)
+        {
+            OnMovementPreviewEnd?.Invoke(currentSelectedMovable);
+        }
+    }
+    
+    /// <summary>
+    /// Gets valid moves for a unit (basic implementation)
+    /// </summary>
+    private List<Vector2Int> GetValidMovesForUnit(IMovable movable)
+    {
+        List<Vector2Int> validMoves = new List<Vector2Int>();
+        
+        if (movable == null || gridManager == null) return validMoves;
+        
+        Vector2Int currentPosition = movable.GridPosition;
+        
+        // Check adjacent positions (up, down, left, right)
+        Vector2Int[] adjacentOffsets = {
+            Vector2Int.up,
+            Vector2Int.down,
+            Vector2Int.left,
+            Vector2Int.right
+        };
+        
+        foreach (Vector2Int offset in adjacentOffsets)
+        {
+            Vector2Int targetPosition = currentPosition + offset;
+            GridCoordinate targetCoord = new GridCoordinate(targetPosition.x, targetPosition.y);
+            
+            if (gridManager.IsValidCoordinate(targetCoord) && !gridManager.IsCoordinateOccupied(targetCoord))
+            {
+                validMoves.Add(targetPosition);
+            }
+        }
+        
+        return validMoves;
+    }
+    
+    /// <summary>
+    /// Provides visual feedback for movement validation result
+    /// </summary>
+    public void ShowMovementValidationFeedback(Vector2Int targetPosition, bool isValid)
+    {
+        if (!enableMovementFeedback) return;
+        
+        GridCoordinate targetCoord = new GridCoordinate(targetPosition.x, targetPosition.y);
+        GridTile tile = gridManager?.GetTile(targetCoord);
+        
+        if (tile != null && materialManager != null)
+        {
+            GridTileState feedbackState = isValid ? GridTileState.Highlighted : GridTileState.Blocked;
+            materialManager.ApplyTileMaterial(tile, feedbackState);
+            
+            // Temporary highlight that fades after a short time
+            StartCoroutine(FadeValidationFeedback(targetCoord, tile, 1.0f));
+        }
+    }
+    
+    /// <summary>
+    /// Fades validation feedback after a delay
+    /// </summary>
+    private IEnumerator FadeValidationFeedback(GridCoordinate coordinate, GridTile tile, float delay)
+    {
+        yield return new WaitForSeconds(delay);
+        
+        if (tile != null && materialManager != null)
+        {
+            GridTileState targetState = GridTileState.Normal;
+            
+            if (coordinate == currentSelectedTile)
+                targetState = GridTileState.Selected;
+            else if (coordinate == currentHoveredTile)
+                targetState = GridTileState.Hovered;
+            else if (movementPreviewTiles.Contains(coordinate))
+                targetState = GridTileState.Highlighted;
+            
+            materialManager.ApplyTileMaterial(tile, targetState);
+        }
+    }
+    
+    /// <summary>
     /// Stops all active feedback effects
     /// </summary>
     public void StopAllFeedbackEffects()
@@ -759,8 +1077,10 @@ public class VisualFeedbackManager : MonoBehaviour
         activeEffectCount = 0;
         
         ClearHighlightedTiles();
+        ClearMovementPreviews();
         currentHoveredTile = GridCoordinate.Invalid;
         currentSelectedTile = GridCoordinate.Invalid;
+        currentSelectedMovable = null;
         
         Debug.Log("VisualFeedbackManager: All effects stopped and positions restored");
     }
@@ -775,11 +1095,16 @@ public class VisualFeedbackManager : MonoBehaviour
             visualFeedbackEnabled = enableVisualFeedback,
             hoverEffectsEnabled = enableHoverEffects,
             selectionEffectsEnabled = enableSelectionEffects,
+            movementFeedbackEnabled = enableMovementFeedback,
+            movementPreviewsEnabled = enableMovementPreviews,
+            collisionFeedbackEnabled = enableCollisionFeedback,
             activeEffectCount = activeEffectCount,
             maxConcurrentEffects = maxConcurrentEffects,
             currentHoveredTile = currentHoveredTile,
             currentSelectedTile = currentSelectedTile,
-            highlightedTileCount = highlightedTiles.Count
+            highlightedTileCount = highlightedTiles.Count,
+            movementPreviewTileCount = movementPreviewTiles.Count,
+            hasSelectedMovable = currentSelectedMovable != null
         };
     }
 }
@@ -818,14 +1143,19 @@ public struct FeedbackSystemInfo
     public bool visualFeedbackEnabled;
     public bool hoverEffectsEnabled;
     public bool selectionEffectsEnabled;
+    public bool movementFeedbackEnabled;
+    public bool movementPreviewsEnabled;
+    public bool collisionFeedbackEnabled;
     public int activeEffectCount;
     public int maxConcurrentEffects;
     public GridCoordinate currentHoveredTile;
     public GridCoordinate currentSelectedTile;
     public int highlightedTileCount;
+    public int movementPreviewTileCount;
+    public bool hasSelectedMovable;
     
     public override string ToString()
     {
-        return $"Feedback System - Active: {activeEffectCount}/{maxConcurrentEffects}, Hover: {currentHoveredTile}, Selected: {currentSelectedTile}";
+        return $"Feedback System - Active: {activeEffectCount}/{maxConcurrentEffects}, Hover: {currentHoveredTile}, Selected: {currentSelectedTile}, Movement Previews: {movementPreviewTileCount}, Movable Selected: {hasSelectedMovable}";
     }
 }

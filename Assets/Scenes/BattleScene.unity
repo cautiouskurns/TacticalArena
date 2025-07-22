@@ -1007,6 +1007,9 @@ GameObject:
   - component: {fileID: 247126707}
   - component: {fileID: 247126706}
   - component: {fileID: 247126705}
+  - component: {fileID: 247126711}
+  - component: {fileID: 247126710}
+  - component: {fileID: 247126709}
   m_Layer: 0
   m_Name: Movement Manager
   m_TagString: Untagged
@@ -1123,12 +1126,12 @@ MonoBehaviour:
   preventOverlappingMoves: 1
   gridLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   raycastDistance: 100
   showMovementPreview: 1
   previewFadeTime: 0.3
-  validMoveMaterial: {fileID: 2100000, guid: 6937086c1f2454bbc920a4da37bcc22e, type: 2}
-  invalidMoveMaterial: {fileID: 2100000, guid: 9708333177fc14814b756f566201e7c9, type: 2}
+  validMoveMaterial: {fileID: 2100000, guid: bd2e2049b3e4a426f9a4d4de9735c7e2, type: 2}
+  invalidMoveMaterial: {fileID: 2100000, guid: 34458765348604bbda6ae1068c83b31f, type: 2}
   selectionManager: {fileID: 1018921826}
   enableMovementLogging: 1
 --- !u!4 &247126708
@@ -1146,6 +1149,205 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &247126709
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247126704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b8466203a5f9d4a41bcdffba66a47b6d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CollisionFeedbackSystem
+  enableCollisionFeedback: 1
+  enableBounceEffect: 1
+  enableObstacleFeedback: 1
+  enableBoundaryFeedback: 1
+  enableOccupancyFeedback: 1
+  bounceIntensity: 0.2
+  bounceDuration: 0.3
+  bounceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableRotationBounce: 1
+  rotationBounceAmount: 15
+  invalidMoveMaterial: {fileID: 2100000, guid: 34458765348604bbda6ae1068c83b31f, type: 2}
+  collisionIndicatorMaterial: {fileID: 0}
+  collisionColor: {r: 1, g: 0, b: 0, a: 1}
+  indicatorDuration: 1
+  enableParticles: 1
+  particleColor: {r: 1, g: 0, b: 0, a: 1}
+  visualEffectIntensity: 1
+  particleCount: 20
+  particleLifetime: 1
+  enableAudioFeedback: 0
+  bounceSound: {fileID: 0}
+  obstacleHitSound: {fileID: 0}
+  boundaryHitSound: {fileID: 0}
+  audioVolume: 0.5
+  maxConcurrentFeedback: 8
+  useObjectPooling: 1
+  feedbackCullingDistance: 15
+  optimizeForPerformance: 1
+  enableDebugLogging: 0
+  showCollisionGizmos: 0
+--- !u!114 &247126710
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247126704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bbfef2934bd6a44eb91031501e80600f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovementAnimationEnhancer
+  enableAnticipation: 1
+  anticipationScale: 1.1
+  anticipationDuration: 0.1
+  anticipationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableRotationAnticipation: 0
+  rotationAnticipation: 5
+  enableFollowThrough: 1
+  bounceIntensity: 0.2
+  bounceDuration: 0.3
+  bounceCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  enableSettleEffect: 1
+  settleDuration: 0.2
+  enableParticles: 1
+  enableTrails: 0
+  visualEffectIntensity: 1
+  effectColor: {r: 1, g: 1, b: 1, a: 1}
+  enableScreenShake: 0
+  screenShakeIntensity: 0.1
+  maxConcurrentEnhancements: 8
+  optimizeForPerformance: 1
+  useObjectPooling: 1
+  effectCullingDistance: 20
+  enableDebugLogging: 0
+  showEnhancementGizmos: 0
+--- !u!114 &247126711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 247126704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 322bfe52bda034512b7c0d1598bc9dac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MovementPreviewSystem
+  enablePreview: 1
+  previewDelay: 0.2
+  showInvalidMoves: 1
+  showValidMovesOnly: 0
+  validMoveMaterial: {fileID: 2100000, guid: bd2e2049b3e4a426f9a4d4de9735c7e2, type: 2}
+  invalidMoveMaterial: {fileID: 2100000, guid: 34458765348604bbda6ae1068c83b31f, type: 2}
+  previewMaterial: {fileID: 2100000, guid: 43c2f682af9314156bf28688e93aab76, type: 2}
+  fadeSpeed: 2
+  enablePulsing: 1
+  pulseSpeed: 1.5
+  pulseCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0.5
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  maxConcurrentPreviews: 16
+  useObjectPooling: 1
+  optimizeForPerformance: 1
+  updateFrequency: 0.1
+  enableDebugLogging: 0
+  showPreviewBounds: 0
 --- !u!1 &259407276
 GameObject:
   m_ObjectHideFlags: 0
@@ -7869,7 +8071,7 @@ MonoBehaviour:
   enableVisualFeedback: 1
   enableHoverEffects: 1
   enableSelectionEffects: 1
-  feedbackIntensity: 2
+  feedbackIntensity: 1
   feedbackSpeed: 2
   hoverIntensityCurve:
     serializedVersion: 2
@@ -7955,8 +8157,18 @@ MonoBehaviour:
   maxConcurrentEffects: 16
   effectPoolingThreshold: 0.1
   useObjectPooling: 1
+  enableMovementFeedback: 1
+  enableMovementPreviews: 1
+  enableCollisionFeedback: 1
+  movementPreviewIntensity: 1
+  validMoveColor: {r: 0, g: 1, b: 0, a: 1}
+  invalidMoveColor: {r: 1, g: 0, b: 0, a: 1}
+  previewMoveColor: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  enableDebugLogging: 0
   hoverSound: {fileID: 0}
   selectionSound: {fileID: 0}
+  movementFeedbackSound: {fileID: 0}
+  collisionFeedbackSound: {fileID: 0}
   audioVolume: 0.3
   enableAudioFeedback: 0
 --- !u!1 &1569043230
