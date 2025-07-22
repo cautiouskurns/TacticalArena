@@ -1346,7 +1346,7 @@ MonoBehaviour:
   useObjectPooling: 1
   optimizeForPerformance: 1
   updateFrequency: 0.1
-  enableDebugLogging: 0
+  enableDebugLogging: 1
   showPreviewBounds: 0
 --- !u!1 &259407276
 GameObject:

@@ -33,7 +33,7 @@ public class MovementPreviewSystem : MonoBehaviour
     [SerializeField] private float updateFrequency = 0.1f;
     
     [Header("Debug Settings")]
-    [SerializeField] private bool enableDebugLogging = false;
+    [SerializeField] private bool enableDebugLogging = true;
     [SerializeField] private bool showPreviewBounds = false;
     
     // System references
@@ -183,15 +183,35 @@ public class MovementPreviewSystem : MonoBehaviour
         highlightObj.name = "MovementHighlight";
         highlightObj.transform.SetParent(transform);
         
-        // Configure for highlighting
-        highlightObj.transform.localScale = Vector3.one * 0.9f;
-        highlightObj.layer = LayerMask.NameToLayer("UI"); // Avoid raycast interference
+        // Configure for highlighting - match grid square size
+        highlightObj.transform.localScale = Vector3.one * 0.1f;
         
         // Remove collider to avoid interference
         Collider collider = highlightObj.GetComponent<Collider>();
         if (collider != null)
         {
             DestroyImmediate(collider);
+        }
+        
+        // Set up transparent material
+        Renderer renderer = highlightObj.GetComponent<Renderer>();
+        if (renderer != null)
+        {
+            // Create a new material using URP/Lit shader that supports transparency
+            Material transparentMaterial = new Material(Shader.Find("Universal Render Pipeline/Lit"));
+            transparentMaterial.SetFloat("_Surface", 1); // Set to Transparent
+            transparentMaterial.SetFloat("_Blend", 0); // Set to Alpha blend
+            transparentMaterial.SetFloat("_AlphaClip", 0);
+            transparentMaterial.SetFloat("_SrcBlend", (int)UnityEngine.Rendering.BlendMode.SrcAlpha);
+            transparentMaterial.SetFloat("_DstBlend", (int)UnityEngine.Rendering.BlendMode.OneMinusSrcAlpha);
+            transparentMaterial.SetFloat("_ZWrite", 0);
+            transparentMaterial.DisableKeyword("_ALPHATEST_ON");
+            transparentMaterial.EnableKeyword("_SURFACE_TYPE_TRANSPARENT");
+            transparentMaterial.EnableKeyword("_ALPHABLEND_ON");
+            transparentMaterial.DisableKeyword("_ALPHAPREMULTIPLY_ON");
+            transparentMaterial.renderQueue = 3000;
+            
+            renderer.material = transparentMaterial;
         }
         
         return highlightObj;
@@ -217,10 +237,16 @@ public class MovementPreviewSystem : MonoBehaviour
     /// </summary>
     private void OnUnitSelected(ISelectable selectable)
     {
+        Debug.Log($"MovementPreviewSystem: Unit selected - {selectable}");
         if (selectable is IMovable movable)
         {
             currentSelectedUnit = movable;
+            Debug.Log($"MovementPreviewSystem: Starting preview for movable unit at {movable.GridPosition}");
             StartPreviewDisplay();
+        }
+        else
+        {
+            Debug.Log("MovementPreviewSystem: Selected object is not IMovable");
         }
     }
     
@@ -352,8 +378,11 @@ public class MovementPreviewSystem : MonoBehaviour
     /// </summary>
     private void RefreshMovementPreviews()
     {
+        Debug.Log($"MovementPreviewSystem: RefreshMovementPreviews called - enablePreview={enablePreview}, currentSelectedUnit={currentSelectedUnit != null}, gridManager={gridManager != null}, movementValidator={movementValidator != null}");
+        
         if (!enablePreview || currentSelectedUnit == null || gridManager == null || movementValidator == null)
         {
+            Debug.Log("MovementPreviewSystem: Skipping preview refresh due to missing requirements");
             return;
         }
         
@@ -361,36 +390,37 @@ public class MovementPreviewSystem : MonoBehaviour
         ClearAllPreviews();
         
         Vector2Int currentPosition = currentSelectedUnit.GridPosition;
-        List<Vector2Int> adjacentPositions = GetAdjacentPositions(currentPosition);
         
-        // Validate each adjacent position
-        foreach (Vector2Int targetPosition in adjacentPositions)
+        // Use MovementValidator to get properly bounded adjacent positions
+        List<Vector2Int> validAdjacentPositions = movementValidator.GetValidAdjacentPositions(currentSelectedUnit);
+        
+        // Show valid positions
+        foreach (Vector2Int targetPosition in validAdjacentPositions)
         {
-            MovementValidationResult validation = movementValidator.ValidateMovement(currentSelectedUnit, targetPosition);
-            
-            HighlightType highlightType;
-            if (validation.isValid)
+            CreateMovementHighlight(targetPosition, HighlightType.Valid);
+        }
+        
+        // Optionally show invalid moves if enabled
+        if (showInvalidMoves)
+        {
+            List<Vector2Int> allAdjacentPositions = GetAdjacentPositions(currentPosition);
+            foreach (Vector2Int targetPosition in allAdjacentPositions)
             {
-                highlightType = HighlightType.Valid;
-            }
-            else
-            {
-                if (showInvalidMoves)
+                // Skip if already shown as valid
+                if (validAdjacentPositions.Contains(targetPosition))
+                    continue;
+                    
+                // Check if this is within grid bounds at least
+                GridCoordinate targetCoord = new GridCoordinate(targetPosition.x, targetPosition.y);
+                if (gridManager.IsValidCoordinate(targetCoord))
                 {
-                    highlightType = HighlightType.Invalid;
-                }
-                else
-                {
-                    continue; // Skip invalid moves if not showing them
+                    MovementValidationResult validation = movementValidator.ValidateMovement(currentSelectedUnit, targetPosition);
+                    if (!validation.isValid)
+                    {
+                        CreateMovementHighlight(targetPosition, HighlightType.Invalid);
+                    }
                 }
             }
-            
-            if (showValidMovesOnly && highlightType != HighlightType.Valid)
-            {
-                continue; // Skip non-valid moves if only showing valid moves
-            }
-            
-            CreateMovementHighlight(targetPosition, highlightType);
         }
         
         if (enableDebugLogging)
@@ -412,20 +442,11 @@ public class MovementPreviewSystem : MonoBehaviour
         adjacentPositions.Add(centerPosition + Vector2Int.left);
         adjacentPositions.Add(centerPosition + Vector2Int.right);
         
-        // Optionally add diagonal neighbors based on movement settings
-        if (movementManager != null)
-        {
-            var serializedManager = new UnityEditor.SerializedObject(movementManager);
-            bool allowDiagonal = serializedManager.FindProperty("allowDiagonalMovement")?.boolValue ?? false;
-            
-            if (allowDiagonal)
-            {
-                adjacentPositions.Add(centerPosition + new Vector2Int(1, 1));
-                adjacentPositions.Add(centerPosition + new Vector2Int(1, -1));
-                adjacentPositions.Add(centerPosition + new Vector2Int(-1, 1));
-                adjacentPositions.Add(centerPosition + new Vector2Int(-1, -1));
-            }
-        }
+        // Add diagonal neighbors (validation will filter them if not allowed)
+        adjacentPositions.Add(centerPosition + new Vector2Int(1, 1));
+        adjacentPositions.Add(centerPosition + new Vector2Int(1, -1));
+        adjacentPositions.Add(centerPosition + new Vector2Int(-1, 1));
+        adjacentPositions.Add(centerPosition + new Vector2Int(-1, -1));
         
         return adjacentPositions;
     }
@@ -450,25 +471,8 @@ public class MovementPreviewSystem : MonoBehaviour
             return;
         }
         
-        // Get or create tile highlighter
-        GridCoordinate gridCoord = new GridCoordinate(gridPosition.x, gridPosition.y);
-        GridTile tile = gridManager.GetTile(gridCoord);
-        
-        if (tile != null)
-        {
-            TileHighlighter highlighter = tile.GetComponent<TileHighlighter>();
-            if (highlighter != null)
-            {
-                Material highlightMaterial = GetMaterialForHighlightType(highlightType);
-                highlighter.SetHighlight(highlightType, highlightMaterial);
-                activeHighlights.Add(highlighter);
-            }
-        }
-        else if (useObjectPooling)
-        {
-            // Use pooled highlight object
-            CreatePooledHighlight(gridPosition, highlightType);
-        }
+        // Always use pooled highlight objects for reliable visualization
+        CreatePooledHighlight(gridPosition, highlightType);
         
         currentPreviews[gridPosition] = highlightType;
         OnTileHighlighted?.Invoke(gridPosition, highlightType);
@@ -479,6 +483,7 @@ public class MovementPreviewSystem : MonoBehaviour
     /// </summary>
     private void CreatePooledHighlight(Vector2Int gridPosition, HighlightType highlightType)
     {
+        Debug.Log($"MovementPreviewSystem: Creating pooled highlight at {gridPosition} with type {highlightType}");
         GameObject highlightObj;
         
         if (highlightPool.Count > 0)
@@ -498,14 +503,21 @@ public class MovementPreviewSystem : MonoBehaviour
         highlightObj.transform.position = worldPosition;
         highlightObj.SetActive(true);
         
-        // Apply material
-        Material highlightMaterial = GetMaterialForHighlightType(highlightType);
-        if (highlightMaterial != null)
+        // Apply color directly to renderer - reliable approach
+        Renderer renderer = highlightObj.GetComponent<Renderer>();
+        if (renderer != null)
         {
-            Renderer renderer = highlightObj.GetComponent<Renderer>();
-            if (renderer != null)
+            switch (highlightType)
             {
-                renderer.material = highlightMaterial;
+                case HighlightType.Valid:
+                    renderer.material.color = new Color(0f, 1f, 0f, 0.6f); // Semi-transparent green
+                    break;
+                case HighlightType.Invalid:
+                    renderer.material.color = new Color(1f, 0f, 0f, 0.6f); // Semi-transparent red  
+                    break;
+                case HighlightType.Preview:
+                    renderer.material.color = new Color(1f, 1f, 0f, 0.6f); // Semi-transparent yellow
+                    break;
             }
         }
         

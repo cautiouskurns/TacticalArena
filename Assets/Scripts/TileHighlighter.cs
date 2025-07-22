@@ -197,12 +197,35 @@ public class TileHighlighter : MonoBehaviour
         isHighlighted = true;
         highlightStartTime = Time.time;
         
-        // Apply appropriate material
-        Material materialToUse = GetHighlightMaterial(highlightType, highlightMaterial);
-        ApplyHighlightMaterial(materialToUse);
+        // Store original material if not already stored
+        if (originalMaterial == null && tileRenderer != null)
+        {
+            originalMaterial = tileRenderer.material;
+        }
         
-        // Start animations
-        StartHighlightAnimations();
+        // Apply color directly to material - simple and reliable approach
+        if (tileRenderer != null && tileRenderer.material != null)
+        {
+            switch (highlightType)
+            {
+                case MovementPreviewSystem.HighlightType.Valid:
+                    tileRenderer.material.color = new Color(0f, 1f, 0f, 0.6f); // Semi-transparent green
+                    break;
+                case MovementPreviewSystem.HighlightType.Invalid:
+                    tileRenderer.material.color = new Color(1f, 0f, 0f, 0.6f); // Semi-transparent red  
+                    break;
+                case MovementPreviewSystem.HighlightType.Preview:
+                    tileRenderer.material.color = new Color(1f, 1f, 0f, 0.6f); // Semi-transparent yellow
+                    break;
+            }
+        }
+        
+        // Start simple animations if enabled
+        if (enablePulsing)
+        {
+            if (pulseCoroutine != null) StopCoroutine(pulseCoroutine);
+            pulseCoroutine = StartCoroutine(SimplePulseHighlight());
+        }
         
         OnHighlightChanged?.Invoke(this, highlightType);
         
@@ -224,12 +247,14 @@ public class TileHighlighter : MonoBehaviour
         // Stop animations
         StopAllAnimations();
         
-        // Fade out highlight
-        if (fadeCoroutine != null)
+        // Restore original material color directly
+        if (tileRenderer != null && originalMaterial != null)
         {
-            StopCoroutine(fadeCoroutine);
+            tileRenderer.material.color = originalMaterial.color;
         }
-        fadeCoroutine = StartCoroutine(FadeOutHighlight());
+        
+        // Reset position to original
+        transform.position = originalPosition;
         
         OnHighlightCleared?.Invoke(this);
         
@@ -240,60 +265,14 @@ public class TileHighlighter : MonoBehaviour
     }
     
     /// <summary>
-    /// Gets the appropriate highlight material
+    /// Simple method to force immediate highlight refresh
     /// </summary>
-    private Material GetHighlightMaterial(MovementPreviewSystem.HighlightType highlightType, Material providedMaterial = null)
+    public void RefreshHighlight()
     {
-        if (providedMaterial != null) return providedMaterial;
-        
-        switch (highlightType)
+        if (isHighlighted)
         {
-            case MovementPreviewSystem.HighlightType.Valid:
-                return validMoveMaterial != null ? validMoveMaterial : originalMaterial;
-            case MovementPreviewSystem.HighlightType.Invalid:
-                return invalidMoveMaterial != null ? invalidMoveMaterial : originalMaterial;
-            case MovementPreviewSystem.HighlightType.Preview:
-                return previewMaterial != null ? previewMaterial : originalMaterial;
-            default:
-                return originalMaterial;
-        }
-    }
-    
-    /// <summary>
-    /// Applies highlight material using efficient methods
-    /// </summary>
-    private void ApplyHighlightMaterial(Material material)
-    {
-        if (tileRenderer == null || material == null) return;
-        
-        if (useMaterialPropertyBlocks && propertyBlock != null)
-        {
-            // Use MaterialPropertyBlock for efficient highlighting
-            tileRenderer.GetPropertyBlock(propertyBlock);
-            
-            // Apply base color
-            if (material.HasProperty(BaseColorProperty))
-            {
-                propertyBlock.SetColor(BaseColorProperty, material.color);
-            }
-            
-            // Apply emission color
-            if (material.HasProperty(EmissionColorProperty))
-            {
-                Color emissionColor = material.GetColor(EmissionColorProperty);
-                if (enableGlowEffect)
-                {
-                    emissionColor *= glowIntensity;
-                }
-                propertyBlock.SetColor(EmissionColorProperty, emissionColor);
-            }
-            
-            tileRenderer.SetPropertyBlock(propertyBlock);
-        }
-        else
-        {
-            // Fallback to material switching
-            tileRenderer.material = material;
+            // Re-apply the current highlight
+            SetHighlight(currentHighlightType);
         }
     }
     
@@ -302,12 +281,7 @@ public class TileHighlighter : MonoBehaviour
     /// </summary>
     private void StartHighlightAnimations()
     {
-        // Fade in
-        if (fadeCoroutine != null)
-        {
-            StopCoroutine(fadeCoroutine);
-        }
-        fadeCoroutine = StartCoroutine(FadeInHighlight());
+        // Simple fade in - no coroutine needed with direct color
         
         // Pulsing effect
         if (enablePulsing)
@@ -316,7 +290,7 @@ public class TileHighlighter : MonoBehaviour
             {
                 StopCoroutine(pulseCoroutine);
             }
-            pulseCoroutine = StartCoroutine(PulseHighlight());
+            pulseCoroutine = StartCoroutine(SimplePulseHighlight());
         }
         
         // Elevation effect
@@ -354,99 +328,24 @@ public class TileHighlighter : MonoBehaviour
         }
     }
     
-    /// <summary>
-    /// Fades in the highlight
-    /// </summary>
-    private IEnumerator FadeInHighlight()
-    {
-        float elapsed = 0f;
-        float duration = 1f / fadeSpeed;
-        
-        while (elapsed < duration)
-        {
-            float progress = elapsed / duration;
-            float alpha = Mathf.Lerp(0f, 1f, progress);
-            
-            ApplyAlpha(alpha);
-            
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
-        
-        ApplyAlpha(1f);
-    }
     
     /// <summary>
-    /// Fades out the highlight
+    /// Simple pulse effect using direct color manipulation
     /// </summary>
-    private IEnumerator FadeOutHighlight()
+    private IEnumerator SimplePulseHighlight()
     {
-        float elapsed = 0f;
-        float duration = 1f / fadeSpeed;
+        if (tileRenderer == null || tileRenderer.material == null) yield break;
         
-        while (elapsed < duration)
-        {
-            float progress = elapsed / duration;
-            float alpha = Mathf.Lerp(1f, 0f, progress);
-            
-            ApplyAlpha(alpha);
-            
-            elapsed += Time.deltaTime;
-            yield return null;
-        }
+        Color baseColor = tileRenderer.material.color;
         
-        // Restore original material
-        if (tileRenderer != null)
-        {
-            if (useMaterialPropertyBlocks)
-            {
-                tileRenderer.SetPropertyBlock(null); // Clear property block
-            }
-            else
-            {
-                tileRenderer.material = originalMaterial;
-            }
-        }
-        
-        // Reset position
-        transform.position = originalPosition;
-    }
-    
-    /// <summary>
-    /// Pulses the highlight
-    /// </summary>
-    private IEnumerator PulseHighlight()
-    {
         while (isHighlighted)
         {
             float time = Time.time * pulseSpeed;
-            float pulseValue = pulseCurve.Evaluate((Mathf.Sin(time) + 1f) * 0.5f);
+            float pulseValue = (Mathf.Sin(time) + 1f) * 0.5f; // 0 to 1
+            float intensity = Mathf.Lerp(0.4f, 1.0f, pulseValue);
             
-            if (useMaterialPropertyBlocks && propertyBlock != null && tileRenderer != null)
-            {
-                tileRenderer.GetPropertyBlock(propertyBlock);
-                
-                // Pulse emission intensity
-                Color currentEmission = propertyBlock.GetColor(EmissionColorProperty);
-                if (currentEmission == Color.clear)
-                {
-                    // Get emission from material if property block doesn't have it
-                    Material currentMaterial = GetHighlightMaterial(currentHighlightType);
-                    if (currentMaterial != null && currentMaterial.HasProperty(EmissionColorProperty))
-                    {
-                        currentEmission = currentMaterial.GetColor(EmissionColorProperty);
-                    }
-                }
-                
-                Color pulsedEmission = currentEmission * (1f + pulseValue * 0.5f);
-                if (enableGlowEffect)
-                {
-                    pulsedEmission *= glowIntensity;
-                }
-                
-                propertyBlock.SetColor(EmissionColorProperty, pulsedEmission);
-                tileRenderer.SetPropertyBlock(propertyBlock);
-            }
+            Color pulsedColor = new Color(baseColor.r, baseColor.g, baseColor.b, baseColor.a * intensity);
+            tileRenderer.material.color = pulsedColor;
             
             yield return null;
         }
@@ -474,64 +373,6 @@ public class TileHighlighter : MonoBehaviour
         transform.position = targetPosition;
     }
     
-    /// <summary>
-    /// Applies alpha to the highlight
-    /// </summary>
-    private void ApplyAlpha(float alpha)
-    {
-        if (!useMaterialPropertyBlocks || propertyBlock == null || tileRenderer == null) return;
-        
-        tileRenderer.GetPropertyBlock(propertyBlock);
-        
-        // Apply alpha to base color
-        Color baseColor = propertyBlock.GetColor(BaseColorProperty);
-        if (baseColor == Color.clear)
-        {
-            // Get color from material if property block doesn't have it
-            Material currentMaterial = GetHighlightMaterial(currentHighlightType);
-            if (currentMaterial != null)
-            {
-                baseColor = currentMaterial.color;
-            }
-        }
-        
-        baseColor.a = alpha;
-        propertyBlock.SetColor(BaseColorProperty, baseColor);
-        
-        // Apply alpha to emission
-        Color emissionColor = propertyBlock.GetColor(EmissionColorProperty);
-        if (emissionColor == Color.clear)
-        {
-            Material currentMaterial = GetHighlightMaterial(currentHighlightType);
-            if (currentMaterial != null && currentMaterial.HasProperty(EmissionColorProperty))
-            {
-                emissionColor = currentMaterial.GetColor(EmissionColorProperty);
-            }
-        }
-        
-        emissionColor.a = alpha;
-        if (enableGlowEffect)
-        {
-            emissionColor *= glowIntensity;
-        }
-        propertyBlock.SetColor(EmissionColorProperty, emissionColor);
-        
-        tileRenderer.SetPropertyBlock(propertyBlock);
-    }
-    
-    /// <summary>
-    /// Forces immediate highlight update (for external control)
-    /// </summary>
-    public void ForceUpdateHighlight()
-    {
-        if (isHighlighted)
-        {
-            StopAllAnimations();
-            Material material = GetHighlightMaterial(currentHighlightType);
-            ApplyHighlightMaterial(material);
-            StartHighlightAnimations();
-        }
-    }
     
     /// <summary>
     /// Gets tile highlighter information for debugging
