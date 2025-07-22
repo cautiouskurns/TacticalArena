@@ -3707,6 +3707,165 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688015358}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
+--- !u!1 &701431823
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 701431828}
+  - component: {fileID: 701431827}
+  - component: {fileID: 701431826}
+  - component: {fileID: 701431825}
+  - component: {fileID: 701431824}
+  m_Layer: 0
+  m_Name: Combat Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &701431824
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701431823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc020822a9c146a1bbd01b7ce728abc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetingSystem
+  enableTargetPreview: 1
+  showAttackRange: 1
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  targetSelectionRadius: 0.5
+  targetHighlightMaterial: {fileID: 0}
+  validTargetColor: {r: 1, g: 0, b: 0, a: 1}
+  invalidTargetColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  attackRangeColor: {r: 1, g: 0.5, b: 0, a: 0.3}
+  targetHighlightDuration: 1
+  enableTargetPulsing: 1
+  pulseSpeed: 2
+  showRangeIndicators: 1
+  rangeIndicatorMaterial: {fileID: 0}
+  rangeIndicatorHeight: 0.05
+  rangeIndicatorSegments: 16
+  enableTargetingLogging: 1
+--- !u!114 &701431825
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701431823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8773a770e49a34ad69c54e4f774e9a07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackExecutor
+  attackAnimationDuration: 0.5
+  attackCooldownDuration: 0.2
+  enableAttackEffects: 1
+  enableDamageNumbers: 1
+  attackAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attackLungeDistance: 0.3
+  attackRecoilDistance: 0.1
+  enableAttackerAnimation: 1
+  enableTargetAnimation: 1
+  attackEffectColor: {r: 1, g: 0, b: 0, a: 1}
+  effectDuration: 0.3
+  effectIntensity: 1.5
+  enableScreenShake: 0
+  shakeIntensity: 0.1
+  enableExecutionLogging: 1
+--- !u!114 &701431826
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701431823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e53d2a76ae0489abb003e0ce83b95b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackValidator
+  enableValidation: 1
+  checkAdjacency: 1
+  allowDiagonalAttacks: 0
+  preventFriendlyFire: 1
+  maxAttackRange: 1.5
+  requireLineOfSight: 0
+  checkAttackerState: 1
+  checkTargetState: 1
+  validateGridPositions: 1
+  enableValidationLogging: 1
+--- !u!114 &701431827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701431823}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3dbdadab465b4ef59f9635c24035011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatManager
+  baseDamage: 1
+  attacksPerTurn: 1
+  allowDiagonalAttacks: 0
+  requireLineOfSight: 0
+  attackRange: 1.5
+  preventFriendlyFire: 1
+  enableCombatLogging: 1
+  combatEnabled: 1
+  trackAttacksPerTurn: 1
+  resetAttacksOnTurnEnd: 1
+--- !u!4 &701431828
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 701431823}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &701571925
 GameObject:
   m_ObjectHideFlags: 0
@@ -3812,6 +3971,8 @@ GameObject:
   - component: {fileID: 719432017}
   - component: {fileID: 719432022}
   - component: {fileID: 719432023}
+  - component: {fileID: 719432025}
+  - component: {fileID: 719432024}
   m_Layer: 0
   m_Name: Red Unit 2
   m_TagString: Untagged
@@ -4089,6 +4250,56 @@ MonoBehaviour:
   movementStartSound: {fileID: 0}
   movementCompleteSound: {fileID: 0}
   enableMovementLogging: 1
+--- !u!114 &719432024
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719432015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32062d5c5b4e43e5aeaf8cfa820af22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetCapability
+  currentHealth: 3
+  maxHealth: 3
+  canBeTargeted: 1
+  isInvulnerable: 0
+  enableDamageReduction: 0
+  damageReduction: 0
+  enableDamageReflection: 0
+  damageReflectionPercent: 0
+  isAlive: 1
+  canDie: 1
+  invulnerabilityDuration: 0
+  validateAttackerTeam: 1
+  validateAttackerState: 1
+  validateSelfState: 1
+  enableTargetLogging: 0
+--- !u!114 &719432025
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 719432015}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8297a8bd869b3485e846918b35a3203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackCapability
+  attackDamage: 1
+  attackRange: 1.5
+  attacksPerTurn: 1
+  canAttackDiagonally: 0
+  canAttack: 1
+  isStunned: 0
+  attackCooldown: 0
+  validateTeamRestrictions: 1
+  validateRange: 1
+  validateState: 1
+  enableAttackLogging: 0
 --- !u!1 &735224585
 GameObject:
   m_ObjectHideFlags: 0
@@ -4345,6 +4556,8 @@ GameObject:
   - component: {fileID: 767108877}
   - component: {fileID: 767108882}
   - component: {fileID: 767108883}
+  - component: {fileID: 767108885}
+  - component: {fileID: 767108884}
   m_Layer: 0
   m_Name: Red Unit 1
   m_TagString: Untagged
@@ -4622,6 +4835,56 @@ MonoBehaviour:
   movementStartSound: {fileID: 0}
   movementCompleteSound: {fileID: 0}
   enableMovementLogging: 1
+--- !u!114 &767108884
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767108875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32062d5c5b4e43e5aeaf8cfa820af22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetCapability
+  currentHealth: 3
+  maxHealth: 3
+  canBeTargeted: 1
+  isInvulnerable: 0
+  enableDamageReduction: 0
+  damageReduction: 0
+  enableDamageReflection: 0
+  damageReflectionPercent: 0
+  isAlive: 1
+  canDie: 1
+  invulnerabilityDuration: 0
+  validateAttackerTeam: 1
+  validateAttackerState: 1
+  validateSelfState: 1
+  enableTargetLogging: 0
+--- !u!114 &767108885
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 767108875}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8297a8bd869b3485e846918b35a3203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackCapability
+  attackDamage: 1
+  attackRange: 1.5
+  attacksPerTurn: 1
+  canAttackDiagonally: 0
+  canAttack: 1
+  isStunned: 0
+  attackCooldown: 0
+  validateTeamRestrictions: 1
+  validateRange: 1
+  validateState: 1
+  enableAttackLogging: 0
 --- !u!1 &789142945
 GameObject:
   m_ObjectHideFlags: 0
@@ -5667,6 +5930,7 @@ GameObject:
   - component: {fileID: 1018921827}
   - component: {fileID: 1018921826}
   - component: {fileID: 1018921825}
+  - component: {fileID: 1018921828}
   m_Layer: 0
   m_Name: Selection Manager
   m_TagString: Untagged
@@ -5747,6 +6011,29 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1018921828
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1018921824}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 67e6dfb30a2bb4a3eb1cbdae47fbb73b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatInputHandler
+  enableCombatInput: 1
+  combatInputMode: 0
+  attackModeKey: 97
+  cancelKey: 27
+  doubleClickTime: 0.3
+  inputCooldown: 0.1
+  preventSpamClicking: 1
+  showCombatCursor: 1
+  attackCursor: {fileID: 0}
+  cursorHotspot: {x: 0, y: 0}
+  enableInputLogging: 1
 --- !u!1 &1029531370
 GameObject:
   m_ObjectHideFlags: 0
@@ -7626,6 +7913,8 @@ GameObject:
   - component: {fileID: 1468225313}
   - component: {fileID: 1468225318}
   - component: {fileID: 1468225319}
+  - component: {fileID: 1468225321}
+  - component: {fileID: 1468225320}
   m_Layer: 0
   m_Name: Blue Unit 1
   m_TagString: Untagged
@@ -7903,6 +8192,56 @@ MonoBehaviour:
   movementStartSound: {fileID: 0}
   movementCompleteSound: {fileID: 0}
   enableMovementLogging: 1
+--- !u!114 &1468225320
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468225311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32062d5c5b4e43e5aeaf8cfa820af22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetCapability
+  currentHealth: 3
+  maxHealth: 3
+  canBeTargeted: 1
+  isInvulnerable: 0
+  enableDamageReduction: 0
+  damageReduction: 0
+  enableDamageReflection: 0
+  damageReflectionPercent: 0
+  isAlive: 1
+  canDie: 1
+  invulnerabilityDuration: 0
+  validateAttackerTeam: 1
+  validateAttackerState: 1
+  validateSelfState: 1
+  enableTargetLogging: 0
+--- !u!114 &1468225321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1468225311}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8297a8bd869b3485e846918b35a3203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackCapability
+  attackDamage: 1
+  attackRange: 1.5
+  attacksPerTurn: 1
+  canAttackDiagonally: 0
+  canAttack: 1
+  isStunned: 0
+  attackCooldown: 0
+  validateTeamRestrictions: 1
+  validateRange: 1
+  validateState: 1
+  enableAttackLogging: 0
 --- !u!1 &1489580187
 GameObject:
   m_ObjectHideFlags: 0
@@ -8991,6 +9330,8 @@ GameObject:
   - component: {fileID: 1880040322}
   - component: {fileID: 1880040327}
   - component: {fileID: 1880040328}
+  - component: {fileID: 1880040330}
+  - component: {fileID: 1880040329}
   m_Layer: 0
   m_Name: Blue Unit 2
   m_TagString: Untagged
@@ -9007,7 +9348,7 @@ Transform:
   m_GameObject: {fileID: 1880040320}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3.03, y: 0.5, z: -4.06}
+  m_LocalPosition: {x: -2, y: 0.5, z: -2.02}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9268,6 +9609,56 @@ MonoBehaviour:
   movementStartSound: {fileID: 0}
   movementCompleteSound: {fileID: 0}
   enableMovementLogging: 1
+--- !u!114 &1880040329
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880040320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c32062d5c5b4e43e5aeaf8cfa820af22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetCapability
+  currentHealth: 3
+  maxHealth: 3
+  canBeTargeted: 1
+  isInvulnerable: 0
+  enableDamageReduction: 0
+  damageReduction: 0
+  enableDamageReflection: 0
+  damageReflectionPercent: 0
+  isAlive: 1
+  canDie: 1
+  invulnerabilityDuration: 0
+  validateAttackerTeam: 1
+  validateAttackerState: 1
+  validateSelfState: 1
+  enableTargetLogging: 0
+--- !u!114 &1880040330
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1880040320}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8297a8bd869b3485e846918b35a3203b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackCapability
+  attackDamage: 1
+  attackRange: 1.5
+  attacksPerTurn: 1
+  canAttackDiagonally: 0
+  canAttack: 1
+  isStunned: 0
+  attackCooldown: 0
+  validateTeamRestrictions: 1
+  validateRange: 1
+  validateState: 1
+  enableAttackLogging: 0
 --- !u!21 &1933930709
 Material:
   serializedVersion: 8
@@ -10007,3 +10398,4 @@ SceneRoots:
   - {fileID: 1939828379}
   - {fileID: 1018921827}
   - {fileID: 247126708}
+  - {fileID: 701431828}

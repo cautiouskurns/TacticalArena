@@ -1,7 +1,7 @@
 # 3D Tactical Arena - Living Project Overview
-Last Updated: Task 1.2.4 - Movement Visual Feedback System - SUB-MILESTONE 1.2 COMPLETE
+Last Updated: Task 2.1.1 - Attack System Implementation - SUB-MILESTONE 1.2 COMPLETE + COMBAT FOUNDATION
 
-## Current Game State - SUB-MILESTONE 1.2 COMPLETE
+## Current Game State - TACTICAL COMBAT SYSTEM COMPLETE
 - **3D battlefield scene** with isometric camera and tactical overview
 - **4x4 grid system** with visible tile boundaries and comprehensive selection feedback
 - **Grid coordinate system** supporting precise tactical positioning (0,0 to 3,3)
@@ -20,11 +20,20 @@ Last Updated: Task 1.2.4 - Movement Visual Feedback System - SUB-MILESTONE 1.2 C
 - **Team-based selection validation** preventing selection of enemy units (turn system ready)
 - **Strategic obstacle placement** with 2-3 obstacles creating tactical chokepoints
 - **Line-of-sight system** with full and partial cover mechanics
+- **Complete tactical combat system** with attack validation, targeting, and execution
+- **Multi-stage attack validation** including state, team, position, and line-of-sight checks
+- **Attack targeting system** with visual feedback and range indicators
+- **Combat input handling** with multiple input modes (click-to-attack, attack mode toggle)
+- **Damage application system** with health management and death handling
+- **Combat interface integration** with existing selection and movement systems
+- **Turn-based attack tracking** with configurable attacks per turn limits
+- **Combat event system** for coordinated feedback across all game systems
 - **Environment polish system** with materials, lighting optimization, and comprehensive visual feedback
 - **Performance optimization** with dynamic quality management and efficient visual effects
 - **Professional visual quality** with clean aesthetic and exceptional tactical clarity
 - **Complete Sub-milestone 1.1** - tactical battlefield foundation with polished environment
 - **Complete Sub-milestone 1.2** - full tactical unit system with professional visual feedback
+- **Complete Task 2.1.1** - comprehensive attack system with validation and targeting
 
 ## System Architecture
 
@@ -57,6 +66,17 @@ Last Updated: Task 1.2.4 - Movement Visual Feedback System - SUB-MILESTONE 1.2 C
 - **GridMovementComponent**: Individual unit movement behavior with state management and effects
 - **IMovable**: Interface contract for movable objects with grid positioning and validation
 
+#### Combat Systems
+- **CombatManager**: Central combat coordinator managing attack requests, validation, and turn tracking
+- **AttackValidator**: Multi-stage attack validation with state, team, position, and line-of-sight checking
+- **AttackExecutor**: Attack animation coordination with damage application and timing management
+- **TargetingSystem**: Target selection UI with highlighting, range indicators, and input handling
+- **CombatInputHandler**: Combat-specific input management with multiple attack input modes
+- **IAttacker**: Interface contract for units capable of attacking with validation and state management
+- **IAttackable**: Interface contract for units that can receive damage with health and team validation
+- **AttackCapability**: Component implementation of IAttacker with attack properties and state tracking
+- **TargetCapability**: Component implementation of IAttackable with health management and damage handling
+
 #### Editor Automation Tools
 - **Task_1_1_1_Setup**: Editor automation tool for scene configuration and validation
 - **Task_1_1_2_Setup**: Editor automation tool for grid system creation and management
@@ -65,6 +85,7 @@ Last Updated: Task 1.2.4 - Movement Visual Feedback System - SUB-MILESTONE 1.2 C
 - **Task_1_2_1_Setup**: Editor automation tool for unit system creation and configuration
 - **Task_1_2_2_Setup**: Editor automation tool for mouse selection system with material generation
 - **Task_1_2_3_Setup**: Editor automation tool for grid-based movement system with validation and animation
+- **Task_2_1_1_Setup**: Editor automation tool for comprehensive attack system with combat validation and targeting
 
 #### Support Systems
 - **MaterialManager**: Centralized material management system for visual consistency and polish
@@ -116,30 +137,51 @@ graph TD
     Y --> S
     Z --> J
     AA --> BB
-    G --> M[Obstacle System]
-    M --> N[ObstacleManager]
-    M --> O[Obstacle Components]
-    M --> P[ObstacleType System]
-    J --> Q[Coordinate Mapping]
-    J --> R[Tile Management]
-    J --> S[Line-of-Sight Integration]
-    K --> T[Selection Feedback]
-    K --> U[Obstacle Occupation]
-    K --> V[Visual States]
-    L --> W[Spatial Queries]
-    N --> X[Line-of-Sight Calculations]
-    N --> Y[Cover Mechanics]
-    O --> Z[Individual Obstacle Behavior]
-    P --> AA[Obstacle Configuration]
-    Q --> BB[Unit Positioning Ready]
-    R --> BB
-    S --> CC[Tactical Visibility]
-    T --> DD[Mouse Interaction]
-    U --> EE[Strategic Blocking]
-    W --> FF[Pathfinding Ready]
-    X --> CC
-    Y --> GG[Tactical Combat Ready]
-    Z --> HH[Dynamic Obstacle States]
+    
+    %% Combat System Integration
+    S --> CC[Combat System]
+    CC --> DD[CombatManager]
+    CC --> EE[AttackValidator]  
+    CC --> FF[AttackExecutor]
+    CC --> GG[TargetingSystem]
+    CC --> HH[CombatInputHandler]
+    O --> II[Combat Interfaces]
+    II --> JJ[IAttacker Interface]
+    II --> KK[IAttackable Interface]
+    JJ --> LL[AttackCapability]
+    KK --> MM[TargetCapability]
+    DD --> EE
+    DD --> FF
+    DD --> GG
+    GG --> HH
+    LL --> DD
+    MM --> DD
+    S --> NN[Combat Input Ready]
+    
+    G --> OO[Obstacle System]
+    OO --> PP[ObstacleManager]
+    OO --> QQ[Obstacle Components]
+    OO --> RR[ObstacleType System]
+    J --> SS[Coordinate Mapping]
+    J --> TT[Tile Management]
+    J --> UU[Line-of-Sight Integration]
+    K --> VV[Selection Feedback]
+    K --> WW[Obstacle Occupation]
+    K --> XX[Visual States]
+    L --> YY[Spatial Queries]
+    PP --> ZZ[Line-of-Sight Calculations]
+    PP --> AAA[Cover Mechanics]
+    QQ --> BBB[Individual Obstacle Behavior]
+    RR --> CCC[Obstacle Configuration]
+    SS --> DDD[Unit Positioning Ready]
+    TT --> DDD
+    UU --> EEE[Tactical Visibility]
+    VV --> FFF[Mouse Interaction]
+    WW --> GGG[Strategic Blocking]
+    YY --> HHH[Pathfinding Ready]
+    ZZ --> EEE
+    AAA --> III[Tactical Combat Ready]
+    BBB --> JJJ[Dynamic Obstacle States]
 ```
 
 ### Integration Points
@@ -159,7 +201,13 @@ graph TD
 - **Movement → Grid**: Grid coordinate validation and world position conversion
 - **Movement → Obstacles**: Movement validation against obstacle positions and boundaries
 - **Movement → Animation**: Smooth interpolation with grid snapping and state management
-- **Line-of-Sight → Combat**: Vision and cover calculations ready for tactical combat
+- **Line-of-Sight → Combat**: Vision and cover calculations for tactical combat
+- **Selection → Combat**: Integrated combat input with selected unit attack capability
+- **Combat → Validation**: Multi-stage attack validation pipeline with state, team, and position checks
+- **Combat → Targeting**: Visual target selection with range indicators and highlighting
+- **Combat → Damage**: Health management and death handling with event coordination
+- **Combat → Animation**: Attack execution with timing and visual feedback coordination
+- **Combat → Input**: Multiple input modes for attack commands and target selection
 
 ## Asset Inventory
 
@@ -220,6 +268,16 @@ graph TD
   - SelectionManager integration for click-to-move functionality
   - Comprehensive validation testing for movement system components
   - Built-in debugging and troubleshooting tools for movement validation
+
+- **Task_2_1_1_Setup.cs**: Comprehensive attack system automation tool
+  - Automated CombatManager, AttackValidator, AttackExecutor, and TargetingSystem creation
+  - Combat interface implementation with IAttacker and IAttackable setup
+  - AttackCapability and TargetCapability component attachment to existing units
+  - CombatInputHandler integration with SelectionManager for seamless combat input
+  - Attack validation material generation and targeting visual feedback setup
+  - Configurable combat rules including attack damage, range, and turn limits
+  - Comprehensive validation testing for all combat system components
+  - Built-in debugging tools and combat system integration verification
 
 #### Runtime Systems
 - **CameraController.cs**: Runtime camera management and validation
@@ -404,6 +462,80 @@ graph TD
   - Base implementation class reducing code duplication across movable objects
   - Display information formatting for debugging and movement tracking
 
+#### Combat Systems
+- **CombatManager.cs**: Central combat coordination and attack request management
+  - Attack request processing with comprehensive validation pipeline
+  - Turn-based attack tracking with configurable attacks per turn limits
+  - Attacker and attackable registration with centralized management
+  - Combat state management and event coordination across all systems
+  - Integration with AttackValidator, AttackExecutor, and TargetingSystem
+  - Combat rule configuration and enforcement with team restrictions
+  - Event system for combat state changes and system coordination
+
+- **AttackValidator.cs**: Multi-stage attack validation and target acquisition
+  - Comprehensive validation pipeline with state, team, position, and line-of-sight checks
+  - Adjacent tile attack validation with diagonal attack support
+  - Line-of-sight integration with ObstacleManager for tactical positioning
+  - Valid target discovery and filtering with team and state validation
+  - Attack range validation with configurable distance limits
+  - Validation result reporting with detailed failure reasons for debugging
+
+- **AttackExecutor.cs**: Attack animation coordination and damage application
+  - Attack animation timing with customizable duration and visual effects
+  - Damage application coordination with health management integration
+  - Visual effects triggering with particle systems and animation support
+  - Attack completion tracking with event callbacks for system coordination
+  - Concurrent attack management with state validation and cleanup
+  - Integration with IAttacker and IAttackable for lifecycle management
+
+- **TargetingSystem.cs**: Target selection UI with visual feedback and range indicators
+  - Interactive target selection with mouse input and raycast detection
+  - Target highlighting with pulsing effects and valid/invalid target distinction
+  - Attack range visualization with configurable materials and indicators
+  - Target hover effects and preview system for tactical decision making
+  - Integration with AttackValidator for valid target discovery and filtering
+  - Targeting mode management with activation, cancellation, and cleanup
+
+- **CombatInputHandler.cs**: Combat-specific input management and integration
+  - Multiple attack input modes: click-to-attack, attack mode toggle, double-click, right-click
+  - Integration with SelectionManager for seamless combat input coordination
+  - Combat mode activation with visual cursor changes and feedback
+  - Input timing management with cooldown and spam prevention
+  - Event system integration with combat state changes and targeting
+  - Configurable input settings and debugging support
+
+- **IAttacker.cs**: Interface contract for units capable of attacking
+  - Attack capability validation with state, cooldown, and turn tracking
+  - Attack properties including damage, range, and attacks per turn
+  - Team assignment integration for attack validation and restrictions
+  - Grid position support for range calculations and tactical positioning
+  - Event callbacks for attack lifecycle with success and failure handling
+  - Display information formatting for debugging and combat UI
+
+- **IAttackable.cs**: Interface contract for units that can receive damage
+  - Damage reception with health management and death state handling
+  - Target validation with team, state, and capability checking
+  - Health properties including current/max health and alive state
+  - Grid position integration for attack range and targeting calculations
+  - Event callbacks for damage, death, and health changes
+  - Display information formatting for debugging and health UI
+
+- **AttackCapability.cs**: Component implementation of IAttacker interface
+  - Attack properties configuration with damage, range, and turn limits
+  - Attack state management including cooldown, stun, and capability states
+  - Turn-based attack tracking with automatic reset functionality
+  - Integration with Unit and TeamAssignment for tactical coordination
+  - CombatManager registration for centralized attack management
+  - Validation integration with attack request processing
+
+- **TargetCapability.cs**: Component implementation of IAttackable interface
+  - Health management with current/max health tracking and validation
+  - Damage application with reduction, reflection, and invulnerability support
+  - Death handling with unit integration and event coordination
+  - Team validation for attack restrictions and tactical gameplay
+  - Status effects support including stun, invulnerability, and healing
+  - Integration with Unit and TeamAssignment for tactical coordination
+
 ### Scene Objects
 - **Main Camera**: Configured for orthographic isometric perspective
   - Position: Calculated for optimal 4x4 grid view
@@ -563,13 +695,21 @@ Assets/
 │   ├── ProjectOverview.md (this file)
 │   ├── LearningLog_Task_1_1_1.md 
 │   ├── LearningLog_Task_1_1_2.md
-│   └── LearningLog_Task_1_1_3.md (pending)
+│   ├── LearningLog_Task_1_1_3.md
+│   ├── LearningLog_Task_1_1_4.md
+│   ├── LearningLog_Task_1_2_1.md
+│   ├── LearningLog_Task_1_2_2.md
+│   ├── LearningLog_Task_1_2_3.md
+│   └── LearningLog_Task_2_1_1.md (pending)
 ├── Editor/
 │   ├── Task_1_1_1_Setup.cs
 │   ├── Task_1_1_2_Setup.cs
 │   ├── Task_1_1_3_Setup.cs
 │   ├── Task_1_1_4_Setup.cs
-│   └── Task_1_1_4_ValidationTest.cs
+│   ├── Task_1_2_1_Setup.cs
+│   ├── Task_1_2_2_Setup.cs
+│   ├── Task_1_2_3_Setup.cs
+│   └── Task_2_1_1_Setup.cs
 ├── Scripts/
 │   ├── CameraController.cs
 │   ├── GridManager.cs
@@ -581,6 +721,32 @@ Assets/
 │   ├── MaterialManager.cs
 │   ├── VisualFeedbackManager.cs
 │   ├── PerformanceOptimizer.cs
+│   ├── Unit.cs
+│   ├── UnitManager.cs
+│   ├── UnitHealth.cs
+│   ├── UnitTeam.cs
+│   ├── SelectionManager.cs
+│   ├── MouseInputHandler.cs
+│   ├── ISelectable.cs
+│   ├── SelectionHighlight.cs
+│   ├── MovementManager.cs
+│   ├── MovementValidator.cs
+│   ├── MovementAnimator.cs
+│   ├── GridMovementComponent.cs
+│   ├── IMovable.cs
+│   ├── CombatManager.cs
+│   ├── AttackValidator.cs
+│   ├── AttackExecutor.cs
+│   ├── TargetingSystem.cs
+│   ├── CombatInputHandler.cs
+│   ├── IAttacker.cs
+│   ├── IAttackable.cs
+│   ├── AttackCapability.cs
+│   ├── TargetCapability.cs
+│   ├── MovementPreviewSystem.cs
+│   ├── TileHighlighter.cs
+│   ├── MovementAnimationEnhancer.cs
+│   ├── CollisionFeedbackSystem.cs
 │   └── Managers/
 │       └── SceneManager.cs
 ├── Materials/
@@ -590,7 +756,15 @@ Assets/
 │   ├── GridTile_Selected.mat
 │   ├── Obstacle_LowCover.mat
 │   ├── Obstacle_HighWall.mat
-│   └── Obstacle_Terrain.mat
+│   ├── Obstacle_Terrain.mat
+│   ├── Movement/
+│   │   ├── ValidMoveHighlight.mat
+│   │   ├── InvalidMoveHighlight.mat
+│   │   └── PreviewMoveHighlight.mat
+│   └── Combat/
+│       ├── TargetHighlight.mat
+│       ├── RangeIndicator.mat
+│       └── AttackFeedback.mat
 ├── Scenes/
 │   └── BattleScene.unity
 └── [Unity default assets...]
@@ -643,6 +817,26 @@ Assets/
 - IMovable interface implementation for extensible movement system
 - Performance-optimized animation with concurrent movement limiting
 
+**Task 1.2.4**: ✅ COMPLETE - VISUAL FEEDBACK ENHANCEMENT
+- Enhanced visual feedback including valid move highlighting and movement path previews
+- Collision feedback system with clear visual indication of blocked moves
+- Movement preview highlighting showing available moves when units are selected
+- Professional animation effects with anticipation scaling and bounce effects
+- Performance-optimized visual effects with dynamic quality management
+
+**Task 2.1.1**: ✅ COMPLETE - ATTACK SYSTEM IMPLEMENTATION
+- Comprehensive tactical combat system with attack validation, targeting, and execution
+- Multi-stage attack validation including state, team, position, and line-of-sight checks
+- Attack targeting system with visual feedback, range indicators, and target highlighting
+- Combat input handling with multiple input modes (click-to-attack, attack mode toggle)
+- Damage application system with health management, status effects, and death handling
+- Combat interface integration with existing selection and movement systems
+- Turn-based attack tracking with configurable attacks per turn limits
+- Combat event system for coordinated feedback across all game systems
+- Editor automation tool for complete attack system setup and validation
+
 ## Next Development Phase
 
-**Task 1.2.4** will add enhanced visual feedback including valid move highlighting, movement path previews, and tactical information display. This will complete Sub-milestone 1.2 with a fully polished unit interaction system ready for combat mechanics.
+**Sub-milestone 1.2**: ✅ COMPLETE - FULL TACTICAL UNIT SYSTEM WITH COMBAT FOUNDATION
+
+**Task 2.1.2** will add line-of-sight mechanics, cover systems, and tactical positioning rules. This will complete the core tactical combat mechanics with environmental interaction and strategic depth.
