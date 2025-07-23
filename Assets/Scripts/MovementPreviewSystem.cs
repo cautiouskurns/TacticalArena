@@ -378,7 +378,7 @@ public class MovementPreviewSystem : MonoBehaviour
     /// </summary>
     private void RefreshMovementPreviews()
     {
-        Debug.Log($"MovementPreviewSystem: RefreshMovementPreviews called - enablePreview={enablePreview}, currentSelectedUnit={currentSelectedUnit != null}, gridManager={gridManager != null}, movementValidator={movementValidator != null}");
+//        Debug.Log($"MovementPreviewSystem: RefreshMovementPreviews called - enablePreview={enablePreview}, currentSelectedUnit={currentSelectedUnit != null}, gridManager={gridManager != null}, movementValidator={movementValidator != null}");
         
         if (!enablePreview || currentSelectedUnit == null || gridManager == null || movementValidator == null)
         {
@@ -483,7 +483,7 @@ public class MovementPreviewSystem : MonoBehaviour
     /// </summary>
     private void CreatePooledHighlight(Vector2Int gridPosition, HighlightType highlightType)
     {
-        Debug.Log($"MovementPreviewSystem: Creating pooled highlight at {gridPosition} with type {highlightType}");
+//        Debug.Log($"MovementPreviewSystem: Creating pooled highlight at {gridPosition} with type {highlightType}");
         GameObject highlightObj;
         
         if (highlightPool.Count > 0)

@@ -315,8 +315,14 @@ public class AttackExecutor : MonoBehaviour
     /// </summary>
     private void ApplyDamageToTarget(IAttacker attacker, IAttackable target, int damage)
     {
+        Debug.Log($"AttackExecutor: Applying {damage} damage from {attacker.GetDisplayInfo()} to {target.GetDisplayInfo()}");
+        Debug.Log($"AttackExecutor: Target health before damage - {target.CurrentHealth}/{target.MaxHealth}");
+        
         // Apply damage to target
         int actualDamage = target.TakeDamage(damage, attacker);
+        
+        Debug.Log($"AttackExecutor: Actual damage applied - {actualDamage}");
+        Debug.Log($"AttackExecutor: Target health after damage - {target.CurrentHealth}/{target.MaxHealth}");
         
         // Notify target that it was attacked
         target.OnAttacked(attacker, actualDamage);

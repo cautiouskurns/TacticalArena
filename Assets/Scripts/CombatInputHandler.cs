@@ -26,6 +26,7 @@ public class CombatInputHandler : MonoBehaviour
     
     [Header("Debug Settings")]
     [SerializeField] private bool enableInputLogging = true;
+    [SerializeField] private bool enableDetailedRaycastLogging = true;
     
     // System references
     private SelectionManager selectionManager;
@@ -66,8 +67,10 @@ public class CombatInputHandler : MonoBehaviour
     
     void Start()
     {
+        Debug.Log("CombatInputHandler: Starting - finding system references...");
         FindSystemReferences();
         SetupEventListeners();
+        Debug.Log($"CombatInputHandler: Start complete - Input mode: {combatInputMode}, Combat enabled: {enableCombatInput}");
     }
     
     void Update()
@@ -99,6 +102,16 @@ public class CombatInputHandler : MonoBehaviour
         if (selectionManager == null)
         {
             Debug.LogError("CombatInputHandler: SelectionManager not found on same GameObject!");
+            // Try finding it in the scene
+            selectionManager = FindFirstObjectByType<SelectionManager>();
+            if (selectionManager != null)
+            {
+                Debug.LogWarning("CombatInputHandler: Found SelectionManager in scene but not on same GameObject - this may cause issues!");
+            }
+        }
+        else
+        {
+            Debug.Log("CombatInputHandler: SelectionManager found on same GameObject");
         }
         
         combatManager = FindFirstObjectByType<CombatManager>();
@@ -131,22 +144,31 @@ public class CombatInputHandler : MonoBehaviour
     /// </summary>
     private void SetupEventListeners()
     {
+        Debug.Log("CombatInputHandler: Setting up event listeners...");
+        
         if (selectionManager != null)
         {
             selectionManager.OnObjectSelected += OnUnitSelected;
             selectionManager.OnObjectDeselected += OnUnitDeselected;
             selectionManager.OnSelectionChanged += OnSelectionChanged;
+            Debug.Log("CombatInputHandler: Subscribed to SelectionManager events");
+        }
+        else
+        {
+            Debug.LogError("CombatInputHandler: Cannot setup event listeners - SelectionManager is null!");
         }
         
         if (combatManager != null)
         {
             combatManager.OnCombatStateChanged += OnCombatStateChanged;
+            Debug.Log("CombatInputHandler: Subscribed to CombatManager events");
         }
         
         if (targetingSystem != null)
         {
             targetingSystem.OnTargetingStarted += OnTargetingStarted;
             targetingSystem.OnTargetingStopped += OnTargetingStopped;
+            Debug.Log("CombatInputHandler: Subscribed to TargetingSystem events");
         }
     }
     
@@ -196,35 +218,64 @@ public class CombatInputHandler : MonoBehaviour
             CancelCombatMode();
         }
     }
-    
+
     /// <summary>
     /// Handles click-to-attack input mode
     /// </summary>
     private void HandleClickToAttackInput()
     {
-        if (Input.GetMouseButtonDown(0) && selectedAttacker != null)
+        if (Input.GetMouseButtonDown(0))
         {
-            Vector3 mousePosition = Input.mousePosition;
-            Ray ray = mainCamera.ScreenPointToRay(mousePosition);
-            
-            if (Physics.Raycast(ray, out RaycastHit hit))
+            Debug.Log($"CombatInputHandler: Mouse clicked - selectedAttacker={selectedAttacker != null}");
+
+            if (selectedAttacker != null)
             {
-                IAttackable target = hit.collider.GetComponent<IAttackable>();
-                if (target != null)
+                Vector3 mousePosition = Input.mousePosition;
+                Ray ray = mainCamera.ScreenPointToRay(mousePosition);
+
+                if (Physics.Raycast(ray, out RaycastHit hit))
                 {
-                    // Check if this is a valid attack target
-                    AttackValidationResult validation = combatManager.GetComponent<AttackValidator>()?.ValidateAttack(selectedAttacker, target);
-                    if (validation != null && validation.isValid)
+                    if (enableDetailedRaycastLogging)
                     {
-                        ExecuteAttack(selectedAttacker, target);
-                        lastInputTime = Time.time;
+                        Debug.Log($"CombatInputHandler: Raycast hit {hit.collider.gameObject.name} at {hit.point}");
+                    }
+
+                    IAttackable target = hit.collider.GetComponent<IAttackable>();
+                    if (target != null)
+                    {
+                        if (enableDetailedRaycastLogging)
+                        {
+                            Debug.Log($"CombatInputHandler: Found IAttackable target - {target.GetDisplayInfo()}");
+                        }
+
+                        // Check if this is a valid attack target
+                        AttackValidationResult validation = combatManager.GetComponent<AttackValidator>()?.ValidateAttack(selectedAttacker, target);
+                        if (validation != null && validation.isValid)
+                        {
+                            ExecuteAttack(selectedAttacker, target);
+                            lastInputTime = Time.time;
+                        }
+                        else
+                        {
+                            if (enableInputLogging)
+                            {
+                                Debug.Log($"CombatInputHandler: Invalid attack target - {validation?.failureReason ?? "Unknown reason"}");
+                            }
+                        }
                     }
                     else
                     {
-                        if (enableInputLogging)
+                        if (enableDetailedRaycastLogging)
                         {
-                            Debug.Log($"CombatInputHandler: Invalid attack target - {validation?.failureReason ?? "Unknown reason"}");
+                            Debug.Log($"CombatInputHandler: Hit object {hit.collider.gameObject.name} has no IAttackable component");
                         }
+                    }
+                }
+                else
+                {
+                    if (enableDetailedRaycastLogging)
+                    {
+                        Debug.Log("CombatInputHandler: Raycast hit nothing");
                     }
                 }
             }
@@ -337,16 +388,19 @@ public class CombatInputHandler : MonoBehaviour
     /// </summary>
     private void ExecuteAttack(IAttacker attacker, IAttackable target)
     {
-        if (combatManager == null) return;
+        if (combatManager == null)
+        {
+            Debug.LogError("CombatInputHandler: CombatManager is null - cannot execute attack!");
+            return;
+        }
+        
+        Debug.Log($"CombatInputHandler: Executing attack from {attacker.GetDisplayInfo()} to {target.GetDisplayInfo()}");
         
         OnAttackInputReceived?.Invoke(attacker, target);
         
         AttackResult result = combatManager.RequestAttack(attacker, target);
         
-        if (enableInputLogging)
-        {
-            Debug.Log($"CombatInputHandler: Attack requested - {result.success}: {result.message}");
-        }
+        Debug.Log($"CombatInputHandler: Attack requested - {result.success}: {result.message}");
     }
     
     /// <summary>
@@ -425,25 +479,53 @@ public class CombatInputHandler : MonoBehaviour
     /// </summary>
     private void OnUnitSelected(ISelectable selectable)
     {
+        Debug.Log($"CombatInputHandler: OnUnitSelected called with {selectable?.GetDisplayInfo() ?? "null"}");
+        
+        // First check if the selectable itself is an attacker
         if (selectable is IAttacker attacker)
         {
             selectedAttacker = attacker;
-            
-            // Auto-activate combat mode based on input mode
-            if (combatInputMode == CombatInputMode.ClickToAttack || combatInputMode == CombatInputMode.RightClickAttack || combatInputMode == CombatInputMode.DoubleClickAttack)
+            Debug.Log($"CombatInputHandler: Unit is an attacker - setting selectedAttacker to {attacker.GetDisplayInfo()}");
+        }
+        else
+        {
+            // If not, check if it's a MonoBehaviour and has an AttackCapability component
+            MonoBehaviour selectableMono = selectable as MonoBehaviour;
+            if (selectableMono != null)
             {
-                ActivateCombatMode(attacker);
+                AttackCapability attackCap = selectableMono.GetComponent<AttackCapability>();
+                if (attackCap != null)
+                {
+                    selectedAttacker = attackCap;
+                    Debug.Log($"CombatInputHandler: Found AttackCapability on selected unit - setting selectedAttacker to {attackCap.GetDisplayInfo()}");
+                    attacker = attackCap;
+                }
+                else
+                {
+                    Debug.Log($"CombatInputHandler: Selected unit has no AttackCapability - clearing selectedAttacker");
+                    selectedAttacker = null;
+                    DeactivateCombatMode();
+                    return;
+                }
             }
+            else
+            {
+                Debug.Log($"CombatInputHandler: Selected object is not a MonoBehaviour - clearing selectedAttacker");
+                selectedAttacker = null;
+                DeactivateCombatMode();
+                return;
+            }
+        }
+        
+        // Auto-activate combat mode based on input mode
+        if (attacker != null && (combatInputMode == CombatInputMode.ClickToAttack || combatInputMode == CombatInputMode.RightClickAttack || combatInputMode == CombatInputMode.DoubleClickAttack))
+        {
+            ActivateCombatMode(attacker);
             
             if (enableInputLogging)
             {
                 Debug.Log($"CombatInputHandler: Attacker selected - {attacker.GetDisplayInfo()}");
             }
-        }
-        else
-        {
-            selectedAttacker = null;
-            DeactivateCombatMode();
         }
     }
     
@@ -468,24 +550,40 @@ public class CombatInputHandler : MonoBehaviour
         IAttacker newSelectedAttacker = null;
         foreach (ISelectable selectable in selectedObjects)
         {
+            // First check if the selectable itself is an attacker
             if (selectable is IAttacker attacker)
             {
                 newSelectedAttacker = attacker;
                 break;
             }
+            
+            // If not, check if it has an AttackCapability component
+            MonoBehaviour selectableMono = selectable as MonoBehaviour;
+            if (selectableMono != null)
+            {
+                AttackCapability attackCap = selectableMono.GetComponent<AttackCapability>();
+                if (attackCap != null)
+                {
+                    newSelectedAttacker = attackCap;
+                    break;
+                }
+            }
         }
         
+        // Only update if we have a different attacker OR no selection
         if (newSelectedAttacker != selectedAttacker)
         {
-            if (selectedAttacker != null)
+            // If we had a previous attacker and now have none, deactivate
+            if (selectedAttacker != null && newSelectedAttacker == null)
             {
+                selectedAttacker = null;
                 DeactivateCombatMode();
             }
-            
-            selectedAttacker = newSelectedAttacker;
-            
-            if (selectedAttacker != null)
+            // If we have a new attacker, update and activate
+            else if (newSelectedAttacker != null)
             {
+                selectedAttacker = newSelectedAttacker;
+                
                 // Auto-activate for appropriate input modes
                 if (combatInputMode == CombatInputMode.ClickToAttack || combatInputMode == CombatInputMode.RightClickAttack || combatInputMode == CombatInputMode.DoubleClickAttack)
                 {

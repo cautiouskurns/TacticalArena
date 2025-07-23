@@ -31,10 +31,11 @@ public class TargetCapability : MonoBehaviour, IAttackable
     [SerializeField] private bool validateSelfState = true;
     
     [Header("Debug Settings")]
-    [SerializeField] private bool enableTargetLogging = false;
+    [SerializeField] private bool enableTargetLogging = true;
     
     // Component references
     private Unit unit;
+    private UnitHealth unitHealth;
     
     // Target state tracking
     private float invulnerabilityTimer = 0f;
@@ -52,14 +53,14 @@ public class TargetCapability : MonoBehaviour, IAttackable
     public Transform Transform => transform;
     public Vector2Int GridPosition => unit != null ? unit.GridPosition : Vector2Int.zero;
     public UnitTeam Team => unit != null ? unit.Team : UnitTeam.Neutral;
-    public int CurrentHealth => currentHealth;
-    public int MaxHealth => maxHealth;
-    public bool CanBeTargeted => canBeTargeted && isAlive && !IsInvulnerable;
-    public bool IsAlive => isAlive && currentHealth > 0;
+    public int CurrentHealth => unitHealth != null ? unitHealth.CurrentHealth : currentHealth;
+    public int MaxHealth => unitHealth != null ? unitHealth.MaxHealth : maxHealth;
+    public bool CanBeTargeted => canBeTargeted && IsAlive && !IsInvulnerable;
+    public bool IsAlive => unitHealth != null ? unitHealth.IsAlive : (isAlive && currentHealth > 0);
     
     // Additional properties
     public bool IsInvulnerable => isInvulnerable || invulnerabilityTimer > 0f;
-    public float HealthPercentage => maxHealth > 0 ? (float)currentHealth / maxHealth : 0f;
+    public float HealthPercentage => unitHealth != null ? unitHealth.HealthPercentage : (maxHealth > 0 ? (float)currentHealth / maxHealth : 0f);
     public int TotalDamageTaken => totalDamageTaken;
     public IAttacker LastAttacker => lastAttacker;
     
@@ -103,6 +104,12 @@ public class TargetCapability : MonoBehaviour, IAttackable
         if (unit == null)
         {
             Debug.LogError($"TargetCapability: Unit component not found on {gameObject.name}");
+        }
+        
+        unitHealth = GetComponent<UnitHealth>();
+        if (unitHealth == null)
+        {
+            Debug.LogError($"TargetCapability: UnitHealth component not found on {gameObject.name}");
         }
         
         // Team is handled by Unit component - no additional setup needed
@@ -172,21 +179,38 @@ public class TargetCapability : MonoBehaviour, IAttackable
             }
         }
         
-        // Apply damage to health
-        int actualDamage = Mathf.Min(damage, currentHealth);
-        currentHealth -= actualDamage;
-        totalDamageTaken += actualDamage;
-        
-        // Check for death
-        if (currentHealth <= 0 && canDie)
+        // Delegate to UnitHealth if available
+        int actualDamage = 0;
+        if (unitHealth != null)
         {
-            currentHealth = 0;
-            isAlive = false;
+            // Use UnitHealth's damage system
+            int healthBefore = unitHealth.CurrentHealth;
+            unitHealth.TakeDamage(damage);
+            actualDamage = healthBefore - unitHealth.CurrentHealth;
+            
+            // Update internal tracking to stay in sync
+            currentHealth = unitHealth.CurrentHealth;
+            isAlive = unitHealth.IsAlive;
         }
+        else
+        {
+            // Fallback to internal health tracking
+            actualDamage = Mathf.Min(damage, currentHealth);
+            currentHealth -= actualDamage;
+            
+            // Check for death
+            if (currentHealth <= 0 && canDie)
+            {
+                currentHealth = 0;
+                isAlive = false;
+            }
+        }
+        
+        totalDamageTaken += actualDamage;
         
         // Trigger events
         OnDamageReceived?.Invoke(attacker, actualDamage);
-        OnHealthChanged?.Invoke(attacker, currentHealth);
+        OnHealthChanged?.Invoke(attacker, CurrentHealth);
         
         // Handle damage reflection
         if (enableDamageReflection && damageReflectionPercent > 0f && attacker != null)
@@ -211,7 +235,7 @@ public class TargetCapability : MonoBehaviour, IAttackable
         
         if (enableTargetLogging)
         {
-            Debug.Log($"TargetCapability: {gameObject.name} took {actualDamage} damage (from {originalDamage}) - Health: {currentHealth}/{maxHealth}");
+            Debug.Log($"TargetCapability: {gameObject.name} took {actualDamage} damage (from {originalDamage}) - Health: {CurrentHealth}/{MaxHealth}");
         }
         
         return actualDamage;

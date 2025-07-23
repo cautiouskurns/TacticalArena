@@ -1086,7 +1086,7 @@ MonoBehaviour:
   rotationSpeed: 5
   useFixedDeltaTime: 0
   maxConcurrentAnimations: 10
-  enableAnimationLogging: 1
+  enableAnimationLogging: 0
 --- !u!114 &247126706
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1107,7 +1107,7 @@ MonoBehaviour:
   maxMovementDistance: 1
   allowMovementThroughUnits: 0
   allowMovementThroughObstacles: 0
-  enableValidationLogging: 1
+  enableValidationLogging: 0
 --- !u!114 &247126707
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1133,7 +1133,7 @@ MonoBehaviour:
   validMoveMaterial: {fileID: 2100000, guid: bd2e2049b3e4a426f9a4d4de9735c7e2, type: 2}
   invalidMoveMaterial: {fileID: 2100000, guid: 34458765348604bbda6ae1068c83b31f, type: 2}
   selectionManager: {fileID: 1018921826}
-  enableMovementLogging: 1
+  enableMovementLogging: 0
 --- !u!4 &247126708
 Transform:
   m_ObjectHideFlags: 0
@@ -1346,7 +1346,7 @@ MonoBehaviour:
   useObjectPooling: 1
   optimizeForPerformance: 1
   updateFrequency: 0.1
-  enableDebugLogging: 1
+  enableDebugLogging: 0
   showPreviewBounds: 0
 --- !u!1 &259407276
 GameObject:
@@ -1929,7 +1929,7 @@ Camera:
   far clip plane: 100
   field of view: 60
   orthographic: 1
-  orthographic size: 4
+  orthographic size: 3
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
@@ -1954,7 +1954,7 @@ Transform:
   m_GameObject: {fileID: 330585543}
   serializedVersion: 2
   m_LocalRotation: {x: 0.3535534, y: 0.3535534, z: -0.14644663, w: 0.85355335}
-  m_LocalPosition: {x: -6.985281, y: 8, z: -6.985281}
+  m_LocalPosition: {x: -7.58, y: 8, z: -7.51}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -3707,165 +3707,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 688015358}
   m_Mesh: {fileID: 10209, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &701431823
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 701431828}
-  - component: {fileID: 701431827}
-  - component: {fileID: 701431826}
-  - component: {fileID: 701431825}
-  - component: {fileID: 701431824}
-  m_Layer: 0
-  m_Name: Combat Manager
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &701431824
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701431823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1cc020822a9c146a1bbd01b7ce728abc, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::TargetingSystem
-  enableTargetPreview: 1
-  showAttackRange: 1
-  targetLayerMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  targetSelectionRadius: 0.5
-  targetHighlightMaterial: {fileID: 0}
-  validTargetColor: {r: 1, g: 0, b: 0, a: 1}
-  invalidTargetColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
-  attackRangeColor: {r: 1, g: 0.5, b: 0, a: 0.3}
-  targetHighlightDuration: 1
-  enableTargetPulsing: 1
-  pulseSpeed: 2
-  showRangeIndicators: 1
-  rangeIndicatorMaterial: {fileID: 0}
-  rangeIndicatorHeight: 0.05
-  rangeIndicatorSegments: 16
-  enableTargetingLogging: 1
---- !u!114 &701431825
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701431823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8773a770e49a34ad69c54e4f774e9a07, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AttackExecutor
-  attackAnimationDuration: 0.5
-  attackCooldownDuration: 0.2
-  enableAttackEffects: 1
-  enableDamageNumbers: 1
-  attackAnimationCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    - serializedVersion: 3
-      time: 1
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0
-      outWeight: 0
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  attackLungeDistance: 0.3
-  attackRecoilDistance: 0.1
-  enableAttackerAnimation: 1
-  enableTargetAnimation: 1
-  attackEffectColor: {r: 1, g: 0, b: 0, a: 1}
-  effectDuration: 0.3
-  effectIntensity: 1.5
-  enableScreenShake: 0
-  shakeIntensity: 0.1
-  enableExecutionLogging: 1
---- !u!114 &701431826
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701431823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e6e53d2a76ae0489abb003e0ce83b95b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AttackValidator
-  enableValidation: 1
-  checkAdjacency: 1
-  allowDiagonalAttacks: 0
-  preventFriendlyFire: 1
-  maxAttackRange: 1.5
-  requireLineOfSight: 0
-  checkAttackerState: 1
-  checkTargetState: 1
-  validateGridPositions: 1
-  enableValidationLogging: 1
---- !u!114 &701431827
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701431823}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3dbdadab465b4ef59f9635c24035011, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::CombatManager
-  baseDamage: 1
-  attacksPerTurn: 1
-  allowDiagonalAttacks: 0
-  requireLineOfSight: 0
-  attackRange: 1.5
-  preventFriendlyFire: 1
-  enableCombatLogging: 1
-  combatEnabled: 1
-  trackAttacksPerTurn: 1
-  resetAttacksOnTurnEnd: 1
---- !u!4 &701431828
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 701431823}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &701571925
 GameObject:
   m_ObjectHideFlags: 0
@@ -4060,7 +3901,7 @@ MonoBehaviour:
   enableMouseHover: 0
   selectionLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   selectionIndicator: {fileID: 0}
   selectedMaterial: {fileID: 0}
   hoveredMaterial: {fileID: 0}
@@ -4276,7 +4117,7 @@ MonoBehaviour:
   validateAttackerTeam: 1
   validateAttackerState: 1
   validateSelfState: 1
-  enableTargetLogging: 0
+  enableTargetLogging: 1
 --- !u!114 &719432025
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -4645,7 +4486,7 @@ MonoBehaviour:
   enableMouseHover: 0
   selectionLayerMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 55
   selectionIndicator: {fileID: 0}
   selectedMaterial: {fileID: 0}
   hoveredMaterial: {fileID: 0}
@@ -4861,7 +4702,7 @@ MonoBehaviour:
   validateAttackerTeam: 1
   validateAttackerState: 1
   validateSelfState: 1
-  enableTargetLogging: 0
+  enableTargetLogging: 1
 --- !u!114 &767108885
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5965,8 +5806,8 @@ MonoBehaviour:
   hoverUpdateRate: 30
   enableNullChecks: 1
   maxRaycastsPerFrame: 1
-  enableInputLogging: 1
-  showRaycastInfo: 1
+  enableInputLogging: 0
+  showRaycastInfo: 0
   enablePerformanceLogging: 0
 --- !u!114 &1018921826
 MonoBehaviour:
@@ -5994,7 +5835,7 @@ MonoBehaviour:
   invalidSelectionSound: {fileID: 0}
   audioVolume: 0.7
   enableDebugVisualization: 0
-  enableSelectionLogging: 1
+  enableSelectionLogging: 0
   validateSelectionOnStart: 1
 --- !u!4 &1018921827
 Transform:
@@ -6034,6 +5875,7 @@ MonoBehaviour:
   attackCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   enableInputLogging: 1
+  enableDetailedRaycastLogging: 1
 --- !u!1 &1029531370
 GameObject:
   m_ObjectHideFlags: 0
@@ -6703,6 +6545,165 @@ MonoBehaviour:
   enableHoverEffect: 1
   enableClickEffect: 1
   showDebugInfo: 0
+--- !u!1 &1208014278
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1208014283}
+  - component: {fileID: 1208014282}
+  - component: {fileID: 1208014281}
+  - component: {fileID: 1208014280}
+  - component: {fileID: 1208014279}
+  m_Layer: 0
+  m_Name: Combat Manager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1208014279
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208014278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1cc020822a9c146a1bbd01b7ce728abc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::TargetingSystem
+  enableTargetPreview: 1
+  showAttackRange: 1
+  targetLayerMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  targetSelectionRadius: 0.5
+  targetHighlightMaterial: {fileID: 0}
+  validTargetColor: {r: 1, g: 0, b: 0, a: 1}
+  invalidTargetColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
+  attackRangeColor: {r: 1, g: 0.5, b: 0, a: 0.3}
+  targetHighlightDuration: 1
+  enableTargetPulsing: 1
+  pulseSpeed: 2
+  showRangeIndicators: 1
+  rangeIndicatorMaterial: {fileID: 0}
+  rangeIndicatorHeight: 0.05
+  rangeIndicatorSegments: 16
+  enableTargetingLogging: 1
+--- !u!114 &1208014280
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208014278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8773a770e49a34ad69c54e4f774e9a07, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackExecutor
+  attackAnimationDuration: 0.5
+  attackCooldownDuration: 0.2
+  enableAttackEffects: 1
+  enableDamageNumbers: 1
+  attackAnimationCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    - serializedVersion: 3
+      time: 1
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0
+      outWeight: 0
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  attackLungeDistance: 0.3
+  attackRecoilDistance: 0.1
+  enableAttackerAnimation: 1
+  enableTargetAnimation: 1
+  attackEffectColor: {r: 1, g: 0, b: 0, a: 1}
+  effectDuration: 0.3
+  effectIntensity: 1.5
+  enableScreenShake: 0
+  shakeIntensity: 0.1
+  enableExecutionLogging: 1
+--- !u!114 &1208014281
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208014278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e6e53d2a76ae0489abb003e0ce83b95b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AttackValidator
+  enableValidation: 1
+  checkAdjacency: 1
+  allowDiagonalAttacks: 0
+  preventFriendlyFire: 1
+  maxAttackRange: 1.5
+  requireLineOfSight: 0
+  checkAttackerState: 1
+  checkTargetState: 1
+  validateGridPositions: 1
+  enableValidationLogging: 1
+--- !u!114 &1208014282
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208014278}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3dbdadab465b4ef59f9635c24035011, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::CombatManager
+  baseDamage: 1
+  attacksPerTurn: 1
+  allowDiagonalAttacks: 0
+  requireLineOfSight: 0
+  attackRange: 1.5
+  preventFriendlyFire: 1
+  enableCombatLogging: 1
+  combatEnabled: 1
+  trackAttacksPerTurn: 1
+  resetAttacksOnTurnEnd: 1
+--- !u!4 &1208014283
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1208014278}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1218083399
 GameObject:
   m_ObjectHideFlags: 0
@@ -7931,7 +7932,7 @@ Transform:
   m_GameObject: {fileID: 1468225311}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.06, y: 0.5, z: -4.06}
+  m_LocalPosition: {x: -1.01, y: 0.5, z: -2.04}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -7986,8 +7987,8 @@ MonoBehaviour:
   team: 0
   unitID: -1
   gridCoordinate:
-    x: 0
-    z: 0
+    x: 3
+    z: 2
   targetWorldPosition: {x: 0, y: 0, z: 0}
   snapToGrid: 1
   moveSpeed: 2
@@ -8091,7 +8092,7 @@ MeshFilter:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1468225311}
-  m_Mesh: {fileID: 10202, guid: 0000000000000000e000000000000000, type: 0}
+  m_Mesh: {fileID: 10206, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!114 &1468225318
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -8218,7 +8219,7 @@ MonoBehaviour:
   validateAttackerTeam: 1
   validateAttackerState: 1
   validateSelfState: 1
-  enableTargetLogging: 0
+  enableTargetLogging: 1
 --- !u!114 &1468225321
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -9348,7 +9349,7 @@ Transform:
   m_GameObject: {fileID: 1880040320}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2, y: 0.5, z: -2.02}
+  m_LocalPosition: {x: -3.035, y: 0.5, z: -4.073}
   m_LocalScale: {x: 0.5, y: 1, z: 0.5}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -9635,7 +9636,7 @@ MonoBehaviour:
   validateAttackerTeam: 1
   validateAttackerState: 1
   validateSelfState: 1
-  enableTargetLogging: 0
+  enableTargetLogging: 1
 --- !u!114 &1880040330
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -10398,4 +10399,4 @@ SceneRoots:
   - {fileID: 1939828379}
   - {fileID: 1018921827}
   - {fileID: 247126708}
-  - {fileID: 701431828}
+  - {fileID: 1208014283}
