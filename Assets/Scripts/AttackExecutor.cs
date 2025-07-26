@@ -33,6 +33,8 @@ public class AttackExecutor : MonoBehaviour
     
     // System references
     private CombatManager combatManager;
+    private HealthManager healthManager;
+    private DamageCalculator damageCalculator;
     
     // Execution state
     private bool executingAttack = false;
@@ -80,9 +82,23 @@ public class AttackExecutor : MonoBehaviour
             Debug.LogWarning("AttackExecutor: CombatManager not found on same GameObject");
         }
         
+        // Find health system components
+        healthManager = FindFirstObjectByType<HealthManager>();
+        if (healthManager == null)
+        {
+            Debug.LogWarning("AttackExecutor: HealthManager not found - using fallback damage application");
+        }
+        
+        damageCalculator = FindFirstObjectByType<DamageCalculator>();
+        if (damageCalculator == null)
+        {
+            Debug.LogWarning("AttackExecutor: DamageCalculator not found - using basic damage calculation");
+        }
+        
         if (enableExecutionLogging)
         {
-            Debug.Log($"AttackExecutor found references - CombatManager: {combatManager != null}");
+            Debug.Log($"AttackExecutor found references - CombatManager: {combatManager != null}, " +
+                     $"HealthManager: {healthManager != null}, DamageCalculator: {damageCalculator != null}");
         }
     }
     
@@ -315,32 +331,78 @@ public class AttackExecutor : MonoBehaviour
     /// </summary>
     private void ApplyDamageToTarget(IAttacker attacker, IAttackable target, int damage)
     {
-        Debug.Log($"AttackExecutor: Applying {damage} damage from {attacker.GetDisplayInfo()} to {target.GetDisplayInfo()}");
-        Debug.Log($"AttackExecutor: Target health before damage - {target.CurrentHealth}/{target.MaxHealth}");
-        
-        // Apply damage to target
-        int actualDamage = target.TakeDamage(damage, attacker);
-        
-        Debug.Log($"AttackExecutor: Actual damage applied - {actualDamage}");
-        Debug.Log($"AttackExecutor: Target health after damage - {target.CurrentHealth}/{target.MaxHealth}");
-        
-        // Notify target that it was attacked
-        target.OnAttacked(attacker, actualDamage);
-        
-        // Check if target was killed
-        if (!target.IsAlive)
+        if (enableExecutionLogging)
         {
-            target.OnDeath(attacker);
+            Debug.Log($"AttackExecutor: === DAMAGE APPLICATION START === ");
+            Debug.Log($"AttackExecutor: Applying {damage} damage from {attacker.GetDisplayInfo()} to {target.GetDisplayInfo()}");
+            Debug.Log($"AttackExecutor: Target health before damage - {target.CurrentHealth}/{target.MaxHealth}");
+        }
+        
+        int actualDamage = damage;
+        DamageResult damageResult;
+        
+        // Try to find Unit component on target GameObject
+        Unit targetUnit = target.Transform?.GetComponent<Unit>();
+        
+        if (enableExecutionLogging)
+        {
+            Debug.Log($"AttackExecutor: HealthManager: {healthManager != null}, TargetUnit: {targetUnit != null}");
+        }
+        
+        // Use health system if available for integrated damage handling
+        if (healthManager != null && targetUnit != null)
+        {
+            // Skip damage calculator for now to ensure consistent 1 damage
+            actualDamage = damage; // Use base damage directly
             
             if (enableExecutionLogging)
             {
-                Debug.Log($"AttackExecutor: Target {target.GetDisplayInfo()} was killed by {attacker.GetDisplayInfo()}");
+                Debug.Log($"AttackExecutor: Using base damage directly - {actualDamage} (DamageCalculator bypassed)");
+            }
+            
+            // Apply damage through health manager for integrated health system
+            damageResult = healthManager.DamageUnit(targetUnit, actualDamage, attacker);
+            
+            if (enableExecutionLogging)
+            {
+                Debug.Log($"AttackExecutor: HealthManager damage result - {damageResult.damageDealt} damage dealt, " +
+                         $"health remaining: {damageResult.healthRemaining}, killed: {damageResult.wasKilled}");
+            }
+        }
+        else
+        {
+            // Fallback to direct damage application (legacy method)
+            actualDamage = target.TakeDamage(actualDamage, attacker);
+            
+            // Create damage result for consistency
+            damageResult = DamageResult.Success(actualDamage, target.CurrentHealth, !target.IsAlive);
+            
+            // Notify target that it was attacked
+            target.OnAttacked(attacker, actualDamage);
+            
+            // Handle death if target was killed
+            if (!target.IsAlive)
+            {
+                target.OnDeath(attacker);
+            }
+            
+            if (enableExecutionLogging)
+            {
+                Debug.Log($"AttackExecutor: Applied damage using fallback method - {actualDamage} damage dealt");
             }
         }
         
         if (enableExecutionLogging)
         {
-            Debug.Log($"AttackExecutor: Applied {actualDamage} damage to {target.GetDisplayInfo()}");
+            Debug.Log($"AttackExecutor: Final damage application result - {damageResult.damageDealt} damage dealt to {target.GetDisplayInfo()}");
+            Debug.Log($"AttackExecutor: Target health after damage - {target.CurrentHealth}/{target.MaxHealth}");
+            
+            if (damageResult.wasKilled)
+            {
+                Debug.Log($"AttackExecutor: Target {target.GetDisplayInfo()} was killed by {attacker.GetDisplayInfo()}");
+            }
+            
+            Debug.Log($"AttackExecutor: === DAMAGE APPLICATION END === ");
         }
     }
     

@@ -20,6 +20,7 @@ public class AttackValidator : MonoBehaviour
     [SerializeField] private bool checkAttackerState = true;
     [SerializeField] private bool checkTargetState = true;
     [SerializeField] private bool validateGridPositions = true;
+    [SerializeField] private bool useAdvancedLineOfSight = true;
     
     [Header("Debug Settings")]
     [SerializeField] private bool enableValidationLogging = true;
@@ -27,6 +28,7 @@ public class AttackValidator : MonoBehaviour
     // System references
     private GridManager gridManager;
     private CombatManager combatManager;
+    private LineOfSightValidator lineOfSightValidator;
     
     // Obstacle tracking for line-of-sight
     private List<Vector2Int> obstaclePositions = new List<Vector2Int>();
@@ -71,9 +73,17 @@ public class AttackValidator : MonoBehaviour
             Debug.LogWarning("AttackValidator: CombatManager not found on same GameObject");
         }
         
+        lineOfSightValidator = GetComponent<LineOfSightValidator>();
+        if (lineOfSightValidator == null && useAdvancedLineOfSight)
+        {
+            Debug.LogWarning("AttackValidator: LineOfSightValidator not found - advanced line-of-sight disabled");
+            useAdvancedLineOfSight = false;
+        }
+        
         if (enableValidationLogging)
         {
-            Debug.Log($"AttackValidator found references - GridManager: {gridManager != null}");
+            Debug.Log($"AttackValidator found references - GridManager: {gridManager != null}, " +
+                     $"LineOfSightValidator: {lineOfSightValidator != null}");
         }
     }
     
@@ -297,6 +307,35 @@ public class AttackValidator : MonoBehaviour
             return AttackValidationResult.Valid(attacker, target);
         }
         
+        // Use advanced line-of-sight validation if available
+        if (useAdvancedLineOfSight && lineOfSightValidator != null)
+        {
+            AttackValidationResult advancedResult = lineOfSightValidator.ValidateAttackWithLineOfSight(attacker, target);
+            if (!advancedResult.isValid)
+            {
+                if (enableValidationLogging)
+                {
+                    Debug.Log($"AttackValidator: Advanced line-of-sight validation failed - {advancedResult.failureReason}");
+                }
+                return advancedResult;
+            }
+            
+            if (enableValidationLogging)
+            {
+                Debug.Log("AttackValidator: Advanced line-of-sight validation passed");
+            }
+            return advancedResult;
+        }
+        
+        // Fallback to basic line-of-sight validation
+        return ValidateBasicLineOfSight(attacker, target);
+    }
+    
+    /// <summary>
+    /// Basic line-of-sight validation for fallback scenarios
+    /// </summary>
+    private AttackValidationResult ValidateBasicLineOfSight(IAttacker attacker, IAttackable target)
+    {
         // Refresh obstacle cache if needed
         if (!obstaclesCached)
         {
@@ -322,7 +361,7 @@ public class AttackValidator : MonoBehaviour
                 
                 if (obstaclePositions.Contains(corner1) && obstaclePositions.Contains(corner2))
                 {
-                    return AttackValidationResult.Invalid("Line of sight blocked by obstacles", attacker, target);
+                    return AttackValidationResult.Invalid("Line of sight blocked by obstacles (basic check)", attacker, target);
                 }
             }
         }
@@ -430,9 +469,33 @@ public class AttackValidator : MonoBehaviour
     /// </summary>
     public string GetValidationInfo()
     {
+        string advancedLOSInfo = useAdvancedLineOfSight && lineOfSightValidator != null ? 
+            " (Advanced)" : " (Basic)";
+        
         return $"Validation Rules: Adjacency={checkAdjacency}, Diagonal={allowDiagonalAttacks}, " +
-               $"Friendly Fire Prevention={preventFriendlyFire}, Line of Sight={requireLineOfSight}, " +
+               $"Friendly Fire Prevention={preventFriendlyFire}, Line of Sight={requireLineOfSight}{advancedLOSInfo}, " +
                $"Max Range={maxAttackRange}, Obstacles Cached={obstaclePositions.Count}";
+    }
+    
+    /// <summary>
+    /// Quick line-of-sight check for external systems
+    /// </summary>
+    public bool HasLineOfSight(IAttacker attacker, IAttackable target)
+    {
+        if (!requireLineOfSight)
+        {
+            return true; // No line-of-sight restrictions
+        }
+        
+        // Use advanced validator if available
+        if (useAdvancedLineOfSight && lineOfSightValidator != null)
+        {
+            return lineOfSightValidator.HasLineOfSight(attacker, target);
+        }
+        
+        // Fallback to basic validation
+        AttackValidationResult result = ValidateBasicLineOfSight(attacker, target);
+        return result.isValid;
     }
     
     /// <summary>

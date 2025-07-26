@@ -31,6 +31,8 @@ public class CombatManager : MonoBehaviour
     private TargetingSystem targetingSystem;
     private SelectionManager selectionManager;
     private GridManager gridManager;
+    private HealthManager healthManager;
+    private WinConditionChecker winConditionChecker;
     
     // Combat state tracking
     private Dictionary<IAttacker, int> attacksThisTurn = new Dictionary<IAttacker, int>();
@@ -109,11 +111,25 @@ public class CombatManager : MonoBehaviour
             Debug.LogError("CombatManager: GridManager not found!");
         }
         
+        // Find health system components
+        healthManager = FindFirstObjectByType<HealthManager>();
+        if (healthManager == null)
+        {
+            Debug.LogWarning("CombatManager: HealthManager not found - combat will use basic damage system");
+        }
+        
+        winConditionChecker = FindFirstObjectByType<WinConditionChecker>();
+        if (winConditionChecker == null)
+        {
+            Debug.LogWarning("CombatManager: WinConditionChecker not found - win conditions not monitored");
+        }
+        
         if (enableCombatLogging)
         {
             Debug.Log($"CombatManager found references - Validator: {attackValidator != null}, " +
                      $"Executor: {attackExecutor != null}, Targeting: {targetingSystem != null}, " +
-                     $"Selection: {selectionManager != null}, Grid: {gridManager != null}");
+                     $"Selection: {selectionManager != null}, Grid: {gridManager != null}, " +
+                     $"Health: {healthManager != null}, Win Checker: {winConditionChecker != null}");
         }
     }
     

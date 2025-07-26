@@ -1,5 +1,5 @@
 # 3D Tactical Arena - Living Project Overview
-Last Updated: Task 2.1.1 - Attack System Implementation - SUB-MILESTONE 1.2 COMPLETE + COMBAT FOUNDATION
+Last Updated: Task 2.1.3 - Health & Damage System - COMPLETE TACTICAL COMBAT WITH 3 HP PER UNIT
 
 ## Current Game State - TACTICAL COMBAT SYSTEM COMPLETE
 - **3D battlefield scene** with isometric camera and tactical overview
@@ -19,8 +19,8 @@ Last Updated: Task 2.1.1 - Attack System Implementation - SUB-MILESTONE 1.2 COMP
 - **Enhanced tile highlighting** with pulsing effects and smooth transitions
 - **Team-based selection validation** preventing selection of enemy units (turn system ready)
 - **Strategic obstacle placement** with 2-3 obstacles creating tactical chokepoints
-- **Line-of-sight system** with full and partial cover mechanics
-- **Complete tactical combat system** with attack validation, targeting, and execution
+- **Advanced line-of-sight system** with raycast-based obstacle detection and tactical cover mechanics
+- **Complete tactical combat system** with enhanced attack validation, targeting, and line-of-sight integration
 - **Multi-stage attack validation** including state, team, position, and line-of-sight checks
 - **Attack targeting system** with visual feedback and range indicators
 - **Combat input handling** with multiple input modes (click-to-attack, attack mode toggle)
@@ -34,6 +34,8 @@ Last Updated: Task 2.1.1 - Attack System Implementation - SUB-MILESTONE 1.2 COMP
 - **Complete Sub-milestone 1.1** - tactical battlefield foundation with polished environment
 - **Complete Sub-milestone 1.2** - full tactical unit system with professional visual feedback
 - **Complete Task 2.1.1** - comprehensive attack system with validation and targeting
+- **Complete Task 2.1.2** - advanced line-of-sight mechanics with tactical cover and positioning
+- **Complete Task 2.1.3** - health & damage system with 3 HP per unit, death conditions, and win detection
 
 ## System Architecture
 
@@ -68,7 +70,7 @@ Last Updated: Task 2.1.1 - Attack System Implementation - SUB-MILESTONE 1.2 COMP
 
 #### Combat Systems
 - **CombatManager**: Central combat coordinator managing attack requests, validation, and turn tracking
-- **AttackValidator**: Multi-stage attack validation with state, team, position, and line-of-sight checking
+- **AttackValidator**: Enhanced multi-stage attack validation with advanced line-of-sight integration
 - **AttackExecutor**: Attack animation coordination with damage application and timing management
 - **TargetingSystem**: Target selection UI with highlighting, range indicators, and input handling
 - **CombatInputHandler**: Combat-specific input management with multiple attack input modes
@@ -76,6 +78,23 @@ Last Updated: Task 2.1.1 - Attack System Implementation - SUB-MILESTONE 1.2 COMP
 - **IAttackable**: Interface contract for units that can receive damage with health and team validation
 - **AttackCapability**: Component implementation of IAttacker with attack properties and state tracking
 - **TargetCapability**: Component implementation of IAttackable with health management and damage handling
+
+#### Line of Sight Systems
+- **LineOfSightManager**: Centralized line-of-sight validation with raycast-based obstacle detection and caching
+- **LineOfSightValidator**: Enhanced attack validation integrating advanced line-of-sight requirements
+- **LineOfSightVisualizer**: Visual feedback system for line-of-sight status and tactical indicators
+- **RaycastOptimizer**: Performance optimization for line-of-sight operations with caching and batching
+- **CoverAnalyzer**: Tactical analysis system for cover opportunities and positioning strategy
+- **ILineOfSightProvider**: Interface contract for line-of-sight validation capability
+
+#### Health & Damage Systems
+- **HealthManager**: Centralized health system coordination with damage application, healing, and event management
+- **HealthComponent**: Individual unit health tracking with 3 HP per unit, damage resistance, and regeneration capabilities
+- **DamageCalculator**: Advanced damage calculation with tactical modifiers, critical hits, and environmental factors
+- **DeathHandler**: Death detection and cleanup system with unit removal, team elimination tracking, and visual effects
+- **WinConditionChecker**: Team elimination detection with multiple win conditions and game state management
+- **HealthEventBroadcaster**: Health event coordination system for UI updates, audio effects, and visual feedback
+- **DamageResult**: Data structure for damage application results with comprehensive damage tracking
 
 #### Editor Automation Tools
 - **Task_1_1_1_Setup**: Editor automation tool for scene configuration and validation
@@ -86,6 +105,8 @@ Last Updated: Task 2.1.1 - Attack System Implementation - SUB-MILESTONE 1.2 COMP
 - **Task_1_2_2_Setup**: Editor automation tool for mouse selection system with material generation
 - **Task_1_2_3_Setup**: Editor automation tool for grid-based movement system with validation and animation
 - **Task_2_1_1_Setup**: Editor automation tool for comprehensive attack system with combat validation and targeting
+- **Task_2_1_2_Setup**: Editor automation tool for advanced line-of-sight mechanics with tactical cover systems
+- **Task_2_1_3_Setup**: Editor automation tool for health & damage system with 3 HP units, death handling, and win conditions
 
 #### Support Systems
 - **MaterialManager**: Centralized material management system for visual consistency and polish
@@ -158,10 +179,41 @@ graph TD
     MM --> DD
     S --> NN[Combat Input Ready]
     
-    G --> OO[Obstacle System]
-    OO --> PP[ObstacleManager]
-    OO --> QQ[Obstacle Components]
-    OO --> RR[ObstacleType System]
+    %% Line of Sight System Integration
+    CC --> AAA[Line of Sight System]
+    AAA --> BBB[LineOfSightManager]
+    AAA --> CCC[LineOfSightValidator]
+    AAA --> DDD[LineOfSightVisualizer]
+    AAA --> EEE[RaycastOptimizer]
+    AAA --> FFF[CoverAnalyzer]
+    DD --> CCC
+    BBB --> GGG[Raycast Validation]
+    CCC --> HHH[Advanced Attack Validation]
+    DDD --> III[Visual Feedback]
+    EEE --> JJJ[Performance Optimization]
+    FFF --> KKK[Tactical Analysis]
+    
+    %% Health & Damage System Integration
+    CC --> LLL[Health & Damage System]
+    LLL --> MMM[HealthManager]
+    LLL --> NNN[HealthComponent]
+    LLL --> OOO[DamageCalculator]
+    LLL --> PPP[DeathHandler]
+    LLL --> QQQ[WinConditionChecker]
+    LLL --> RRR[HealthEventBroadcaster]
+    DD --> MMM
+    FF --> OOO
+    MMM --> SSS[3 HP Per Unit]
+    NNN --> TTT[Individual Health Tracking]
+    OOO --> UUU[Tactical Damage Modifiers]
+    PPP --> VVV[Death & Cleanup]
+    QQQ --> WWW[Win Condition Detection]
+    RRR --> XXX[Event Coordination]
+    
+    G --> YYY[Obstacle System]
+    YYY --> ZZZ[ObstacleManager]
+    YYY --> AAAA[Obstacle Components]
+    YYY --> BBBB[ObstacleType System]
     J --> SS[Coordinate Mapping]
     J --> TT[Tile Management]
     J --> UU[Line-of-Sight Integration]
@@ -208,6 +260,10 @@ graph TD
 - **Combat → Damage**: Health management and death handling with event coordination
 - **Combat → Animation**: Attack execution with timing and visual feedback coordination
 - **Combat → Input**: Multiple input modes for attack commands and target selection
+- **Line-of-Sight → Combat**: Advanced validation with raycast-based obstacle detection
+- **Line-of-Sight → Obstacles**: Integration with obstacle system for cover calculations
+- **Line-of-Sight → Visual Feedback**: Real-time line-of-sight status and blocking indicators
+- **Line-of-Sight → Performance**: Optimized raycast operations with caching and batching
 
 ## Asset Inventory
 
@@ -278,6 +334,16 @@ graph TD
   - Configurable combat rules including attack damage, range, and turn limits
   - Comprehensive validation testing for all combat system components
   - Built-in debugging tools and combat system integration verification
+
+- **Task_2_1_2_Setup.cs**: Advanced line-of-sight mechanics automation tool
+  - Automated LineOfSightManager, LineOfSightValidator, and LineOfSightVisualizer creation
+  - RaycastOptimizer and CoverAnalyzer component setup for performance and tactical analysis
+  - Integration with existing CombatManager and AttackValidator for enhanced validation
+  - Line-of-sight visualization material generation and visual feedback configuration
+  - Configurable raycast settings including obstacle detection and caching parameters
+  - Performance optimization settings for real-time line-of-sight validation
+  - Comprehensive validation testing for all line-of-sight system components
+  - Built-in debugging tools and cover analysis verification
 
 #### Runtime Systems
 - **CameraController.cs**: Runtime camera management and validation
@@ -536,6 +602,48 @@ graph TD
   - Status effects support including stun, invulnerability, and healing
   - Integration with Unit and TeamAssignment for tactical coordination
 
+#### Line of Sight Systems
+- **LineOfSightManager.cs**: Centralized line-of-sight validation and caching system
+  - Raycast-based line-of-sight validation with configurable obstacle detection
+  - Performance optimization through intelligent caching and result management
+  - Integration with combat system for tactical depth and strategic positioning
+  - Visual debugging and gizmo support for development and testing
+  - Event system for line-of-sight changes and tactical feedback
+
+- **LineOfSightValidator.cs**: Enhanced attack validation with line-of-sight integration
+  - Advanced validation pipeline integrating line-of-sight requirements with existing rules
+  - Diagonal attack handling with specialized line-of-sight tolerance settings
+  - Integration with AttackValidator for seamless validation enhancement
+  - Partial line-of-sight support for complex tactical scenarios
+  - Configurable validation settings and debugging support
+
+- **LineOfSightVisualizer.cs**: Visual feedback system for line-of-sight status
+  - Real-time line-of-sight visualization with clear and blocked status indicators
+  - Obstacle highlighting system for blocked line-of-sight feedback
+  - Animated visual effects with customizable colors and duration settings
+  - Performance-optimized rendering with object pooling and batching
+  - Integration with combat system for tactical decision-making support
+
+- **RaycastOptimizer.cs**: Performance optimization for line-of-sight operations
+  - Raycast batching and frame-spreading for smooth gameplay performance
+  - Intelligent caching system with automatic invalidation and cleanup
+  - Adaptive performance scaling based on frame rate and system load
+  - Distance culling and spatial optimization for efficient processing
+  - Performance statistics and monitoring for optimization verification
+
+- **CoverAnalyzer.cs**: Tactical analysis system for cover and positioning
+  - Cover quality analysis with partial, full, and directional cover detection
+  - Flanking opportunity identification and tactical positioning suggestions
+  - Crossfire analysis for multi-unit tactical coordination
+  - Escape route calculation for tactical retreat and positioning
+  - Strategic position scoring for AI decision-making support
+
+- **ILineOfSightProvider.cs**: Interface contract for line-of-sight capability
+  - Standardized line-of-sight validation with detailed result information
+  - Position-based and transform-based line-of-sight checking methods
+  - Blocking object identification and distance calculation utilities
+  - Visual debugging support for line-of-sight development and testing
+
 ### Scene Objects
 - **Main Camera**: Configured for orthographic isometric perspective
   - Position: Calculated for optimal 4x4 grid view
@@ -700,7 +808,8 @@ Assets/
 │   ├── LearningLog_Task_1_2_1.md
 │   ├── LearningLog_Task_1_2_2.md
 │   ├── LearningLog_Task_1_2_3.md
-│   └── LearningLog_Task_2_1_1.md (pending)
+│   ├── LearningLog_Task_2_1_1.md
+│   └── LearningLog_Task_2_1_2.md
 ├── Editor/
 │   ├── Task_1_1_1_Setup.cs
 │   ├── Task_1_1_2_Setup.cs
@@ -709,7 +818,8 @@ Assets/
 │   ├── Task_1_2_1_Setup.cs
 │   ├── Task_1_2_2_Setup.cs
 │   ├── Task_1_2_3_Setup.cs
-│   └── Task_2_1_1_Setup.cs
+│   ├── Task_2_1_1_Setup.cs
+│   └── Task_2_1_2_Setup.cs
 ├── Scripts/
 │   ├── CameraController.cs
 │   ├── GridManager.cs
@@ -743,6 +853,12 @@ Assets/
 │   ├── IAttackable.cs
 │   ├── AttackCapability.cs
 │   ├── TargetCapability.cs
+│   ├── LineOfSightManager.cs
+│   ├── LineOfSightValidator.cs
+│   ├── LineOfSightVisualizer.cs
+│   ├── RaycastOptimizer.cs
+│   ├── CoverAnalyzer.cs
+│   ├── ILineOfSightProvider.cs
 │   ├── MovementPreviewSystem.cs
 │   ├── TileHighlighter.cs
 │   ├── MovementAnimationEnhancer.cs
@@ -839,4 +955,13 @@ Assets/
 
 **Sub-milestone 1.2**: ✅ COMPLETE - FULL TACTICAL UNIT SYSTEM WITH COMBAT FOUNDATION
 
-**Task 2.1.2** will add line-of-sight mechanics, cover systems, and tactical positioning rules. This will complete the core tactical combat mechanics with environmental interaction and strategic depth.
+**Task 2.1.2**: ✅ COMPLETE - ADVANCED LINE-OF-SIGHT MECHANICS
+- Raycast-based line-of-sight validation with obstacle detection and tactical cover mechanics
+- Enhanced attack validation integrating line-of-sight requirements with existing combat rules
+- Visual feedback system for line-of-sight status with real-time blocking indicators
+- Performance optimization through intelligent caching, batching, and adaptive scaling
+- Tactical analysis system for cover opportunities, flanking positions, and escape routes
+- Integration with existing CombatManager and AttackValidator for seamless enhancement
+- Editor automation tool for complete line-of-sight system setup and validation
+
+**Task 2.1.3** will add health and damage systems with 3 HP per unit, damage tracking, and death conditions, building on the attack and line-of-sight foundation to create complete combat mechanics.

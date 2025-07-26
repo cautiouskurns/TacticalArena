@@ -9,8 +9,8 @@ using UnityEngine;
 public class TargetCapability : MonoBehaviour, IAttackable
 {
     [Header("Health Configuration")]
-    [SerializeField] private int currentHealth = 3;
-    [SerializeField] private int maxHealth = 3;
+    [SerializeField] private int currentHealth = 3; // DEPRECATED - only used as fallback
+    [SerializeField] private int maxHealth = 3; // DEPRECATED - only used as fallback
     [SerializeField] private bool canBeTargeted = true;
     [SerializeField] private bool isInvulnerable = false;
     
@@ -36,6 +36,7 @@ public class TargetCapability : MonoBehaviour, IAttackable
     // Component references
     private Unit unit;
     private UnitHealth unitHealth;
+    private HealthComponent healthComponent;
     
     // Target state tracking
     private float invulnerabilityTimer = 0f;
@@ -53,14 +54,28 @@ public class TargetCapability : MonoBehaviour, IAttackable
     public Transform Transform => transform;
     public Vector2Int GridPosition => unit != null ? unit.GridPosition : Vector2Int.zero;
     public UnitTeam Team => unit != null ? unit.Team : UnitTeam.Neutral;
-    public int CurrentHealth => unitHealth != null ? unitHealth.CurrentHealth : currentHealth;
-    public int MaxHealth => unitHealth != null ? unitHealth.MaxHealth : maxHealth;
+    public int CurrentHealth 
+    {
+        get 
+        {
+            if (unitHealth != null)
+                return unitHealth.CurrentHealth;
+            else if (healthComponent != null)
+                return healthComponent.CurrentHealth;
+            else
+            {
+                Debug.LogWarning($"TargetCapability: {gameObject.name} using fallback currentHealth value!");
+                return currentHealth;
+            }
+        }
+    }
+    public int MaxHealth => unitHealth != null ? unitHealth.MaxHealth : (healthComponent != null ? healthComponent.MaxHealth : maxHealth);
     public bool CanBeTargeted => canBeTargeted && IsAlive && !IsInvulnerable;
-    public bool IsAlive => unitHealth != null ? unitHealth.IsAlive : (isAlive && currentHealth > 0);
+    public bool IsAlive => unitHealth != null ? unitHealth.IsAlive : (healthComponent != null ? healthComponent.IsAlive : (isAlive && currentHealth > 0));
     
     // Additional properties
     public bool IsInvulnerable => isInvulnerable || invulnerabilityTimer > 0f;
-    public float HealthPercentage => unitHealth != null ? unitHealth.HealthPercentage : (maxHealth > 0 ? (float)currentHealth / maxHealth : 0f);
+    public float HealthPercentage => unitHealth != null ? unitHealth.HealthPercentage : (healthComponent != null ? healthComponent.HealthPercentage : (maxHealth > 0 ? (float)currentHealth / maxHealth : 0f));
     public int TotalDamageTaken => totalDamageTaken;
     public IAttacker LastAttacker => lastAttacker;
     
@@ -85,13 +100,13 @@ public class TargetCapability : MonoBehaviour, IAttackable
     /// </summary>
     private void InitializeTargetCapability()
     {
-        // Ensure health values are valid
-        currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
-        isAlive = currentHealth > 0;
+        // Don't touch health values - they should come from HealthComponent
+        // currentHealth = Mathf.Clamp(currentHealth, 0, maxHealth);
+        // isAlive = currentHealth > 0;
         
         if (enableTargetLogging)
         {
-            Debug.Log($"TargetCapability initialized for {gameObject.name} - Health: {currentHealth}/{maxHealth}");
+            Debug.Log($"TargetCapability initialized for {gameObject.name}");
         }
     }
     
@@ -109,7 +124,20 @@ public class TargetCapability : MonoBehaviour, IAttackable
         unitHealth = GetComponent<UnitHealth>();
         if (unitHealth == null)
         {
-            Debug.LogError($"TargetCapability: UnitHealth component not found on {gameObject.name}");
+            // Try to find HealthComponent instead
+            healthComponent = GetComponent<HealthComponent>();
+            if (healthComponent == null)
+            {
+                Debug.LogError($"TargetCapability: Neither UnitHealth nor HealthComponent found on {gameObject.name}");
+            }
+            else if (enableTargetLogging)
+            {
+                Debug.Log($"TargetCapability: Using HealthComponent for {gameObject.name} - Current health: {healthComponent.CurrentHealth}/{healthComponent.MaxHealth}");
+            }
+        }
+        else if (enableTargetLogging)
+        {
+            Debug.Log($"TargetCapability: Using UnitHealth for {gameObject.name}");
         }
         
         // Team is handled by Unit component - no additional setup needed
@@ -120,18 +148,19 @@ public class TargetCapability : MonoBehaviour, IAttackable
     /// </summary>
     private void ValidateInitialState()
     {
-        if (maxHealth <= 0)
-        {
-            Debug.LogWarning($"TargetCapability: {gameObject.name} has invalid max health ({maxHealth}). Setting to 1.");
-            maxHealth = 1;
-            currentHealth = Mathf.Min(currentHealth, maxHealth);
-        }
+        // Don't validate or modify health - it's managed by HealthComponent
+        // if (maxHealth <= 0)
+        // {
+        //     Debug.LogWarning($"TargetCapability: {gameObject.name} has invalid max health ({maxHealth}). Setting to 1.");
+        //     maxHealth = 1;
+        //     currentHealth = Mathf.Min(currentHealth, maxHealth);
+        // }
         
-        if (currentHealth <= 0 && isAlive)
-        {
-            Debug.LogWarning($"TargetCapability: {gameObject.name} has no health but is marked as alive. Fixing state.");
-            isAlive = false;
-        }
+        // if (currentHealth <= 0 && isAlive)
+        // {
+        //     Debug.LogWarning($"TargetCapability: {gameObject.name} has no health but is marked as alive. Fixing state.");
+        //     isAlive = false;
+        // }
     }
     
     /// <summary>
@@ -179,7 +208,7 @@ public class TargetCapability : MonoBehaviour, IAttackable
             }
         }
         
-        // Delegate to UnitHealth if available
+        // Delegate to UnitHealth or HealthComponent if available
         int actualDamage = 0;
         if (unitHealth != null)
         {
@@ -191,6 +220,16 @@ public class TargetCapability : MonoBehaviour, IAttackable
             // Update internal tracking to stay in sync
             currentHealth = unitHealth.CurrentHealth;
             isAlive = unitHealth.IsAlive;
+        }
+        else if (healthComponent != null)
+        {
+            // Use HealthComponent's damage system
+            int healthBefore = healthComponent.CurrentHealth;
+            actualDamage = healthComponent.TakeDamage(damage, attacker);
+            
+            // DO NOT update internal tracking - always read from HealthComponent
+            // currentHealth = healthComponent.CurrentHealth;
+            // isAlive = healthComponent.IsAlive;
         }
         else
         {
@@ -235,7 +274,8 @@ public class TargetCapability : MonoBehaviour, IAttackable
         
         if (enableTargetLogging)
         {
-            Debug.Log($"TargetCapability: {gameObject.name} took {actualDamage} damage (from {originalDamage}) - Health: {CurrentHealth}/{MaxHealth}");
+            string healthSource = unitHealth != null ? "UnitHealth" : (healthComponent != null ? "HealthComponent" : "Internal");
+            Debug.Log($"TargetCapability: {gameObject.name} took {actualDamage} damage (from {originalDamage}) - Health: {CurrentHealth}/{MaxHealth} (using {healthSource})");
         }
         
         return actualDamage;
@@ -337,7 +377,7 @@ public class TargetCapability : MonoBehaviour, IAttackable
     public string GetDisplayInfo()
     {
         string teamName = unit != null ? unit.Team.ToString() : "Unknown";
-        return $"{gameObject.name} ({teamName} Team Target - {currentHealth}/{maxHealth} HP)";
+        return $"{gameObject.name} ({teamName} Team Target - {CurrentHealth}/{MaxHealth} HP)";
     }
     
     /// <summary>
